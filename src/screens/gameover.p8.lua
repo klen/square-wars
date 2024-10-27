@@ -2,6 +2,7 @@ function show_gameover()
   frame()
   local start, ctime = time(), dget(cdata.time)
   local minutes, seconds = ctime \ 60, flr(ctime % 60)
+  local scores, stats, credits
 
   scene = {
     typewriter:new {
