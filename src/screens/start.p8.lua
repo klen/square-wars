@@ -1,10 +1,12 @@
 function show_start()
-  if stat(24) <= 0 then
+  if stat(24) <= 0 and dget(cdata.mute) == 0 then
     music(0, 1000)
   end
   cls(1)
+  menuitem(1)
 
-  local mission, place, practice = dget(cdata.mission), dget(cdata.place), dget(cdata.practice)
+  local mission, place, practice, scores =
+    dget(cdata.mission), dget(cdata.place), dget(cdata.practice), dget(cdata.done)
 
   scene = {
     -- clear the scene (we don't use cls because of the fade)
@@ -37,6 +39,7 @@ function show_start()
           }
         or nil,
       practice > 0 and { name = "practice", callback = show_practice } or nil,
+      scores > 0 and { name = "scores", callback = show_scores } or nil,
     }),
   }
 end

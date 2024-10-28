@@ -17,11 +17,11 @@ function sort(t, cmp)
   end
 end
 
-function find(t, v)
-  for i = 1, #t do
-    if t[i] == v then
-      return i
+function find(t, fn)
+  for idx, o in ipairs(t) do
+    if fn(o) then
+      return idx
     end
   end
-  return nil
+  return -1
 end

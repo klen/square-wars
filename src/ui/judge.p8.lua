@@ -3,7 +3,8 @@ judge = entity:create {
   arena = 0,
   active = 1,
   mission = 0,
-  num_players = 2,
+  cpu = 1,
+  human = 1,
   finished = false,
 
   init = function(_ENV)
@@ -12,17 +13,26 @@ judge = entity:create {
     local self, pos = _ENV, { 1, size * size, size, (size * size) - size + 1 }
     players, tiles = {}, field.tiles
 
-    -- init players
-    for pn = 1, num_players do
+    local init_player = function(pn, cpu)
       local pt = tiles[pos[pn]]
       pt.p = pn
       pt.c = self:move_color(rndcolor(), rndcolor)
       add(players, {
         n = pn,
+        s = 0,
         c = pt.c,
         t = { pt },
-        cpu = pn ~= 1,
+        cpu = cpu,
       })
+    end
+
+    -- init players
+    for pn = 1, human do
+      init_player(pn, false)
+    end
+
+    for pn = human + 1, human + cpu do
+      init_player(pn, true)
     end
 
     -- fix positions
@@ -42,17 +52,23 @@ judge = entity:create {
 
     finished = true
 
-    local player = players[1]
+    -- sort places
     sort(players, function(a, b)
       return #a.t > #b.t
     end)
-    local seconds, place = time() - start, find(players, player)
-    local score = 0
-    for n = place + 1, #players do
-      score += #player.t - #players[n].t
+
+    -- calculate scores
+    for pn = 1, #players do
+      local p = players[pn]
+      for sn = pn + 1, #players do
+        local sp = players[sn]
+        if p.cpu or sp.cpu then
+          p.s += #p.t - #sp.t
+        end
+      end
     end
 
-    sfx(place == 1 and 61 or 60)
+    sfx(players[1].cpu and 60 or 61)
 
     freeze_update(
       71,
@@ -63,12 +79,11 @@ judge = entity:create {
             dset(cdata.place, place)
           end
           show_results(
-            mission == 0 and arena or mission,
-            place,
-            score,
+            players,
             moves,
-            seconds,
-            mission ~= 0
+            time() - start,
+            mission == 0 and arena or mission, -- mission or arena number
+            mission == 0 and "a" or "m" -- mode
           )
         end,
       }
@@ -92,7 +107,6 @@ judge = entity:create {
     return players[active]
   end,
   move = function(_ENV, c)
-    sfx(1)
     local p = players[active]
     p.c = c
     foreach(p.t, function(t)
@@ -101,6 +115,9 @@ judge = entity:create {
     end)
     moves = moves + 1
     active = (active % #players) + 1
+    if p.cpu then
+      sfx(62)
+    end
   end,
 }
 

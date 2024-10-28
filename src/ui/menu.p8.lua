@@ -14,13 +14,18 @@ menu = entity:create {
       options[selected].selected = true
     end
   end,
+
   update = function(_ENV)
     local opt, btn = options[selected], getbtn()
     local d = dir[btn + 1]
 
     if btn == -1 then
       return
-    elseif btn == 2 or btn == 3 then
+    end
+
+    beep()
+
+    if btn == 2 or btn == 3 then
       opt.selected = false
       repeat
         selected = (selected - 1 + d) % #options + 1
@@ -29,7 +34,12 @@ menu = entity:create {
     else
       opt:callback(d)
     end
+
+    foreach(options, function(opt)
+      opt:update()
+    end)
   end,
+
   draw = function(_ENV)
     foreach(options, function(opt)
       opt:draw()

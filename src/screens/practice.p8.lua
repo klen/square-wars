@@ -1,11 +1,11 @@
 function show_practice()
-  local arena, enemies, arena_available = 1, 3, min(dget(cdata.arena), #arenas)
+  local arena, human, cpu, arena_available = 1, 1, 3, min(dget(cdata.arena), #arenas)
 
   scene = {
     art(function()
       cls(1)
       print("practice mode", 16, 16, 7)
-      print("choose preferences\nstart to begin.", 16, 40, 6)
+      print("choose preferences\n\nstart to begin.", 16, 40, 6)
     end),
     menu:new(nil, {
       arena_available > 0 and {
@@ -17,10 +17,23 @@ function show_practice()
         end,
       } or nil,
       {
-        name = "enemies: 3",
+        name = "human: 1",
+        update = function(_ENV)
+          name = "human: " .. human
+        end,
         callback = function(self, dir)
-          enemies = (enemies - 1 + dir) % 3 + 1
-          self.name = "enemies: " .. enemies
+          human = (human - 1 + dir) % 4 + 1
+          cpu = min(cpu, 4 - human)
+        end,
+      },
+      {
+        name = "cpu: 3",
+        update = function(_ENV)
+          name = "cpu: " .. cpu
+        end,
+        callback = function(self, dir)
+          cpu = (cpu - 1 + dir) % 4 + 1
+          human = min(human, 4 - cpu)
         end,
       },
       {
@@ -28,7 +41,7 @@ function show_practice()
         callback = function()
           music(-1)
           arena = arena == 1 and flr(rnd(#arenas)) + 1 or arena - 1
-          show_mission(0, enemies + 1, arena, 20)
+          show_mission(0, arena, 20, cpu, human)
         end,
       },
       {

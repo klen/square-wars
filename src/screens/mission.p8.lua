@@ -1,5 +1,4 @@
--- set mission to 0 for practice mode
-function show_mission(mission, players, arena, size)
+function show_mission(mission, arena, size, cpu, human)
   sfx(0)
   cls()
   freeze_update(31, fade:new { reverse = true })
@@ -9,11 +8,11 @@ function show_mission(mission, players, arena, size)
     if not mdata then
       return show_start()
     end
-    size, players, arena = mdata.s, mdata.p, mdata.a
+    size, arena, cpu = mdata.s, mdata.a, mdata.cpu
   end
 
   local f = field:new { size = size, arena = arena }
-  local j = judge:new { num_players = players, field = f, mission = mission, arena = arena }
+  local j = judge:new { cpu = cpu, human = human, field = f, mission = mission, arena = arena }
 
   scene = {
     art(cls),
@@ -22,7 +21,7 @@ function show_mission(mission, players, arena, size)
     -- judge
     j,
     -- stats
-    stats:new { players = j.players },
+    -- stats:new { players = j.players },
     -- controls
     controls:new { field = f, judge = j },
   }

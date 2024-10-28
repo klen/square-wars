@@ -20,7 +20,7 @@ controls = entity:create {
     if p.cpu then
       self:move(bot1(self.field, judge))
     else
-      local btn = getbtn()
+      local btn = getbtn(judge.active - 1)
       if btn < 0 then
         return
       end
@@ -31,21 +31,27 @@ controls = entity:create {
         end)
         beep()
       else
+        sfx(63)
         self:move(self.scolor)
       end
     end
   end,
 
-  draw = function(self)
+  draw = function(_ENV)
     for idx = 1, #colors do
       local c, s = colors[idx], idx * 8 - 8
-      if idx == self.scolor then
+      if idx == scolor then
         rectfill(s, 120, s + 6, 126, c)
-      elseif self.judge:color_available(idx) then
+      elseif judge:color_available(idx) then
         rectfill(s + 1, 121, s + 5, 125, c)
       else
         rect(s + 1, 121, s + 5, 125, c)
       end
+    end
+    local w, active = 51, judge.active
+    for p in all(judge.players) do
+      local n, c, t = p.n, colors[p.c], tostr(#p.t)
+      w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
     end
   end,
 
@@ -54,6 +60,7 @@ controls = entity:create {
     scolor = judge:move_color(judge:get_active().c, function(c)
       return (c % #colors) + 1
     end)
+    freeze_update(5 + rnd(10))
   end,
 }
 

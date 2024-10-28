@@ -8,8 +8,12 @@ typewriter = entity:create {
   draw = function(_ENV)
     local _txt = ""
     for ch in all(txt) do
-      local r = rnd { "a", "e", "b" }
-      _txt ..= "\a63" .. r .. " \^" .. speed .. ch
+      if ch == " " then
+        _txt ..= " "
+      else
+        local r = rnd { "a", "e", "b" }
+        _txt ..= "\a63" .. r .. " \^" .. speed .. ch
+      end
     end
     print(_txt, x, y, c)
 

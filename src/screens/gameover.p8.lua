@@ -1,5 +1,7 @@
 function show_gameover()
   frame()
+  dset(cdata.done, 1)
+
   local start, ctime = time(), dget(cdata.time)
   local minutes, seconds = ctime \ 60, flr(ctime % 60)
   local scores, stats, credits
@@ -25,7 +27,7 @@ function show_gameover()
     },
     entity:new {
       update = function(self)
-        if time() - start > 0.1 then
+        if dget(cdata.mute) == 0 and time() - start > 0.1 then
           music(6, 1000)
           self.update = noop
         end
@@ -39,6 +41,7 @@ function show_gameover()
     },
   }
 
+  -- scores
   scores = {
     typewriter:new {
       txt = "you have done " .. #missions .. " missions",
@@ -49,7 +52,7 @@ function show_gameover()
       c = 6,
     },
     typewriter:new {
-      txt = "total time: " .. minutes .. ":" .. leading_zero(seconds),
+      txt = "total time: " .. minutes .. ":" .. lzero(seconds, 10),
       y = 46,
       c = 6,
     },
@@ -61,30 +64,16 @@ function show_gameover()
     },
   }
 
-  stats = {
-    typewriter:new {
-      txt = "mission scores",
-    },
-    confirmation:new {
+  -- stats
+  stats = mission_scores()
+  add(stats, confirmation:new {
       txt = "view credits",
       callback = function()
         scene = credits
       end,
-    },
-  }
-
-  add(stats, typewriter:new {
-      txt = "mission scores",
   })
-  for i, m in ipairs(missions) do
-    if i > 1 then
-      add(stats, typewriter:new {
-        txt = m.n .. ": " .. dget(cdata.mscores + i - 1),
-        y = i * 8, c = 6,
-      }, #stats - 1)
-    end
-  end
 
+  -- credits
   credits = {
     typewriter:new {
       txt = "square wars",
