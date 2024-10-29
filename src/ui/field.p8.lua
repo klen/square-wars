@@ -10,11 +10,18 @@ field = entity:create {
 
     tiles = {}
     for n = 1, size * size do
-      add(tiles, {
-        p = 0,
-        n = n,
-        c = rndcolor(),
-      })
+      local t = tile:new { n = n }
+      add(tiles, t)
+      if n % size ~= 1 then
+        local f = tiles[n - 1]
+        add(t.friends, f)
+        add(f.friends, t)
+      end
+      if n > size then
+        local f = tiles[n - size]
+        add(t.friends, f)
+        add(f.friends, t)
+      end
     end
 
     if arena ~= 0 then
@@ -32,39 +39,4 @@ field = entity:create {
       draw_tile(t, size, offset)
     end)
   end,
-
-  get_neighbours = function(_ENV, st)
-    local n, res, t = st.n, {}, nil
-
-    if n % size ~= 1 then
-      t = tiles[n - 1]
-      if t.p == 0 then
-        add(res, t)
-      end
-    end
-    if n % size ~= 0 then
-      t = tiles[n + 1]
-      if t.p == 0 then
-        add(res, t)
-      end
-    end
-    if n > size then
-      t = tiles[n - size]
-      if t.p == 0 then
-        add(res, t)
-      end
-    end
-    if size * size - size >= n then
-      t = tiles[n + size]
-      if t.p == 0 then
-        add(res, t)
-      end
-    end
-
-    return res
-  end,
 }
-
-function rndcolor(free)
-  return flr(rnd(#colors) + 1)
-end

@@ -8,13 +8,15 @@ function load_table_str(s)
 end
 
 function sort(t, cmp)
-  for i = 1, #t do
+  res = pack(unpack(t))
+  for i = 1, #res do
     local j = i
-    while j > 1 and cmp(t[j], t[j - 1]) do
-      t[j], t[j - 1] = t[j - 1], t[j]
+    while j > 1 and cmp(res[j], res[j - 1]) do
+      res[j], res[j - 1] = res[j - 1], res[j]
       j = j - 1
     end
   end
+  return res
 end
 
 function find(t, fn)
@@ -24,4 +26,14 @@ function find(t, fn)
     end
   end
   return -1
+end
+
+function filter(t, fn)
+  local res = {}
+  for o in all(t) do
+    if fn(o) then
+      add(res, o)
+    end
+  end
+  return res
 end

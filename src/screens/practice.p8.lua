@@ -41,7 +41,11 @@ function show_practice()
         callback = function()
           music(-1)
           arena = arena == 1 and flr(rnd(#arenas)) + 1 or arena - 1
-          show_mission(0, arena, 20, cpu, human)
+          local tcpu = {}
+          for idx = 1, cpu do
+            add(tcpu, idx % 2 + 1)
+          end
+          show_mission(0, arena, 20, human, tcpu)
         end,
       },
       {

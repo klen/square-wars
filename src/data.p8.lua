@@ -17,17 +17,17 @@ arenas = {
 
 missions = {
   -- load_table_str "n=debug,s=15,p=1,a=6",
-  load_table_str "n=intro,s=5,cpu=0", -- 1
+  load_table_str "n=intro,s=5", -- 1
   load_table_str "n=tutor,s=8,cpu=1,un=continue", -- 2
-  load_table_str "n=qualification,s=12,cpu=2", -- 3
-  load_table_str "n=exam,s=15,cpu=3,u=practice,un=practice mode", -- 4
+  load_table_str "n=qualification,s=12,cpu=1/1", -- 3
+  load_table_str "n=exam,s=15,cpu=1/1/1,u=practice,un=practice mode", -- 4
   load_table_str "n=infiltration,s=20,a=2,cpu=1,u=arena,un=arena 1", -- 5
   load_table_str "n=brothers,s=20,a=3,cpu=1,u=arena,un=arena 2", -- 6
-  load_table_str "n=the mirror,s=20,a=4,cpu=1,u=arena,un=arena 3", -- 7
-  load_table_str "n=the crystal,s=20,a=5,cpu=2,u=arena,un=arena 4", -- 8
-  load_table_str "n=labyrinth,s=20,a=6,cpu=2,u=arena,un=arena 5", -- 9
-  load_table_str "n=cage,s=20,a=7,cpu=3,u=arena,un=arena 6", -- 10
-  load_table_str "n=lines,s=20,a=8,cpu=3,u=arena,un=arena 7", -- 11
+  load_table_str "n=the mirror,s=20,a=4,cpu=2,u=arena,un=arena 3", -- 7
+  load_table_str "n=the crystal,s=20,a=5,cpu=1/2,u=arena,un=arena 4", -- 8
+  load_table_str "n=labyrinth,s=20,a=6,cpu=2/2,u=arena,un=arena 5", -- 9
+  load_table_str "n=cage,s=20,a=7,cpu=1/2/2,u=arena,un=arena 6", -- 10
+  load_table_str "n=lines,s=20,a=8,cpu=2/2/2,u=arena,un=arena 7", -- 11
 }
 
 briefs = {

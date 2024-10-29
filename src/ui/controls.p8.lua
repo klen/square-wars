@@ -1,5 +1,4 @@
 controls = entity:create {
-  field = nil,
   judge = nil,
   scolor = 0,
 
@@ -18,7 +17,12 @@ controls = entity:create {
     end
 
     if p.cpu then
-      self:move(bot1(self.field, judge))
+      local targets = get_targets(p, judge)
+      if #targets == 0 then
+        return self:move(judge:move_color(rndcolor(), rndcolor))
+      end
+      local bot = ai[p.cpu]
+      self:move(bot(targets))
     else
       local btn = getbtn(judge.active - 1)
       if btn < 0 then
@@ -64,18 +68,49 @@ controls = entity:create {
   end,
 }
 
-function bot1(field, judge)
-  local neighbours, cache, p = {}, {}, judge:get_active()
+function get_targets(p, judge)
+  local targets, seen = {}, {}
   for t in all(p.t) do
-    for n in all(field:get_neighbours(t)) do
-      if judge:color_available(n.c) then
-        cache[n.n] = n -- keep unique
+    for f in all(t:free()) do
+      if not seen[f.n] then
+        seen[f.n] = true
+        if judge:color_available(f.c) then
+          add(targets, f)
+        end
       end
     end
   end
-
-  for _, t in pairs(cache) do
-    add(neighbours, t)
-  end
-  return #neighbours > 0 and rnd(neighbours).c or judge:move_color(rndcolor(), rndcolor)
+  return targets
 end
+
+function get_clusters(targets)
+  local seen, clusters, res = {}, { [1] = {}, [2] = {}, [3] = {}, [4] = {}, [5] = {}, [6] = {} }, {}
+  for t in all(targets) do
+    local c = cluster(t)
+    local cnum = c[1].n
+    if not seen[cnum] then
+      seen[cnum] = true
+      for f in all(c) do
+        add(clusters[t.c], f)
+      end
+    end
+  end
+  clusters = sort(clusters, function(a, b)
+    return #a > #b
+  end)
+  return filter(clusters, function(c)
+    return #c > 0
+  end)
+end
+
+-- random bot
+function bot1(targets)
+  return rnd(targets).c
+end
+
+-- greedy bot (selects the target with biggest cluster)
+function bot2(targets)
+  return get_clusters(targets)[1][1].c
+end
+
+ai = { bot1, bot2 }

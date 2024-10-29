@@ -23,12 +23,6 @@ function show_start()
     end),
     -- main menu
     menu:new(nil, {
-      {
-        name = "new campaign",
-        callback = function()
-          start(1)
-        end,
-      },
       mission > 1
           and mission < #missions
           and {
@@ -38,6 +32,12 @@ function show_start()
             end,
           }
         or nil,
+      {
+        name = "new campaign",
+        callback = function()
+          start(1)
+        end,
+      },
       practice > 0 and { name = "practice", callback = show_practice } or nil,
       scores > 0 and { name = "scores", callback = show_scores } or nil,
     }),

@@ -3,8 +3,8 @@ judge = entity:create {
   arena = 0,
   active = 1,
   mission = 0,
-  cpu = 1,
   human = 1,
+  bots = nil,
   finished = false,
 
   init = function(_ENV)
@@ -14,6 +14,7 @@ judge = entity:create {
     players, tiles = {}, field.tiles
 
     local init_player = function(pn, cpu)
+      printh("init player " .. pn .. " cpu " .. tostr(cpu))
       local pt = tiles[pos[pn]]
       pt.p = pn
       pt.c = self:move_color(rndcolor(), rndcolor)
@@ -31,14 +32,19 @@ judge = entity:create {
       init_player(pn, false)
     end
 
-    for pn = human + 1, human + cpu do
-      init_player(pn, true)
+    for b in all(bots) do
+      init_player(#players + 1, b)
+    end
+
+    printh("--- players " .. #players)
+    for p in all(players) do
+      printh("player " .. p.n .. " cpu " .. (p.cpu and p.cpu or "-"))
     end
 
     -- fix positions
     for p in all(pos) do
       local pt = tiles[p]
-      for t in all(field:get_neighbours(pt)) do
+      for t in all(pt:free()) do
         t.c = self:move_color(t.c, rndcolor)
       end
     end
@@ -53,22 +59,22 @@ judge = entity:create {
     finished = true
 
     -- sort places
-    sort(players, function(a, b)
+    local res = sort(players, function(a, b)
       return #a.t > #b.t
     end)
 
     -- calculate scores
-    for pn = 1, #players do
-      local p = players[pn]
-      for sn = pn + 1, #players do
-        local sp = players[sn]
+    for pn = 1, #res do
+      local p = res[pn]
+      for sn = pn + 1, #res do
+        local sp = res[sn]
         if p.cpu or sp.cpu then
           p.s += #p.t - #sp.t
         end
       end
     end
 
-    sfx(players[1].cpu and 60 or 61)
+    sfx(res[1].cpu and 60 or 61)
 
     freeze_update(
       71,
@@ -79,7 +85,7 @@ judge = entity:create {
             dset(cdata.place, place)
           end
           show_results(
-            players,
+            res,
             moves,
             time() - start,
             mission == 0 and arena or mission, -- mission or arena number
@@ -111,7 +117,7 @@ judge = entity:create {
     p.c = c
     foreach(p.t, function(t)
       t.c = c
-      grab_near(p, t, field)
+      grab_near(p, t)
     end)
     moves = moves + 1
     active = (active % #players) + 1
@@ -121,12 +127,12 @@ judge = entity:create {
   end,
 }
 
-function grab_near(p, pt, field)
-  for n in all(field:get_neighbours(pt)) do
+function grab_near(p, pt)
+  for n in all(pt:free()) do
     if n.c == pt.c then
       n.p = p.n
       add(p.t, n)
-      grab_near(p, n, field)
+      grab_near(p, n)
     end
   end
 end

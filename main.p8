@@ -15,6 +15,7 @@ __lua__
 #include src/ui/tools.p8.lua
 #include src/ui/palette.p8.lua
 #include src/ui/menu.p8.lua
+#include src/ui/tile.p8.lua
 #include src/ui/field.p8.lua
 #include src/ui/controls.p8.lua
 #include src/ui/judge.p8.lua
@@ -28,11 +29,13 @@ __lua__
 #include src/screens/gameover.p8.lua
 #include src/screens/practice.p8.lua
 #include src/screens/scores.p8.lua
--- #include src/screens/debug.p8.lua
 
 #include src/init.p8.lua
 #include src/update.p8.lua
 #include src/draw.p8.lua
+
+-- #include src/screens/debug.p8.lua
+-- #include src/tools/debug.p8.lua
 
 inv = "\^i"
 

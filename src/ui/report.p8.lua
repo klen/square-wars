@@ -17,8 +17,8 @@ function report(players, moves, seconds, num, mode)
 
   moves = tostr(moves)
   report ..= "\n" .. (
-    "moves: " .. pspace(moves, 13) .. moves .. "\n\n" ..
-    "time:  " .. pspace(time, 13) .. time
+    "moves: " .. pspace(moves, 12) .. moves .. "\n\n" ..
+    "time:  " .. pspace(time, 12) .. time
   )
   return function() return typewriter:new { txt = report } end
 end
