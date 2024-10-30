@@ -7,6 +7,7 @@ Judge = Entity:create {
   mission = 0,
   human = 1,
   bots = nil,
+  powers = 63,
 
   -- @param power Power
   power = nil,
@@ -19,14 +20,14 @@ Judge = Entity:create {
     local self, pos = _ENV, { 1, size * size, size, (size * size) - size + 1 }
     players, tiles = {}, field.tiles
 
-    local init_player = function(pn, cpu)
-      printh("init player " .. pn .. " cpu " .. tostr(cpu))
+    local init_player = function(pn, cpu, w)
       local pt = tiles[pos[pn]]
       pt.p = pn
       pt.c = self:move_color(rndcolor(), rndcolor)
       add(players, {
         n = pn,
         s = 0,
+        w = w,
         c = pt.c,
         t = { pt },
         cpu = cpu,
@@ -35,16 +36,11 @@ Judge = Entity:create {
 
     -- init players
     for pn = 1, human do
-      init_player(pn, false)
+      init_player(pn, false, powers)
     end
 
     for b in all(bots) do
-      init_player(#players + 1, b)
-    end
-
-    printh("--- players " .. #players)
-    for p in all(players) do
-      printh("player " .. p.n .. " cpu " .. (p.cpu and p.cpu or "-"))
+      init_player(#players + 1, b, 63)
     end
 
     -- fix positions
@@ -55,6 +51,7 @@ Judge = Entity:create {
       end
     end
   end,
+
   update = function(_ENV)
     for t in all(tiles) do
       if t.p == 0 then
@@ -101,18 +98,22 @@ Judge = Entity:create {
       }
     )
   end,
-  color_available = function(self, c)
-    for p in all(self.players) do
+  color_available = function(_ENV, c, w)
+    for p in all(players) do
       if p.c == c then
         return false
       end
     end
+    if w and power and power:active(c) then
+      return 2 ^ (c - 1) & w > 0
+    end
     return true
   end,
-  move_color = function(self, c, fn)
+
+  move_color = function(self, c, fn, w)
     repeat
       c = fn(c)
-    until self:color_available(c)
+    until self:color_available(c, w)
     return c
   end,
   get_active = function(_ENV)
@@ -121,8 +122,6 @@ Judge = Entity:create {
   move = function(_ENV, c)
     local p = players[active]
     local tiles, pwr = p.t, power and power.levels[c] == 3
-
-    printh("move player " .. p.n .. " color " .. p.c .. " power " .. tostr(pwr))
 
     p.c = c
     moves += 1

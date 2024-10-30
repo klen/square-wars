@@ -7,7 +7,7 @@ function show_debug()
     {
       name = "toggle mode: 1",
       callback = function(self, dir)
-        mode = (mode - 1 + dir) % 4 + 1
+        mode = (mode - 1 + dir) % 5 + 1
         self.name = "toggle mode: " .. mode
       end,
     }, {
@@ -16,7 +16,7 @@ function show_debug()
       c = 1,
     }
 
-  local m4 = Menu:new({ offset = 0 }, {
+  local ms = Menu:new({ offset = 0 }, {
     toggle,
     sep,
     {
@@ -77,7 +77,7 @@ function show_debug()
     },
   })
 
-  local m1 = Menu:new({
+  local mc = Menu:new({
     offset = 0,
   }, {
     toggle,
@@ -87,9 +87,9 @@ function show_debug()
       callback = function(self, dir)
         dset(cdata.mission, (dget(cdata.mission) - 1 + dir) % #missions + 1)
         self.name = "campaign - mission: " .. dget(cdata.mission)
-        m4.options[4].name = "screen - brief " .. dget(cdata.mission)
-        m4.options[5].name = "screen - mission " .. dget(cdata.mission)
-        m4.options[6].name = "screen - results " .. dget(cdata.mission)
+        ms.options[4].name = "screen - brief " .. dget(cdata.mission)
+        ms.options[5].name = "screen - mission " .. dget(cdata.mission)
+        ms.options[6].name = "screen - results " .. dget(cdata.mission)
       end,
     },
     {
@@ -152,9 +152,9 @@ function show_debug()
     },
   })
 
-  local m2opts = { toggle, sep }
+  local mmopts = { toggle, sep }
   for idx = 1, #missions do
-    add(m2opts, {
+    add(mmopts, {
       name = "score - m" .. idx .. ": " .. dget(cdata.mscores + idx - 1),
       callback = function(self, dir)
         dset(cdata.mscores + idx - 1, dget(cdata.mscores + idx - 1) + dir)
@@ -162,11 +162,11 @@ function show_debug()
       end,
     })
   end
-  local m2 = Menu:new({ offset = 0 }, m2opts)
+  local mm = Menu:new({ offset = 0 }, mmopts)
 
-  local m3opts = { toggle, sep }
+  local maopts = { toggle, sep }
   for idx = 1, #arenas do
-    add(m3opts, {
+    add(maopts, {
       name = "score - a" .. idx .. ": " .. dget(cdata.ascores + idx - 1),
       callback = function(self, dir)
         dset(cdata.ascores + idx - 1, dget(cdata.ascores + idx - 1) + dir)
@@ -174,9 +174,63 @@ function show_debug()
       end,
     })
   end
-  local m3 = Menu:new({ offset = 0 }, m3opts)
+  local ma = Menu:new({ offset = 0 }, maopts)
 
-  local menus = { m1, m2, m3, m4 }
+  local power = dget(cdata.power)
+  local mp = Menu:new({ offset = 0 }, {
+    toggle,
+    sep,
+    {
+      name = "power - snow: " .. (power & 1),
+      callback = function(self, dir)
+        power = invert(power, 1)
+        dset(cdata.power, power)
+        self.name = "power - snow: " .. (power & 1)
+      end,
+    },
+    {
+      name = "power - fire: " .. (power & 2),
+      callback = function(self, dir)
+        power = invert(power, 2)
+        dset(cdata.power, power)
+        self.name = "power - fire: " .. (power & 2)
+      end,
+    },
+    {
+      name = "power - desert: " .. (power & 4),
+      callback = function(self, dir)
+        power = invert(power, 4)
+        dset(cdata.power, power)
+        self.name = "power - desert: " .. (power & 4)
+      end,
+    },
+    {
+      name = "power - sun: " .. (power & 8),
+      callback = function(self, dir)
+        power = invert(power, 8)
+        dset(cdata.power, power)
+        self.name = "power - sun: " .. (power & 8)
+      end,
+    },
+    {
+      name = "power - woods: " .. (power & 16),
+      callback = function(self, dir)
+        power = invert(power, 16)
+        dset(cdata.power, power)
+        self.name = "power - woods: " .. (power & 16)
+      end,
+    },
+    {
+      name = "power - storm: " .. (power & 32),
+      callback = function(self, dir)
+        power = invert(power, 32)
+        dset(cdata.power, power)
+        self.name = "power - storm: " .. (power & 32)
+      end,
+    },
+  })
+
+  local menus = { mc, mp, mm, ma, ms }
 
   scene = {
     art(cls),
@@ -194,3 +248,11 @@ function show_debug()
 end
 
 menuitem(3, "debug", show_debug)
+
+function invert(var, b)
+  if var & b == 0 then
+    return var | b
+  else
+    return var & ~b
+  end
+end

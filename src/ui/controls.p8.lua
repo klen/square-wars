@@ -26,16 +26,15 @@ Controls = Entity:create {
       end
       local bot = ai[p.cpu]
       self:move(bot(targets))
+
     else
       local btn = getbtn(judge.active - 1)
-      if btn < 0 then
-        return
-      end
+      if btn < 0 then return end
       if btn < 4 then
         local d = dir[btn + 1]
         self.scolor = judge:move_color(self.scolor, function(c)
           return (c + d - 1) % #colors + 1
-        end)
+        end, p.w)
         beep()
       else
         sfx(63)
@@ -45,20 +44,18 @@ Controls = Entity:create {
   end,
 
   draw = function(_ENV)
+    local p = judge:get_active()
+
     for idx = 1, #colors do
       local c, s = colors[idx], idx * 8 - 8
+
       if idx == scolor then
         rectfill(s, 120, s + 6, 126, c)
-      elseif judge:color_available(idx) then
+      elseif judge:color_available(idx, p.w) then
         rectfill(s + 1, 121, s + 5, 125, c)
       else
         rect(s + 1, 121, s + 5, 125, c)
       end
-    end
-    local w, active = 51, judge.active
-    for p in all(judge.players) do
-      local n, c, t = p.n, colors[p.c], tostr(#p.t)
-      w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
     end
   end,
 
@@ -68,7 +65,7 @@ Controls = Entity:create {
     if power do power:move(c) end
     scolor = judge:move_color(p.c, function(c)
       return (c % #colors) + 1
-    end)
+    end, p.w)
     freeze_update(5 + rnd(10))
   end,
 }

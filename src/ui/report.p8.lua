@@ -12,7 +12,7 @@ function report(players, moves, seconds, num, mode)
         smode = " (" .. mode .. num .. " top)"
       end
     end
-    report ..= place .. "st " .. prefix .. p.n .. " score: " .. pspace(score, 6) .. score .. smode .. "\n"
+    report ..= place .. "st " .. prefix .. p.n .. " score: " .. pspace(score, 5) .. score .. smode .. "\n"
   end
 
   moves = tostr(moves)

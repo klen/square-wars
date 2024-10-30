@@ -26,9 +26,9 @@ function show_results(players, moves, seconds, num, mode)
       dset(cdata.score, dget(cdata.score) + players[place].s)
 
       local mdata = missions[num]
-      local unlock = mdata.u
+      local unlock, unlock_value = mdata.u, mdata.uv
       if unlock then
-        dset(cdata[unlock], dget(cdata[unlock]) + 1)
+        dset(cdata[unlock], unlock_value and unlock_value or (dget(cdata[unlock]) + 1))
       end
 
       scene = {

@@ -22,9 +22,13 @@ missions = {
   load_table_str "n=qualification,s=12,cpu=1/1", -- 3
   load_table_str "n=exam,s=15,cpu=1/1/1,u=practice,un=practice mode", -- 4
   load_table_str "n=infiltration,s=20,a=2,cpu=1,u=arena,un=arena 1", -- 5
-  load_table_str "n=brothers,s=20,a=3,cpu=1,u=arena,un=arena 2", -- 6
-  load_table_str "n=the mirror,s=20,a=4,cpu=2,u=arena,un=arena 3", -- 7
+
+  load_table_str "n=snow's trial,s=20,a=4,cpu=2,u=power,un=power of snow,uv=1,w=1", -- 6
+  load_table_str "n=brothers,s=20,a=3,cpu=1,u=arena,un=arena 2,w=1", -- 6
+
+  load_table_str "n=fire's challenge,s=20,a=4,cpu=2,u=arena,un=arena 3,w=3", -- 7
   load_table_str "n=the crystal,s=20,a=5,cpu=1/2,u=arena,un=arena 4", -- 8
+
   load_table_str "n=labyrinth,s=20,a=6,cpu=2/2,u=arena,un=arena 5", -- 9
   load_table_str "n=cage,s=20,a=7,cpu=1/2/2,u=arena,un=arena 6", -- 10
   load_table_str "n=lines,s=20,a=8,cpu=2/2/2,u=arena,un=arena 7", -- 11
@@ -33,15 +37,29 @@ missions = {
 briefs = {
   "welcome, initiate.\n\n\nprove your readiness\n\n\nfill the board with\n\na single color.",
   "the field awakens.\n\n\na simple adversary\n\nstands in your way.\n\n\ngrab the board.",
-  "two observers enter.\n\n\nare you ready\n\nto demonstrate your worth?",
+  "two observers enter.\n\n\nare you ready\n\nto demonstrate your worth?", --3
   "three shadows converge.\n\n\nshow your resolve\n\nor be forgotten.",
+
   "a lone sentinel\n\n\nguards this vast domain.\n\n\ndisrupt the silence.",
-  "two strongholds oppose you.\n\n\ndivide and conquer.",
+  "you ready.\n\n\nmaster of snow awaits.\n\n\nthe field grows cold\n\nconquer the frost.",
+
+  "two strongholds oppose you.\n\n\ndivide and conquer.\n\npower of snow with you.",
+  "master of fire stands ready.\n\nthe heat intensifies\n\nthe brave will endure.",
+
   "a reflection of your skill.\n\n\nbalance is the key.",
   "two adversaries\n\n\nguard the heart.\n\n\napproach with caution.",
+  "master of desert emerges. the sands shift—only those who adapt will survive.",
+
   "the paths twist and narrow.\n\n\nmove swiftly, or be lost.",
+  "master of sun stands tall.\n\n\nthe light is blinding—prove\n\nyour worth in the glare.",
+
   "three join.\n\n\nnavigate the chaos\n\nto claim victory.",
-  "the final gauntlet.\n\n\nfour foes align to test you.",
+  "master of woods appears.\n\n\nthe field thickens—only\n\nthe cunning will prevail.",
+
+  "barriers divide the field.\n\n\nfind your path\n\namidst the obstruction.",
+  "master of storm approaches.\n\n\nthe winds howl—only\n\nthe steadfast will endure.",
+
+  "the final test awaits. all forces align against you. prove you are the master.",
 }
 
 -- Final Trial: "The end draws near, but secrets linger. Only the chosen will unlock the truth."
