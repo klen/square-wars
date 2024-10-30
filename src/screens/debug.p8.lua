@@ -16,7 +16,7 @@ function show_debug()
       c = 1,
     }
 
-  local m4 = menu:new({ offset = 0 }, {
+  local m4 = Menu:new({ offset = 0 }, {
     toggle,
     sep,
     {
@@ -77,7 +77,7 @@ function show_debug()
     },
   })
 
-  local m1 = menu:new({
+  local m1 = Menu:new({
     offset = 0,
   }, {
     toggle,
@@ -162,7 +162,7 @@ function show_debug()
       end,
     })
   end
-  local m2 = menu:new({ offset = 0 }, m2opts)
+  local m2 = Menu:new({ offset = 0 }, m2opts)
 
   local m3opts = { toggle, sep }
   for idx = 1, #arenas do
@@ -174,13 +174,13 @@ function show_debug()
       end,
     })
   end
-  local m3 = menu:new({ offset = 0 }, m3opts)
+  local m3 = Menu:new({ offset = 0 }, m3opts)
 
   local menus = { m1, m2, m3, m4 }
 
   scene = {
     art(cls),
-    entity:new {
+    Entity:new {
       update = function()
         local m = menus[mode]
         m:update()

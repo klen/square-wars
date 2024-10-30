@@ -2,15 +2,16 @@ function rndcolor(free)
   return flr(rnd(#colors) + 1)
 end
 
-tile = entity:create {
+Tile = Entity:create {
   n = 0,
   p = 0,
   init = function(_ENV)
-    friends = {}
+    diag = {} -- diagonal
+    hvrel = {} -- horizontal and vertical
     c = rndcolor()
   end,
   free = function(_ENV)
-    return filter(friends, function(t)
+    return filter(hvrel, function(t)
       return t.p == 0
     end)
   end,
@@ -24,7 +25,7 @@ function cluster(t)
     deli(q, 1)
     if t.p == 0 and t.c == c then
       add(res, t)
-      for f in all(t.friends) do
+      for f in all(t.hvrel) do
         if not seen[f.n] then
           seen[f.n] = true
           add(q, f)

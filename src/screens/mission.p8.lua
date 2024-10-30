@@ -1,7 +1,7 @@
 function show_mission(mission, arena, size, human, bots)
   sfx(0)
   cls()
-  freeze_update(31, fade:new { reverse = true })
+  freeze_update(31, Fade:new { reverse = true })
 
   if mission ~= 0 then
     local mdata = missions[mission]
@@ -11,8 +11,10 @@ function show_mission(mission, arena, size, human, bots)
     size, arena, bots = mdata.s, mdata.a, split(mdata.cpu, "/")
   end
 
-  local f = field:new { size = size, arena = arena }
-  local j = judge:new { bots = bots, human = human, field = f, mission = mission, arena = arena }
+  local f = Field:new { size = size, arena = arena }
+  local w = size == 20 and Power:new {} or nil
+  local j =
+    Judge:new { bots = bots, human = human, field = f, mission = mission, arena = arena, power = w }
 
   scene = {
     art(cls),
@@ -20,9 +22,9 @@ function show_mission(mission, arena, size, human, bots)
     f,
     -- judge
     j,
-    -- stats
-    -- stats:new { players = j.players },
+    -- power
+    w,
     -- controls
-    controls:new { judge = j },
+    Controls:new { judge = j, power = w },
   }
 end

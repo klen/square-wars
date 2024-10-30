@@ -6,13 +6,13 @@ function show_scores()
   scene = mdata
   add(
     scene,
-    confirmation:new {
+    Confirmation:new {
       txt = "practice scores",
       callback = function()
         scene = pdata
         add(
           scene,
-          confirmation:new {
+          Confirmation:new {
             txt = "main menu",
             callback = show_start,
           }

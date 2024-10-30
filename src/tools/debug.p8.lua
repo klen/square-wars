@@ -1,14 +1,17 @@
 function debug(t, indent)
   if type(t) ~= "table" then
-    return printh(tostr(t))
+    return tostr(t)
   end
+
+  res = ""
   indent = indent or " "
   for k, v in pairs(t) do
     if type(v) == "table" then
-      printh(indent .. k .. ":")
+      res = res .. indent .. k .. ":\n"
       debug(v, indent .. " ")
     else
-      printh(indent .. k .. ": " .. tostr(v))
+      res = res .. indent .. k .. ": " .. tostr(v) .. "\n"
     end
   end
+  return res
 end

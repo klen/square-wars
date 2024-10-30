@@ -20,6 +20,6 @@ function report(players, moves, seconds, num, mode)
     "moves: " .. pspace(moves, 12) .. moves .. "\n\n" ..
     "time:  " .. pspace(time, 12) .. time
   )
-  return function() return typewriter:new { txt = report } end
+  return function() return Typewriter:new { txt = report } end
 end
 

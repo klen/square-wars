@@ -1,11 +1,17 @@
-judge = entity:create {
-  moves = 0,
-  arena = 0,
+Judge = Entity:create {
   active = 1,
+  moves = 0,
+  finished = false,
+
+  arena = 0,
   mission = 0,
   human = 1,
   bots = nil,
-  finished = false,
+
+  -- @param power Power
+  power = nil,
+  -- @param field Field
+  field = nil,
 
   init = function(_ENV)
     moves, start = 0, time()
@@ -78,7 +84,7 @@ judge = entity:create {
 
     freeze_update(
       71,
-      fade:new {
+      Fade:new {
         frames = 70,
         callback = function()
           if mission ~= 0 then
@@ -114,25 +120,41 @@ judge = entity:create {
   end,
   move = function(_ENV, c)
     local p = players[active]
+    local tiles, pwr = p.t, power and power.levels[c] == 3
+
+    printh("move player " .. p.n .. " color " .. p.c .. " power " .. tostr(pwr))
+
     p.c = c
-    foreach(p.t, function(t)
+    moves += 1
+
+    -- make a move
+    foreach(tiles, function(t)
       t.c = c
-      grab_near(p, t)
+      for n in all(t:free()) do
+        if n.c == c then
+          n.p = active
+          add(tiles, n)
+        end
+      end
+      -- grab diag
+      if pwr then
+        for n in all(t.diag) do
+          if n.c == c and n.p == 0 then
+            n.p = active
+            add(tiles, n)
+          end
+        end
+      end
     end)
-    moves = moves + 1
-    active = (active % #players) + 1
-    if p.cpu then
-      sfx(62)
+
+    -- make a power move
+    if pwr then
+      sfx(59)
+    else
+      if p.cpu then
+        sfx(62)
+      end
+      active = (active % #players) + 1
     end
   end,
 }
-
-function grab_near(p, pt)
-  for n in all(pt:free()) do
-    if n.c == pt.c then
-      n.p = p.n
-      add(p.t, n)
-      grab_near(p, n)
-    end
-  end
-end

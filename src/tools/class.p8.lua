@@ -2,7 +2,7 @@ global = _ENV
 
 noop = function() end
 
-class = setmetatable({
+Class = setmetatable({
   create = function(self, tbl, ...)
     return setmetatable(tbl or {}, { __index = self })
   end,
@@ -14,8 +14,8 @@ class = setmetatable({
   init = noop,
 }, { __index = _ENV })
 
-entity = class:create { update = noop, draw = noop }
+Entity = Class:create { update = noop, draw = noop }
 
 function art(draw)
-  return entity:new { draw = draw }
+  return Entity:new { draw = draw }
 end

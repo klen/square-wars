@@ -1,4 +1,4 @@
-field = entity:create {
+Field = Entity:create {
   size = 15,
   arena = 0,
   offset = -1,
@@ -10,17 +10,30 @@ field = entity:create {
 
     tiles = {}
     for n = 1, size * size do
-      local t = tile:new { n = n }
+      local t, h = Tile:new { n = n }
+
       add(tiles, t)
       if n % size ~= 1 then
-        local f = tiles[n - 1]
-        add(t.friends, f)
-        add(f.friends, t)
+        local f = tiles[n - 1] -- left
+        add(t.hvrel, f)
+        add(f.hvrel, t)
       end
       if n > size then
-        local f = tiles[n - size]
-        add(t.friends, f)
-        add(f.friends, t)
+        local up = n - size
+        local f = tiles[up] -- up
+        add(t.hvrel, f)
+        add(f.hvrel, t)
+
+        if n % size ~= 1 then
+          local f = tiles[up - 1] -- up-left
+          add(t.diag, f)
+          add(f.diag, t)
+        end
+        if n % size ~= 0 then
+          local f = tiles[up + 1] -- up-right
+          add(t.diag, f)
+          add(f.diag, t)
+        end
       end
     end
 

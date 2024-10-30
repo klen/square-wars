@@ -14,7 +14,7 @@ function show_start()
       rectfill(0, 0, 127, 127, 1)
     end),
     -- field
-    field:new { size = 12, offset = 16 },
+    Field:new { size = 12, offset = 16 },
     -- the title
     art(function()
       rectfill(0, 48, 127, 127, 1)
@@ -22,7 +22,7 @@ function show_start()
       print("a game by horneds 2024\nmusic by gruber", 16, 114, 6)
     end),
     -- main menu
-    menu:new(nil, {
+    Menu:new(nil, {
       mission > 1
           and mission < #missions
           and {
@@ -47,7 +47,7 @@ end
 function start(mission)
   freeze_update(
     31,
-    fade:new {
+    Fade:new {
       callback = function()
         show_brief(mission)
       end,

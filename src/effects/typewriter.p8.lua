@@ -1,4 +1,4 @@
-typewriter = entity:create {
+Typewriter = Entity:create {
   txt = "",
   speed = 2,
   x = 8,
@@ -17,6 +17,8 @@ typewriter = entity:create {
     end
     print(_txt, x, y, c)
 
-    draw = function() print(txt, x, y, c) end
+    draw = function()
+      print(txt, x, y, c)
+    end
   end,
 }

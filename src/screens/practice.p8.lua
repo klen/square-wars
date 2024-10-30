@@ -7,7 +7,7 @@ function show_practice()
       print("practice mode", 16, 16, 7)
       print("choose preferences\n\nstart to begin.", 16, 40, 6)
     end),
-    menu:new(nil, {
+    Menu:new(nil, {
       arena_available > 0 and {
         name = "arena: random",
         callback = function(self, dir)

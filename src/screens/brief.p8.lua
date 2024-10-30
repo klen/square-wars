@@ -17,13 +17,13 @@ function show_brief(mission)
 
   scene = {
     -- title
-    typewriter:new {
+    Typewriter:new {
       txt = "mission " .. mission .. ' "' .. missions[mission].n .. '"',
       speed = 3,
     },
 
     -- information
-    typewriter:new {
+    Typewriter:new {
       txt = briefs[mission],
       speed = 1,
       y = 32,
@@ -31,7 +31,7 @@ function show_brief(mission)
     },
 
     -- confirm
-    confirmation:new {
+    Confirmation:new {
       txt = "confirm",
       callback = function()
         show_mission(mission)

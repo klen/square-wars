@@ -1,8 +1,11 @@
-controls = entity:create {
-  judge = nil,
+Controls = Entity:create {
   scolor = 0,
+  judge = nil,
+  buffer = split "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+  power = nil,
 
   init = function(_ENV)
+    buffer = pack(unpack(buffer))
     scolor = judge:move_color(scolor, function(c)
       return (c % #colors) + 1
     end)
@@ -60,8 +63,10 @@ controls = entity:create {
   end,
 
   move = function(_ENV, c)
+    local p = judge:get_active()
     judge:move(c)
-    scolor = judge:move_color(judge:get_active().c, function(c)
+    if power do power:move(c) end
+    scolor = judge:move_color(p.c, function(c)
       return (c % #colors) + 1
     end)
     freeze_update(5 + rnd(10))

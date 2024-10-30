@@ -16,8 +16,8 @@ function show_results(players, moves, seconds, num, mode)
     if place ~= 1 then
       scene = {
         r(),
-        typewriter:new { txt = "status: disqualified", c = 8, y = 95 },
-        confirmation:new { txt = "main menu", callback = show_start },
+        Typewriter:new { txt = "status: disqualified", c = 8, y = 95 },
+        Confirmation:new { txt = "main menu", callback = show_start },
       }
     -- mission won
     else
@@ -33,9 +33,9 @@ function show_results(players, moves, seconds, num, mode)
 
       scene = {
         r(),
-        typewriter:new { txt = "status: mission complete", c = 12, y = 95 },
-        mdata.un and typewriter:new { txt = "unlocked: " .. mdata.un, c = 6, y = 82 } or nil,
-        confirmation:new {
+        Typewriter:new { txt = "status: mission complete", c = 12, y = 95 },
+        mdata.un and Typewriter:new { txt = "unlocked: " .. mdata.un, c = 6, y = 82 } or nil,
+        Confirmation:new {
           txt = "confirm",
           callback = num == #missions and show_gameover or function()
             show_brief(num + 1)
@@ -46,7 +46,7 @@ function show_results(players, moves, seconds, num, mode)
   else
     scene = {
       r(),
-      confirmation:new { txt = "main menu", callback = show_start },
+      Confirmation:new { txt = "main menu", callback = show_start },
     }
   end
 end

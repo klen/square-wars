@@ -17,7 +17,7 @@ local fadetable = {
   { 15, 143, 143, 134, 134, 134, 134, 5, 5, 5, 133, 133, 128, 128, 0 },
 }
 
-fade = entity:create {
+Fade = Entity:create {
   past = 0,
   frames = 30,
   callback = nil,

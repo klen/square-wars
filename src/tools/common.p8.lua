@@ -37,3 +37,22 @@ function filter(t, fn)
   end
   return res
 end
+
+function counter(t)
+  local c = {}
+  for o in all(t) do
+    c[o] = (c[o] or 0) + 1
+  end
+  return c
+end
+
+function unique(t)
+  local c = counter(t)
+  local res = {}
+  for o in all(t) do
+    if c[o] == 1 then
+      add(res, o)
+    end
+  end
+  return res
+end

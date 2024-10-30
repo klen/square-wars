@@ -26,7 +26,7 @@ function frame()
   rect(2, 2, 126, 104, 7)
 end
 
-confirmation = entity:create {
+Confirmation = Entity:create {
   y = 112,
   txt = "confirm",
   callback = noop,
@@ -36,7 +36,7 @@ confirmation = entity:create {
   update = function(_ENV)
     local btn = getbtn()
     if btn == 4 or btn == 5 then
-      freeze_update(31, fade:new { callback = callback })
+      freeze_update(31, Fade:new { callback = callback })
     end
   end,
   draw = function(_ENV)

@@ -1,4 +1,4 @@
-menu = entity:create {
+Menu = Entity:create {
   offset = 76,
   selected = 1,
   dir = { -1, 1, -1, 1, 1, 1 },
@@ -8,7 +8,7 @@ menu = entity:create {
     foreach(opts, function(props)
       props.idx = #options
       props.offset = offset
-      add(options, option:new(props))
+      add(options, Option:new(props))
     end)
     if #options > 0 then
       options[selected].selected = true
@@ -47,7 +47,7 @@ menu = entity:create {
   end,
 }
 
-option = entity:create {
+Option = Entity:create {
   c = 7,
   idx = 0,
   name = "",

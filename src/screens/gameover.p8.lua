@@ -7,25 +7,25 @@ function show_gameover()
   local scores, stats, credits
 
   scene = {
-    typewriter:new {
+    Typewriter:new {
       txt = "you have mastered the field",
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "the secrets of the board\n\nare now yours to command.",
       y = 32,
       c = 6,
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "but remember,\n\nnew challengers prepare, and",
       y = 56,
       c = 6,
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "the field awaits.",
       y = 84,
       c = 12,
     },
-    entity:new {
+    Entity:new {
       update = function(self)
         if dget(cdata.mute) == 0 and time() - start > 0.1 then
           music(6, 1000)
@@ -33,7 +33,7 @@ function show_gameover()
         end
       end,
     },
-    confirmation:new {
+    Confirmation:new {
       txt = "view scores",
       callback = function()
         scene = scores
@@ -43,20 +43,20 @@ function show_gameover()
 
   -- scores
   scores = {
-    typewriter:new {
+    Typewriter:new {
       txt = "you have done " .. #missions .. " missions",
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "total score: " .. dget(cdata.score),
       y = 32,
       c = 6,
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "total time: " .. minutes .. ":" .. lzero(seconds, 10),
       y = 46,
       c = 6,
     },
-    confirmation:new {
+    Confirmation:new {
       txt = "view stats",
       callback = function()
         scene = stats
@@ -66,7 +66,7 @@ function show_gameover()
 
   -- stats
   stats = mission_scores()
-  add(stats, confirmation:new {
+  add(stats, Confirmation:new {
       txt = "view credits",
       callback = function()
         scene = credits
@@ -75,23 +75,23 @@ function show_gameover()
 
   -- credits
   credits = {
-    typewriter:new {
+    Typewriter:new {
       txt = "square wars",
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "a game by horneds 2024",
       y = 32,
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "music composed by gruber",
       y = 48,
     },
-    typewriter:new {
+    Typewriter:new {
       txt = "thanks for playing!",
       y = 86,
       c = 12,
     },
-    confirmation:new {
+    Confirmation:new {
       txt = "main menu",
       callback = function()
         music(-1)

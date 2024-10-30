@@ -1,6 +1,6 @@
 function mission_scores()
   local entities = {
-    typewriter:new {
+    Typewriter:new {
       txt = "mission scores",
     },
   }
@@ -9,7 +9,7 @@ function mission_scores()
       local score, name = dget(cdata.mscores + i - 1), m.n .. ":"
       add(
         entities,
-        typewriter:new {
+        Typewriter:new {
           c = 6,
           y = i * 8 + 8,
           txt = name .. pspace(name, 25) .. pspace(tostr(score), 3) .. score,
@@ -22,7 +22,7 @@ end
 
 function practice_scores()
   local entities = {
-    typewriter:new {
+    Typewriter:new {
       txt = "practice scores",
     },
   }
@@ -30,7 +30,7 @@ function practice_scores()
     local score, name = dget(cdata.ascores + i - 1), "a" .. i .. " - " .. a[1] .. ": "
     add(
       entities,
-      typewriter:new {
+      Typewriter:new {
         c = 6,
         y = i * 8 + 16,
         txt = name .. pspace(name, 25) .. pspace(tostr(score), 3) .. score,
