@@ -59,7 +59,7 @@ Option = Entity:create {
       (selected and "❎ " or "") .. name,
       selected and 4 or 16,
       offset + 8 * idx,
-      selected and band(frames, 8) == 0 and (c - 1) or c
+      selected and band(FRAMES, 8) == 0 and (c - 1) or c
     )
   end,
 }

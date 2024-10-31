@@ -30,16 +30,13 @@ Confirmation = Entity:create {
   y = 112,
   txt = "confirm",
   callback = noop,
-  init = function(_ENV)
-    txt = "❎ " .. txt
-  end,
   update = function(_ENV)
     local btn = getbtn()
     if btn == 4 or btn == 5 then
-      freeze_update(31, Fade:new { callback = callback })
+      freeze_update(32, Fade:new { callback = function() callback(_ENV) end })
     end
   end,
   draw = function(_ENV)
-    print(txt, 8, y, band(frames, 8) == 0 and 6 or 7)
+    print("❎ " .. txt, 8, y, band(FRAMES, 8) == 0 and 6 or 7)
   end,
 }

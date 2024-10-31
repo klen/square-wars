@@ -44,6 +44,12 @@ Controls = Entity:create {
   draw = function(_ENV)
     local p = judge:get_active()
 
+    -- active tiles ???
+    -- local c = COLORS[scolor]
+    -- for n in all(p.t) do
+    --   judge.field:draw_tile(n, c)
+    -- end
+
     for idx = 1, #COLORS do
       local c, s = COLORS[idx], idx * 8 - 8
 

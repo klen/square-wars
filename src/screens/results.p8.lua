@@ -14,7 +14,7 @@ function show_results(players, moves, seconds, num, mode)
     dset(CDATA.time, dget(CDATA.time) + seconds)
 
     if place ~= 1 then
-      scene = {
+      SCENE = {
         r(),
         Typewriter:new { txt = "status: disqualified", c = 8, y = 95 },
         Confirmation:new { txt = "main menu", callback = show_start },
@@ -31,7 +31,7 @@ function show_results(players, moves, seconds, num, mode)
         dset(CDATA[unlock], unlock_value and unlock_value or (dget(CDATA[unlock]) + 1))
       end
 
-      scene = {
+      SCENE = {
         r(),
         Typewriter:new { txt = "status: mission complete", c = 12, y = 95 },
         mdata.un and Typewriter:new { txt = "unlocked: " .. mdata.un, c = 6, y = 82 } or nil,
@@ -44,7 +44,7 @@ function show_results(players, moves, seconds, num, mode)
       }
     end
   else
-    scene = {
+    SCENE = {
       r(),
       Confirmation:new { txt = "main menu", callback = show_start },
     }

@@ -56,3 +56,11 @@ function unique(t)
   end
   return res
 end
+
+function slice(t, i, j)
+  local res = {}
+  for k = i, j do
+    add(res, t[k])
+  end
+  return res
+end

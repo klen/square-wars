@@ -3,7 +3,7 @@ Power = Entity:create {
   powers = 0b111111,
 
   init = function(_ENV)
-    levels = split "4,4,4,4,4,4"
+    levels = split "0,0,0,0,0,0"
   end,
 
   draw = function(_ENV)

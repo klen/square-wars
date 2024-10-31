@@ -10,15 +10,15 @@ function update()
     return
   end
 
-  foreach(scene, function(e)
+  foreach(SCENE, function(e)
     e:update()
   end)
 
-  frames += 1
+  FRAMES += 1
 end
 
-scene = {}
-frames = 0
+SCENE = {}
+FRAMES = 0
 frozenframes = 0
 frozenentities = {}
 

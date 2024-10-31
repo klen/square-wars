@@ -8,7 +8,7 @@ function show_start()
   local mission, place, practice, scores =
     dget(CDATA.mission), dget(CDATA.place), dget(CDATA.practice), dget(CDATA.done)
 
-  scene = {
+  SCENE = {
     -- clear the scene (we don't use cls because of the fade)
     art(function()
       rectfill(0, 0, 127, 127, 1)
@@ -46,7 +46,7 @@ end
 
 function start(mission)
   freeze_update(
-    31,
+    32,
     Fade:new {
       callback = function()
         show_brief(mission)

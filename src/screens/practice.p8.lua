@@ -1,7 +1,7 @@
 function show_practice()
   local arena, human, cpu, arena_available = 1, 1, 3, min(dget(CDATA.arena), #ARENAS)
 
-  scene = {
+  SCENE = {
     art(function()
       cls(1)
       print("practice mode", 16, 16, 7)

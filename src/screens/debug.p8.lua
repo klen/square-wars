@@ -231,7 +231,7 @@ function show_debug()
 
   local menus = { mc, mp, mm, ma, ms }
 
-  scene = {
+  SCENE = {
     art(cls),
     Entity:new {
       update = function()

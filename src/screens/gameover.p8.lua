@@ -6,7 +6,7 @@ function show_gameover()
   local minutes, seconds = ctime \ 60, flr(ctime % 60)
   local scores, stats, credits
 
-  scene = {
+  SCENE = {
     Typewriter:new {
       txt = "you have mastered the field",
     },
@@ -36,7 +36,7 @@ function show_gameover()
     Confirmation:new {
       txt = "view scores",
       callback = function()
-        scene = scores
+        SCENE = scores
       end,
     },
   }
@@ -59,17 +59,22 @@ function show_gameover()
     Confirmation:new {
       txt = "view stats",
       callback = function()
-        scene = stats
+        SCENE = stats
       end,
     },
   }
 
   -- stats
-  stats = mission_scores()
+  stats = mission_scores(slice(MISSIONS, 2, 11))
   add(stats, Confirmation:new {
-      txt = "view credits",
-      callback = function()
-        scene = credits
+      txt = "next",
+      callback = function(self)
+        if SCENE == stats then
+          SCENE = mission_scores(slice(MISSIONS, 12, #MISSIONS))
+          self.txt = "view credits"
+          return add(SCENE, self)
+        end
+        SCENE = credits
       end,
   })
 

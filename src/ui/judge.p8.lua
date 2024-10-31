@@ -95,9 +95,9 @@ Judge = Entity:create {
     sfx(res[1].cpu and 60 or 61)
 
     freeze_update(
-      71,
+      62,
       Fade:new {
-        frames = 70,
+        frames = 60,
         callback = function()
           if mission ~= 0 then
             dset(CDATA.place, place)

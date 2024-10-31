@@ -17,7 +17,7 @@ function show_brief(mission)
   local power, mdata = dget(CDATA.power), MISSIONS[mission]
   power = power & (mdata.w or 0)
 
-  scene = {
+  SCENE = {
     -- title
     Typewriter:new {
       txt = "mission " .. mission .. ' "' .. MISSIONS[mission].n .. '"',

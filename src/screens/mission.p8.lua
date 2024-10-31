@@ -1,7 +1,7 @@
 function show_mission(mission, arena, size, human, bots, powers)
   sfx(0)
   cls()
-  freeze_update(31, Fade:new { reverse = true })
+  freeze_update(62, Fade:new { reverse = true, frames = 60 })
 
   if mission ~= 0 then
     local mdata = MISSIONS[mission]
@@ -12,8 +12,8 @@ function show_mission(mission, arena, size, human, bots, powers)
       mdata.s or 20, mdata.a, split(mdata.cpu, "/"), mdata.w, mdata.plc or 1
   end
 
-  local f = Field:new { size = size, arena = arena }
-  local w = powers and Power:new { powers = powers } or nil
+  local f, w =
+    Field:new { size = size, arena = arena }, powers and Power:new { powers = powers } or nil
   local j = Judge:new {
     bots = bots,
     human = human,
@@ -25,7 +25,7 @@ function show_mission(mission, arena, size, human, bots, powers)
     powers = dget(CDATA.power),
   }
 
-  scene = {
+  SCENE = {
     art(cls),
     -- field
     f,

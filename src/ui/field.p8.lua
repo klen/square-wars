@@ -7,6 +7,7 @@ Field = Entity:create {
     if offset == -1 then
       offset = max((15 - size) * 8 / 2, 0)
     end
+    ts = size > 15 and 6 or 8
 
     tiles = {}
     for n = 1, size * size do
@@ -49,18 +50,22 @@ Field = Entity:create {
 
   draw = function(_ENV)
     foreach(tiles, function(t)
-      draw_tile(t, size, offset)
+      _ENV:draw_tile(t.n, COLORS[t.c] or 1)
     end)
   end,
-}
 
-function draw_tile(t, size, offset)
-  local idx = t.n - 1
-  local s = size > 15 and 6 or 8
-  local x, y = idx % size * s + offset, idx \ size * s + offset
-  if (t.p == 0) then
-    rectfill(x, y, x + s - 2, y + s - 2, COLORS[t.c])
-  else
-    rect(x, y, x + s - 2, y + s - 2, COLORS[t.c] or 1)
-  end
-end
+  draw_tile = function(_ENV, n, c)
+    local t = tiles[n]
+    local x, y = _ENV:tile_coords(n, size, offset, ts)
+    if (t.p == 0) then
+      rectfill(x, y, x + ts - 2, y + ts - 2, c)
+    else
+      rect(x, y, x + ts - 2, y + ts - 2, c or 1)
+    end
+  end,
+
+  tile_coords = function(_ENV, n)
+    local idx = n - 1
+    return idx % size * ts + offset, idx \ size * ts + offset
+  end,
+}
