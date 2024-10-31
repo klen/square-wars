@@ -5,7 +5,6 @@ Fade = Entity:create {
   reverse = false,
 
   fadetable = {
-    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     { 1, 1, 129, 129, 129, 129, 129, 129, 129, 129, 0, 0, 0, 0, 0 },
     { 2, 2, 2, 130, 130, 130, 130, 130, 128, 128, 128, 128, 128, 0, 0 },
     { 3, 3, 3, 131, 131, 131, 131, 129, 129, 129, 129, 129, 0, 0, 0 },
@@ -31,17 +30,16 @@ Fade = Entity:create {
   update = function(_ENV)
     if past <= 15 then
       local idx = reverse and 15 - flr(past) or flr(past)
-      for c = 0, 15 do
-        -- TODO: use table (as first arg) instead of color cycle
-        pal(c, fadetable[c + 1][idx + 1])
+      for f in all(fadetable) do
+        pal(f[1], f[idx + 1])
       end
       past += speed
     else
       pal(0)
+      update = noop
       if callback then
         callback()
       end
-      update = noop
     end
   end,
 }

@@ -14,23 +14,26 @@ Tile = Entity:create {
 }
 
 -- find free tiles same color
-function cluster(t)
-  local res, seen, q, c = {}, { [t.n] = true }, { t }, t.c
+function cluster(tn, tiles)
+  local q, seen, res = { tn }, { [tn] = true }, {}
+  local c = tiles[tn].c
+
   while #q > 0 do
-    local t = q[1]
+    local qn = q[1]
     deli(q, 1)
+
+    local t = tiles[qn]
     if t.p == 0 and t.c == c then
-      add(res, t)
-      for f in all(t.hvrel) do
-        if not seen[f.n] then
-          seen[f.n] = true
-          add(q, f)
+      add(res, qn)
+      for fn in all(t.hvrel) do
+        if not seen[fn] then
+          seen[fn] = true
+          add(q, fn)
         end
       end
     end
   end
-  res = sort(res, function(a, b)
-    return a.n > b.n
+  return sort(res, function(a, b)
+    return a > b
   end)
-  return res
 end

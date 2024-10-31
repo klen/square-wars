@@ -82,10 +82,10 @@ function show_debug()
     toggle,
     sep,
     {
-      name = "campaign - mission: " .. dget(CDATA.mission),
+      name = "campaign - mission done: " .. dget(CDATA.mission),
       callback = function(self, dir)
         dset(CDATA.mission, (dget(CDATA.mission) - 1 + dir) % #MISSIONS + 1)
-        self.name = "campaign - mission: " .. dget(CDATA.mission)
+        self.name = "campaign - mission done: " .. dget(CDATA.mission)
         ms.options[4].name = "screen - brief " .. dget(CDATA.mission) + 1
         ms.options[5].name = "screen - mission " .. dget(CDATA.mission)
         ms.options[6].name = "screen - results " .. dget(CDATA.mission)

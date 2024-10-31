@@ -20,8 +20,9 @@ Controls = Entity:create {
       if #targets == 0 then
         return self:move(judge:move_color(rndcolor(), rndcolor))
       end
+
       local bot = ai[p.cpu]
-      self:move(bot(targets))
+      self:move(bot(targets, judge.field.tiles))
     else
       local btn = getbtn(judge.active - 1)
       if btn < 0 then
@@ -79,15 +80,15 @@ Controls = Entity:create {
 }
 
 function get_targets(p, judge)
-  local targets, seen = {}, {}
+  local targets, seen, tiles = {}, {}, judge.field.tiles
   for tn in all(p.t) do
-    local t = judge.field.tiles[tn]
-    for f in all(t.hvrel) do
+    for fn in all(tiles[tn].hvrel) do
+      local f = tiles[fn]
       if f.p == 0 then
-        if not seen[f.n] then
-          seen[f.n] = true
+        if not seen[fn] then
+          seen[fn] = true
           if judge:color_available(f.c) then
-            add(targets, f)
+            add(targets, fn)
           end
         end
       end
@@ -96,15 +97,16 @@ function get_targets(p, judge)
   return targets
 end
 
-function get_clusters(targets)
-  local seen, clusters, res = {}, { [1] = {}, [2] = {}, [3] = {}, [4] = {}, [5] = {}, [6] = {} }, {}
-  for t in all(targets) do
-    local c = cluster(t)
-    local cnum = c[1].n
+function get_clusters(targets, tiles)
+  local seen, clusters = {}, { {}, {}, {}, {}, {}, {} }
+  for tn in all(targets) do
+    local cl = cluster(tn, tiles)
+    local cnum = cl[1]
     if not seen[cnum] then
       seen[cnum] = true
-      for f in all(c) do
-        add(clusters[t.c], f)
+      local t = tiles[tn]
+      for cn in all(cl) do
+        add(clusters[t.c], cn)
       end
     end
   end
@@ -117,13 +119,13 @@ function get_clusters(targets)
 end
 
 -- random bot
-function bot1(targets)
-  return rnd(targets).c
+function bot1(targets, tiles)
+  return tiles[rnd(targets)].c
 end
 
 -- greedy bot (selects the target with biggest cluster)
-function bot2(targets)
-  return get_clusters(targets)[1][1].c
+function bot2(targets, tiles)
+  return tiles[get_clusters(targets, tiles)[1][1]].c
 end
 
 ai = { bot1, bot2 }

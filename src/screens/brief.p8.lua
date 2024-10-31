@@ -11,7 +11,11 @@ function show_brief(mission)
   if mission == 1 then
     dset(CDATA.time, 0)
     dset(CDATA.score, 0)
+    dset(CDATA.power, 0)
   end
+
+  local power, mdata = dget(CDATA.power), MISSIONS[mission]
+  power = power & (mdata.w or 0)
 
   scene = {
     -- title
@@ -27,6 +31,19 @@ function show_brief(mission)
       speed = 1,
       txt = BRIEFS[mission],
     },
+
+    -- powers
+    power > 0
+        and Entity:new {
+          draw = function()
+            for c = 1, #COLORS do
+              if power & (1 << (c - 1)) > 0 then
+                circ(128 - (c * 5), 100, 1, COLORS[c])
+              end
+            end
+          end,
+        }
+      or nil,
 
     -- confirm
     Confirmation:new {

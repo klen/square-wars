@@ -11,28 +11,28 @@ Field = Entity:create {
     tiles = {}
     for n = 1, size * size do
       local t, h = Tile:new { n = n }
-
       add(tiles, t)
+
       if n % size ~= 1 then
         local f = tiles[n - 1] -- left
-        add(t.hvrel, f)
-        add(f.hvrel, t)
+        add(t.hvrel, f.n)
+        add(f.hvrel, n)
       end
       if n > size then
         local up = n - size
         local f = tiles[up] -- up
-        add(t.hvrel, f)
-        add(f.hvrel, t)
+        add(t.hvrel, f.n)
+        add(f.hvrel, n)
 
         if n % size ~= 1 then
           local f = tiles[up - 1] -- up-left
-          add(t.diag, f)
-          add(f.diag, t)
+          add(t.diag, f.n)
+          add(f.diag, n)
         end
         if n % size ~= 0 then
           local f = tiles[up + 1] -- up-right
-          add(t.diag, f)
-          add(f.diag, t)
+          add(t.diag, f.n)
+          add(f.diag, n)
         end
       end
     end

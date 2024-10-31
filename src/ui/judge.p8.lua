@@ -2,6 +2,7 @@ Judge = Entity:create {
   active = 1,
   moves = 0,
 
+  plc = 1,
   arena = 0,
   mission = 0,
   human = 1,
@@ -13,25 +14,31 @@ Judge = Entity:create {
   -- @param field Field
   field = nil,
 
+  positions = function(size, plc)
+    if plc == 2 then
+      return { { 1, size * size - size + 1 }, { size, size * size } }
+    elseif plc == 3 then
+      return { { 169 }, { 172 }, { 229 }, { 232 } }
+    elseif plc == 4 then
+      return { { 85 }, { 96 }, { 305 }, { 316 } }
+    end
+    return { { 1 }, { size * size }, { size }, { size * size - size + 1 } }
+  end,
+
   init = function(_ENV)
     moves, start = 0, time()
     local size, tiles = field.size, field.tiles
-    local self, pos = _ENV, { 1, size * size, size, (size * size) - size + 1 }
 
     players = {}
 
     local init_player = function(pn, cpu, w)
-      local pt = tiles[pos[pn]]
-      pt.p = pn
-      pt.c = self:move_color(rndcolor(), rndcolor)
-
       add(players, {
         n = pn,
         s = 0,
         w = w,
-        c = pt.c,
-        t = { pt.n },
         cpu = cpu,
+        t = {},
+        c = _ENV:move_color(rndcolor(), rndcolor),
       })
     end
 
@@ -44,11 +51,20 @@ Judge = Entity:create {
       init_player(#players + 1, b, 63)
     end
 
-    -- fix positions
-    for p in all(pos) do
-      local pt = tiles[p]
-      for t in all(pt.hvrel) do
-        t.c = self:move_color(t.c, rndcolor)
+    -- placement
+    for p in all(players) do
+      local pos = _ENV.positions(size, _ENV.plc)
+      for n in all(pos[p.n]) do
+        local t = tiles[n]
+        for nn in all(t.hvrel) do
+          local nt = tiles[nn]
+          while nt.c == p.c do
+            nt.c = rndcolor()
+          end
+        end
+        t.c = p.c
+        t.p = p.n
+        add(p.t, n)
       end
     end
   end,
@@ -123,34 +139,37 @@ Judge = Entity:create {
 
   move = function(_ENV, c)
     local p = players[active]
-    local ntiles, pwr = p.t, power and power.levels[c] == 3
+    local tiles, ptiles, pwr = field.tiles, p.t, power and power:active(c)
+    local grab = #ptiles
 
     p.c = c
     moves += 1
 
     -- make a move
-    foreach(ntiles, function(tn)
-      local t = field.tiles[tn]
+    foreach(ptiles, function(tn)
+      local t = tiles[tn]
       t.c = c
-      for n in all(t.hvrel) do
+      for nn in all(t.hvrel) do
+        local n = tiles[nn]
         if n.p == 0 and n.c == c then
           n.p = active
-          add(ntiles, n.n)
+          add(ptiles, nn)
         end
       end
       -- grab diag
       if pwr then
-        for n in all(t.diag) do
+        for nn in all(t.diag) do
+          local n = tiles[nn]
           if n.c == c and n.p == 0 then
             n.p = active
-            add(ntiles, n.n)
+            add(ptiles, nn)
           end
         end
       end
     end)
 
     -- make a power move
-    if pwr then
+    if pwr and #ptiles > grab then
       sfx(59)
     else
       if p.cpu then

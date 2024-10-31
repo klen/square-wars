@@ -8,15 +8,12 @@ function show_mission(mission, arena, size, human, bots, powers)
     if not mdata then
       return show_start()
     end
-    size, arena, bots, powers = mdata.s or 20, mdata.a, split(mdata.cpu, "/"), mdata.w
+    size, arena, bots, powers, plc =
+      mdata.s or 20, mdata.a, split(mdata.cpu, "/"), mdata.w, mdata.plc or 1
   end
 
   local f = Field:new { size = size, arena = arena }
-  local w = powers
-      and Power:new {
-        powers = { powers & 1, powers & 2, powers & 4, powers & 8, powers & 16, powers & 32 },
-      }
-    or nil
+  local w = powers and Power:new { powers = powers } or nil
   local j = Judge:new {
     bots = bots,
     human = human,
@@ -24,6 +21,7 @@ function show_mission(mission, arena, size, human, bots, powers)
     mission = mission,
     field = f,
     power = w,
+    plc = plc,
     powers = dget(CDATA.power),
   }
 
