@@ -1,8 +1,8 @@
 function show_gameover()
   frame()
-  dset(cdata.done, 1)
+  dset(CDATA.done, 1)
 
-  local start, ctime = time(), dget(cdata.time)
+  local start, ctime = time(), dget(CDATA.time)
   local minutes, seconds = ctime \ 60, flr(ctime % 60)
   local scores, stats, credits
 
@@ -27,7 +27,7 @@ function show_gameover()
     },
     Entity:new {
       update = function(self)
-        if dget(cdata.mute) == 0 and time() - start > 0.1 then
+        if dget(CDATA.mute) == 0 and time() - start > 0.1 then
           music(6, 1000)
           self.update = noop
         end
@@ -44,10 +44,10 @@ function show_gameover()
   -- scores
   scores = {
     Typewriter:new {
-      txt = "you have done " .. #missions .. " missions",
+      txt = "you have done " .. #MISSIONS .. " missions",
     },
     Typewriter:new {
-      txt = "total score: " .. dget(cdata.score),
+      txt = "total score: " .. dget(CDATA.score),
       y = 32,
       c = 6,
     },

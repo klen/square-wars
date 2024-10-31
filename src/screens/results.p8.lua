@@ -10,8 +10,8 @@ function show_results(players, moves, seconds, num, mode)
     end)
 
     -- mission lost (update campaign stats)
-    dset(cdata.place, place)
-    dset(cdata.time, dget(cdata.time) + seconds)
+    dset(CDATA.place, place)
+    dset(CDATA.time, dget(CDATA.time) + seconds)
 
     if place ~= 1 then
       scene = {
@@ -22,13 +22,13 @@ function show_results(players, moves, seconds, num, mode)
     -- mission won
     else
       -- update mission data
-      dset(cdata.mission, num)
-      dset(cdata.score, dget(cdata.score) + players[place].s)
+      dset(CDATA.mission, num)
+      dset(CDATA.score, dget(CDATA.score) + players[place].s)
 
-      local mdata = missions[num]
+      local mdata = MISSIONS[num]
       local unlock, unlock_value = mdata.u, mdata.uv
       if unlock then
-        dset(cdata[unlock], unlock_value and unlock_value or (dget(cdata[unlock]) + 1))
+        dset(CDATA[unlock], unlock_value and unlock_value or (dget(CDATA[unlock]) + 1))
       end
 
       scene = {
@@ -37,7 +37,7 @@ function show_results(players, moves, seconds, num, mode)
         mdata.un and Typewriter:new { txt = "unlocked: " .. mdata.un, c = 6, y = 82 } or nil,
         Confirmation:new {
           txt = "confirm",
-          callback = num == #missions and show_gameover or function()
+          callback = num == #MISSIONS and show_gameover or function()
             show_brief(num + 1)
           end,
         },

@@ -11,4 +11,4 @@ sync: build
 	scp $(TARGET).p8.png root@game-anbernic.lan:/mnt/sdcard/ROMS/DEV/.
 
 clean_data:
-	rm -f ../../cdata/horneds-sw.p8d.txt
+	rm -f ../../cdata/horneds-sw*

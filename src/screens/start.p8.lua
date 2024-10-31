@@ -1,12 +1,12 @@
 function show_start()
-  if stat(24) <= 0 and dget(cdata.mute) == 0 then
+  if stat(24) <= 0 and dget(CDATA.mute) == 0 then
     music(0, 1000)
   end
   cls(1)
   menuitem(1)
 
   local mission, place, practice, scores =
-    dget(cdata.mission), dget(cdata.place), dget(cdata.practice), dget(cdata.done)
+    dget(CDATA.mission), dget(CDATA.place), dget(CDATA.practice), dget(CDATA.done)
 
   scene = {
     -- clear the scene (we don't use cls because of the fade)
@@ -24,7 +24,7 @@ function show_start()
     -- main menu
     Menu:new(nil, {
       mission > 1
-          and mission < #missions
+          and mission < #MISSIONS
           and {
             name = (place == 1 and "continue" or "try again") .. " (m" .. mission + 1 .. ")",
             callback = function()

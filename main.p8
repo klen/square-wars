@@ -7,7 +7,7 @@ __lua__
 #include src/tools/class.p8.lua
 #include src/tools/common.p8.lua
 
-#include src/data.p8.lua
+#include src/global.p8.lua
 
 #include src/effects/fade.p8.lua
 #include src/effects/typewriter.p8.lua
@@ -52,21 +52,6 @@ function _draw()
 	draw()
 end
 
-
-
--->8
--- draw
-
-function draw_tile(t, size, offset)
-  local idx = t.n - 1
-  local s = size > 15 and 6 or 8
-  local x, y = idx % size * s + offset, idx \ size * s + offset
-  if (t.p == 0) then
-    rectfill(x, y, x + s - 2, y + s - 2, colors[t.c])
-  else
-    rect(x, y, x + s - 2, y + s - 2, colors[t.c] or 1)
-  end
-end
 -->8
 -- tools
 

@@ -1,5 +1,5 @@
 function show_practice()
-  local arena, human, cpu, arena_available = 1, 1, 3, min(dget(cdata.arena), #arenas)
+  local arena, human, cpu, arena_available = 1, 1, 3, min(dget(CDATA.arena), #ARENAS)
 
   scene = {
     art(function()
@@ -12,7 +12,7 @@ function show_practice()
         name = "arena: random",
         callback = function(self, dir)
           arena = (arena - 1 + dir) % (arena_available + 2) + 1
-          local data = arenas[arena - 1] or { "random" }
+          local data = ARENAS[arena - 1] or { "random" }
           self.name = "arena: " .. data[1]
         end,
       } or nil,
@@ -40,7 +40,7 @@ function show_practice()
         name = "start",
         callback = function()
           music(-1)
-          arena = arena == 1 and flr(rnd(#arenas)) + 1 or arena - 1
+          arena = arena == 1 and flr(rnd(#ARENAS)) + 1 or arena - 1
           local tcpu = {}
           for idx = 1, cpu do
             add(tcpu, idx % 2 + 1)

@@ -38,7 +38,7 @@ Field = Entity:create {
     end
 
     if arena ~= 0 then
-      local data = arenas[arena]
+      local data = ARENAS[arena]
       for n = 2, #data do
         local t = tiles[data[n]]
         t.c = 0
@@ -53,3 +53,14 @@ Field = Entity:create {
     end)
   end,
 }
+
+function draw_tile(t, size, offset)
+  local idx = t.n - 1
+  local s = size > 15 and 6 or 8
+  local x, y = idx % size * s + offset, idx \ size * s + offset
+  if (t.p == 0) then
+    rectfill(x, y, x + s - 2, y + s - 2, COLORS[t.c])
+  else
+    rect(x, y, x + s - 2, y + s - 2, COLORS[t.c] or 1)
+  end
+end

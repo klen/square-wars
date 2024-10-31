@@ -1,7 +1,7 @@
 function report(players, moves, seconds, num, mode)
   local year, month, day, time = stat(90), stat(91), stat(92), seconds \ 60 .. ":" .. lzero(flr(seconds % 60))
   local report = "report " .. mode .. num .. "/" .. year .. "-" .. month .. "-" .. day .. "\n\n\n"
-  local ckey = mode == "m" and cdata.mscores or cdata.ascores
+  local ckey = mode == "m" and CDATA.mscores or CDATA.ascores
   local stored = dget(ckey - 1 + num)
 
   for place, p in ipairs(players) do

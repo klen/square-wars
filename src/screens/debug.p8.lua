@@ -1,8 +1,7 @@
 function show_debug()
   cls()
   music(-1)
-
-  local mode, mission = 1, dget(cdata.mission)
+  local mode, mission = 1, dget(CDATA.mission)
   local toggle, sep =
     {
       name = "toggle mode: 1",
@@ -24,16 +23,16 @@ function show_debug()
       callback = show_start,
     },
     {
-      name = "screen - brief " .. mission,
+      name = "screen - brief " .. mission + 1,
       callback = function()
-        local mission = dget(cdata.mission)
-        show_brief(mission)
+        local mission = dget(CDATA.mission)
+        show_brief(mission + 1)
       end,
     },
     {
       name = "screen - mission " .. mission,
       callback = function()
-        local mission = dget(cdata.mission)
+        local mission = dget(CDATA.mission)
         if mission == 0 then
           show_mission(0, 2, 6, 20)
         end
@@ -43,7 +42,7 @@ function show_debug()
     {
       name = "screen - results " .. mission,
       callback = function()
-        local mission, players = dget(cdata.mission), {}
+        local mission, players = dget(CDATA.mission), {}
         for idx = 1, 2 + flr(rnd(3)) do
           add(players, {
             n = idx,
@@ -83,100 +82,100 @@ function show_debug()
     toggle,
     sep,
     {
-      name = "campaign - mission: " .. dget(cdata.mission),
+      name = "campaign - mission: " .. dget(CDATA.mission),
       callback = function(self, dir)
-        dset(cdata.mission, (dget(cdata.mission) - 1 + dir) % #missions + 1)
-        self.name = "campaign - mission: " .. dget(cdata.mission)
-        ms.options[4].name = "screen - brief " .. dget(cdata.mission)
-        ms.options[5].name = "screen - mission " .. dget(cdata.mission)
-        ms.options[6].name = "screen - results " .. dget(cdata.mission)
+        dset(CDATA.mission, (dget(CDATA.mission) - 1 + dir) % #MISSIONS + 1)
+        self.name = "campaign - mission: " .. dget(CDATA.mission)
+        ms.options[4].name = "screen - brief " .. dget(CDATA.mission) + 1
+        ms.options[5].name = "screen - mission " .. dget(CDATA.mission)
+        ms.options[6].name = "screen - results " .. dget(CDATA.mission)
       end,
     },
     {
-      name = "campaign - place: " .. dget(cdata.place),
+      name = "campaign - place: " .. dget(CDATA.place),
       callback = function(self, dir)
-        dset(cdata.place, (dget(cdata.place) - 1 + dir) % 4 + 1)
-        self.name = "campaign - place: " .. dget(cdata.place)
+        dset(CDATA.place, (dget(CDATA.place) - 1 + dir) % 4 + 1)
+        self.name = "campaign - place: " .. dget(CDATA.place)
       end,
     },
     {
-      name = "campaign - score: " .. dget(cdata.score),
+      name = "campaign - score: " .. dget(CDATA.score),
       callback = function(self, dir)
-        dset(cdata.score, dget(cdata.score) + dir)
-        self.name = "campaign - score: " .. dget(cdata.score)
+        dset(CDATA.score, dget(CDATA.score) + dir)
+        self.name = "campaign - score: " .. dget(CDATA.score)
       end,
     },
     {
-      name = "campaign - time: " .. dget(cdata.time),
+      name = "campaign - time: " .. dget(CDATA.time),
       callback = function(self, dir)
-        dset(cdata.time, dget(cdata.time) + dir)
-        self.name = "campaign - time: " .. dget(cdata.time)
+        dset(CDATA.time, dget(CDATA.time) + dir)
+        self.name = "campaign - time: " .. dget(CDATA.time)
       end,
     },
     {
-      name = "campaign - done: " .. dget(cdata.done),
+      name = "campaign - done: " .. dget(CDATA.done),
       callback = function(self, dir)
-        dset(cdata.done, (dget(cdata.done) + dir) % 2)
-        self.name = "campaign - done: " .. dget(cdata.done)
-      end,
-    },
-    sep,
-    {
-      name = "option - palette: " .. dget(cdata.palette),
-      callback = function(self, dir)
-        dset(cdata.palette, (dget(cdata.palette) + dir) % 2)
-        self.name = "option - palette: " .. dget(cdata.palette)
-      end,
-    },
-    {
-      name = "option - mute: " .. dget(cdata.mute),
-      callback = function(self, dir)
-        dset(cdata.mute, (dget(cdata.mute) + dir) % 2)
-        self.name = "option - mute: " .. dget(cdata.mute)
+        dset(CDATA.done, (dget(CDATA.done) + dir) % 2)
+        self.name = "campaign - done: " .. dget(CDATA.done)
       end,
     },
     sep,
     {
-      name = "unlock - arena: " .. dget(cdata.arena),
+      name = "option - palette: " .. dget(CDATA.palette),
       callback = function(self, dir)
-        dset(cdata.arena, (dget(cdata.arena) - 1 + dir) % #arenas + 1)
-        self.name = "unlock - arena: " .. dget(cdata.arena)
+        dset(CDATA.palette, (dget(CDATA.palette) + dir) % 2)
+        self.name = "option - palette: " .. dget(CDATA.palette)
       end,
     },
     {
-      name = "unlock - practice: " .. dget(cdata.practice),
+      name = "option - mute: " .. dget(CDATA.mute),
       callback = function(self, dir)
-        dset(cdata.practice, (dget(cdata.practice) + dir) % 2)
-        self.name = "unlock - practice: " .. dget(cdata.practice)
+        dset(CDATA.mute, (dget(CDATA.mute) + dir) % 2)
+        self.name = "option - mute: " .. dget(CDATA.mute)
+      end,
+    },
+    sep,
+    {
+      name = "unlock - arena: " .. dget(CDATA.arena),
+      callback = function(self, dir)
+        dset(CDATA.arena, (dget(CDATA.arena) - 1 + dir) % #ARENAS + 1)
+        self.name = "unlock - arena: " .. dget(CDATA.arena)
+      end,
+    },
+    {
+      name = "unlock - practice: " .. dget(CDATA.practice),
+      callback = function(self, dir)
+        dset(CDATA.practice, (dget(CDATA.practice) + dir) % 2)
+        self.name = "unlock - practice: " .. dget(CDATA.practice)
       end,
     },
   })
 
   local mmopts = { toggle, sep }
-  for idx = 1, #missions do
+  for idx = 1, #MISSIONS do
     add(mmopts, {
-      name = "score - m" .. idx .. ": " .. dget(cdata.mscores + idx - 1),
+      name = "score - m" .. idx .. ": " .. dget(CDATA.mscores + idx - 1),
       callback = function(self, dir)
-        dset(cdata.mscores + idx - 1, dget(cdata.mscores + idx - 1) + dir)
-        self.name = "score - m" .. idx .. ": " .. dget(cdata.mscores + idx - 1)
+        dset(CDATA.mscores + idx - 1, dget(CDATA.mscores + idx - 1) + dir)
+        self.name = "score - m" .. idx .. ": " .. dget(CDATA.mscores + idx - 1)
       end,
     })
   end
   local mm = Menu:new({ offset = 0 }, mmopts)
 
   local maopts = { toggle, sep }
-  for idx = 1, #arenas do
+  for idx = 1, #ARENAS do
     add(maopts, {
-      name = "score - a" .. idx .. ": " .. dget(cdata.ascores + idx - 1),
+      name = "score - a" .. idx .. ": " .. dget(CDATA.ascores + idx - 1),
       callback = function(self, dir)
-        dset(cdata.ascores + idx - 1, dget(cdata.ascores + idx - 1) + dir)
-        self.name = "score - a" .. idx .. ": " .. dget(cdata.ascores + idx - 1)
+        dset(CDATA.ascores + idx - 1, dget(CDATA.ascores + idx - 1) + dir)
+        self.name = "score - a" .. idx .. ": " .. dget(CDATA.ascores + idx - 1)
       end,
     })
   end
   local ma = Menu:new({ offset = 0 }, maopts)
 
-  local power = dget(cdata.power)
+  local power = dget(CDATA.power)
   local mp = Menu:new({ offset = 0 }, {
     toggle,
     sep,
@@ -184,7 +183,7 @@ function show_debug()
       name = "power - snow: " .. (power & 1),
       callback = function(self, dir)
         power = invert(power, 1)
-        dset(cdata.power, power)
+        dset(CDATA.power, power)
         self.name = "power - snow: " .. (power & 1)
       end,
     },
@@ -192,7 +191,7 @@ function show_debug()
       name = "power - fire: " .. (power & 2),
       callback = function(self, dir)
         power = invert(power, 2)
-        dset(cdata.power, power)
+        dset(CDATA.power, power)
         self.name = "power - fire: " .. (power & 2)
       end,
     },
@@ -200,7 +199,7 @@ function show_debug()
       name = "power - desert: " .. (power & 4),
       callback = function(self, dir)
         power = invert(power, 4)
-        dset(cdata.power, power)
+        dset(CDATA.power, power)
         self.name = "power - desert: " .. (power & 4)
       end,
     },
@@ -208,7 +207,7 @@ function show_debug()
       name = "power - sun: " .. (power & 8),
       callback = function(self, dir)
         power = invert(power, 8)
-        dset(cdata.power, power)
+        dset(CDATA.power, power)
         self.name = "power - sun: " .. (power & 8)
       end,
     },
@@ -216,7 +215,7 @@ function show_debug()
       name = "power - woods: " .. (power & 16),
       callback = function(self, dir)
         power = invert(power, 16)
-        dset(cdata.power, power)
+        dset(CDATA.power, power)
         self.name = "power - woods: " .. (power & 16)
       end,
     },
@@ -224,7 +223,7 @@ function show_debug()
       name = "power - storm: " .. (power & 32),
       callback = function(self, dir)
         power = invert(power, 32)
-        dset(cdata.power, power)
+        dset(CDATA.power, power)
         self.name = "power - storm: " .. (power & 32)
       end,
     },

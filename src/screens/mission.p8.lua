@@ -4,11 +4,11 @@ function show_mission(mission, arena, size, human, bots, powers)
   freeze_update(31, Fade:new { reverse = true })
 
   if mission ~= 0 then
-    local mdata = missions[mission]
+    local mdata = MISSIONS[mission]
     if not mdata then
       return show_start()
     end
-    size, arena, bots, powers = mdata.s, mdata.a, split(mdata.cpu, "/"), mdata.w
+    size, arena, bots, powers = mdata.s or 20, mdata.a, split(mdata.cpu, "/"), mdata.w
   end
 
   local f = Field:new { size = size, arena = arena }
@@ -24,7 +24,7 @@ function show_mission(mission, arena, size, human, bots, powers)
     mission = mission,
     field = f,
     power = w,
-    powers = dget(cdata.power),
+    powers = dget(CDATA.power),
   }
 
   scene = {

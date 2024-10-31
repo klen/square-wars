@@ -1,19 +1,15 @@
 function rndcolor(free)
-  return flr(rnd(#colors) + 1)
+  return flr(rnd(#COLORS) + 1)
 end
 
 Tile = Entity:create {
   n = 0,
   p = 0,
+
   init = function(_ENV)
+    c = rndcolor()
     diag = {} -- diagonal
     hvrel = {} -- horizontal and vertical
-    c = rndcolor()
-  end,
-  free = function(_ENV)
-    return filter(hvrel, function(t)
-      return t.p == 0
-    end)
   end,
 }
 

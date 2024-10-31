@@ -6,9 +6,9 @@ Power = Entity:create {
   end,
 
   draw = function(_ENV)
-    for c = 1, #colors do
+    for c = 1, #COLORS do
       if powers[c] ~= 0 then
-        local cy, v, cc = c * 20, levels[c], colors[c]
+        local cy, v, cc = c * 20, levels[c], COLORS[c]
 
         rect(121, cy - 20, 127, cy - 2, v == 3 and cc or 1)
 

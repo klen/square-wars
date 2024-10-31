@@ -7,27 +7,25 @@ function show_brief(mission)
     show_brief(mission)
   end)
 
-  dset(cdata.mission, mission - 1)
-
   -- reset campaign data
   if mission == 1 then
-    dset(cdata.time, 0)
-    dset(cdata.score, 0)
+    dset(CDATA.time, 0)
+    dset(CDATA.score, 0)
   end
 
   scene = {
     -- title
     Typewriter:new {
-      txt = "mission " .. mission .. ' "' .. missions[mission].n .. '"',
+      txt = "mission " .. mission .. ' "' .. MISSIONS[mission].n .. '"',
       speed = 3,
     },
 
     -- information
     Typewriter:new {
-      txt = briefs[mission],
-      speed = 1,
-      y = 32,
+      y = 24,
       c = 6,
+      speed = 1,
+      txt = BRIEFS[mission],
     },
 
     -- confirm

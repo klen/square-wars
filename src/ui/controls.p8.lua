@@ -1,23 +1,19 @@
+-- globals: colors
+--
 Controls = Entity:create {
   scolor = 0,
   judge = nil,
-  buffer = split "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
   power = nil,
 
   init = function(_ENV)
-    buffer = pack(unpack(buffer))
     scolor = judge:move_color(scolor, function(c)
-      return (c % #colors) + 1
+      return (c % #COLORS) + 1
     end)
   end,
 
   update = function(self)
     local judge = self.judge
     local dir, p = { -1, 1, 1, -1 }, judge:get_active()
-
-    if judge.finished then
-      return
-    end
 
     if p.cpu then
       local targets = get_targets(p, judge)
@@ -26,14 +22,15 @@ Controls = Entity:create {
       end
       local bot = ai[p.cpu]
       self:move(bot(targets))
-
     else
       local btn = getbtn(judge.active - 1)
-      if btn < 0 then return end
+      if btn < 0 then
+        return
+      end
       if btn < 4 then
         local d = dir[btn + 1]
         self.scolor = judge:move_color(self.scolor, function(c)
-          return (c + d - 1) % #colors + 1
+          return (c + d - 1) % #COLORS + 1
         end, p.w)
         beep()
       else
@@ -46,8 +43,8 @@ Controls = Entity:create {
   draw = function(_ENV)
     local p = judge:get_active()
 
-    for idx = 1, #colors do
-      local c, s = colors[idx], idx * 8 - 8
+    for idx = 1, #COLORS do
+      local c, s = COLORS[idx], idx * 8 - 8
 
       if idx == scolor then
         rectfill(s, 120, s + 6, 126, c)
@@ -57,27 +54,41 @@ Controls = Entity:create {
         rect(s + 1, 121, s + 5, 125, c)
       end
     end
+    local w, active = 51, judge.active
+    for p in all(judge.players) do
+      local n, c, t = p.n, COLORS[p.c], tostr(#p.t)
+      w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
+    end
   end,
 
   move = function(_ENV, c)
-    local p = judge:get_active()
     judge:move(c)
-    if power do power:move(c) end
+    if power then
+      power:move(c)
+    end
+
+    local p = judge:get_active()
     scolor = judge:move_color(p.c, function(c)
-      return (c % #colors) + 1
+      return (c % #COLORS) + 1
     end, p.w)
+
     freeze_update(5 + rnd(10))
+
+    judge:finish()
   end,
 }
 
 function get_targets(p, judge)
   local targets, seen = {}, {}
-  for t in all(p.t) do
-    for f in all(t:free()) do
-      if not seen[f.n] then
-        seen[f.n] = true
-        if judge:color_available(f.c) then
-          add(targets, f)
+  for tn in all(p.t) do
+    local t = judge.field.tiles[tn]
+    for f in all(t.hvrel) do
+      if f.p == 0 then
+        if not seen[f.n] then
+          seen[f.n] = true
+          if judge:color_available(f.c) then
+            add(targets, f)
+          end
         end
       end
     end

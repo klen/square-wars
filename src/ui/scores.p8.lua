@@ -4,9 +4,9 @@ function mission_scores()
       txt = "mission scores",
     },
   }
-  for i, m in ipairs(missions) do
+  for i, m in ipairs(MISSIONS) do
     if i > 1 then
-      local score, name = dget(cdata.mscores + i - 1), m.n .. ":"
+      local score, name = dget(CDATA.mscores + i - 1), m.n .. ":"
       add(
         entities,
         Typewriter:new {
@@ -26,8 +26,8 @@ function practice_scores()
       txt = "practice scores",
     },
   }
-  for i, a in ipairs(arenas) do
-    local score, name = dget(cdata.ascores + i - 1), "a" .. i .. " - " .. a[1] .. ": "
+  for i, a in ipairs(ARENAS) do
+    local score, name = dget(CDATA.ascores + i - 1), "a" .. i .. " - " .. a[1] .. ": "
     add(
       entities,
       Typewriter:new {

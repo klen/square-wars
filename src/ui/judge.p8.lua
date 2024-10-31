@@ -1,7 +1,6 @@
 Judge = Entity:create {
   active = 1,
   moves = 0,
-  finished = false,
 
   arena = 0,
   mission = 0,
@@ -16,20 +15,22 @@ Judge = Entity:create {
 
   init = function(_ENV)
     moves, start = 0, time()
-    local size = field.size
+    local size, tiles = field.size, field.tiles
     local self, pos = _ENV, { 1, size * size, size, (size * size) - size + 1 }
-    players, tiles = {}, field.tiles
+
+    players = {}
 
     local init_player = function(pn, cpu, w)
       local pt = tiles[pos[pn]]
       pt.p = pn
       pt.c = self:move_color(rndcolor(), rndcolor)
+
       add(players, {
         n = pn,
         s = 0,
         w = w,
         c = pt.c,
-        t = { pt },
+        t = { pt.n },
         cpu = cpu,
       })
     end
@@ -46,20 +47,18 @@ Judge = Entity:create {
     -- fix positions
     for p in all(pos) do
       local pt = tiles[p]
-      for t in all(pt:free()) do
+      for t in all(pt.hvrel) do
         t.c = self:move_color(t.c, rndcolor)
       end
     end
   end,
 
-  update = function(_ENV)
-    for t in all(tiles) do
+  finish = function(_ENV)
+    for t in all(field.tiles) do
       if t.p == 0 then
         return
       end
     end
-
-    finished = true
 
     -- sort places
     local res = sort(players, function(a, b)
@@ -85,7 +84,7 @@ Judge = Entity:create {
         frames = 70,
         callback = function()
           if mission ~= 0 then
-            dset(cdata.place, place)
+            dset(CDATA.place, place)
           end
           show_results(
             res,
@@ -98,6 +97,7 @@ Judge = Entity:create {
       }
     )
   end,
+
   color_available = function(_ENV, c, w)
     for p in all(players) do
       if p.c == c then
@@ -116,23 +116,26 @@ Judge = Entity:create {
     until self:color_available(c, w)
     return c
   end,
+
   get_active = function(_ENV)
     return players[active]
   end,
+
   move = function(_ENV, c)
     local p = players[active]
-    local tiles, pwr = p.t, power and power.levels[c] == 3
+    local ntiles, pwr = p.t, power and power.levels[c] == 3
 
     p.c = c
     moves += 1
 
     -- make a move
-    foreach(tiles, function(t)
+    foreach(ntiles, function(tn)
+      local t = field.tiles[tn]
       t.c = c
-      for n in all(t:free()) do
-        if n.c == c then
+      for n in all(t.hvrel) do
+        if n.p == 0 and n.c == c then
           n.p = active
-          add(tiles, n)
+          add(ntiles, n.n)
         end
       end
       -- grab diag
@@ -140,7 +143,7 @@ Judge = Entity:create {
         for n in all(t.diag) do
           if n.c == c and n.p == 0 then
             n.p = active
-            add(tiles, n)
+            add(ntiles, n.n)
           end
         end
       end
