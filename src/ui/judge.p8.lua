@@ -124,8 +124,9 @@ Judge = Entity:create {
         return false
       end
     end
-    if w and power and power:active(c) then
-      return 2 ^ (c - 1) & w > 0
+    local idx = COLORS_IDX[c]
+    if w and power and power:active(idx) then
+      return 2 ^ (idx - 1) & w > 0
     end
     return true
   end,
@@ -143,7 +144,7 @@ Judge = Entity:create {
 
   move = function(_ENV, c)
     local p = players[active]
-    local tiles, ptiles, pwr = field.tiles, p.tiles, power and power:active(c)
+    local tiles, ptiles, pwr = field.tiles, p.tiles, power and power:active(COLORS_IDX[c])
     local grab = #ptiles
 
     p.c = c
@@ -175,9 +176,9 @@ Judge = Entity:create {
     local skip = #ptiles == grab
     p.skip = skip and p.skip + 1 or 0
     if p.skip >= 8 then
-      p.c = 0
+      p.c = 5
       foreach(ptiles, function(tn)
-        tiles[tn].c = 6
+        tiles[tn].c = 5
       end)
       active = (active % #players) + 1
     end

@@ -38,8 +38,8 @@ function show_start()
           start(1)
         end,
       },
-      practice > 0 and { name = "practice", callback = show_practice } or nil,
       scores > 0 and { name = "scores", callback = show_scores } or nil,
+      practice > 0 and { name = "practice", callback = show_practice } or nil,
     }),
   }
 end

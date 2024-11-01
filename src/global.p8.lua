@@ -3,6 +3,7 @@ G = _ENV
 VERSION = 1
 
 COLORS = split "7,8,9,10,11,12"
+COLORS_IDX = load_table_str "7=1,8=2,9=3,10=4,11=5,12=6"
 
 ARENAS = {
   split "empty",

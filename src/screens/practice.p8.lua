@@ -9,6 +9,18 @@ function show_practice()
       print("choose preferences\n\nstart to begin.", 16, 40, 6)
     end),
     Menu:new(nil, {
+      {
+        name = "start",
+        callback = function()
+          music(-1)
+          arena = arena == 1 and flr(rnd(#ARENAS)) + 1 or arena - 1
+          local tcpu = {}
+          for idx = 1, cpu do
+            add(tcpu, idx % 2 + 1)
+          end
+          show_mission(0, arena, 20, human, tcpu, powers)
+        end,
+      },
       arena_available > 0 and {
         name = "arena: random",
         callback = function(self, dir)
@@ -35,18 +47,6 @@ function show_practice()
         callback = function(self, dir)
           cpu = (cpu - 1 + dir) % 4 + 1
           human = min(human, 4 - cpu)
-        end,
-      },
-      {
-        name = "start",
-        callback = function()
-          music(-1)
-          arena = arena == 1 and flr(rnd(#ARENAS)) + 1 or arena - 1
-          local tcpu = {}
-          for idx = 1, cpu do
-            add(tcpu, idx % 2 + 1)
-          end
-          show_mission(0, arena, 20, human, tcpu, powers)
         end,
       },
       {

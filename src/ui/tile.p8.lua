@@ -1,5 +1,5 @@
-function rndcolor(free)
-  return flr(rnd(#COLORS) + 1)
+function rndcolor()
+  return rnd(COLORS)
 end
 
 Tile = Entity:create {

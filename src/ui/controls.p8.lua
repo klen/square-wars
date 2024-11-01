@@ -1,14 +1,14 @@
 -- globals: colors
 --
 Controls = Entity:create {
-  scolor = 0,
+  scolor = COLORS[1],
   judge = nil,
   power = nil,
 
   init = function(_ENV)
-    scolor = judge:move_color(scolor, function(c)
-      return (c % #COLORS) + 1
-    end)
+    while not judge:color_available(scolor) do
+      scolor = COLORS[(COLORS_IDX[scolor] + 1) % #COLORS + 1]
+    end
   end,
 
   update = function(self)
@@ -31,7 +31,7 @@ Controls = Entity:create {
       if btn < 4 then
         local d = dir[btn + 1]
         self.scolor = judge:move_color(self.scolor, function(c)
-          return (c + d - 1) % #COLORS + 1
+          return COLORS[(COLORS_IDX[c] + d - 1) % #COLORS + 1]
         end, p.w)
         beep()
       else
@@ -50,12 +50,12 @@ Controls = Entity:create {
     --   judge.field:draw_tile(n, c)
     -- end
 
-    for idx = 1, #COLORS do
-      local c, s = COLORS[idx], idx * 8 - 8
+    for idx, c in ipairs(COLORS) do
+      local s = idx * 8 - 8
 
-      if idx == scolor then
+      if c == scolor then
         rectfill(s, 120, s + 6, 126, c)
-      elseif judge:color_available(idx, p.w) then
+      elseif judge:color_available(c, p.w) then
         rectfill(s + 1, 121, s + 5, 125, c)
       else
         rect(s + 1, 121, s + 5, 125, c)
@@ -63,7 +63,7 @@ Controls = Entity:create {
     end
     local w, active = 51, judge.active
     for p in all(judge.players) do
-      local n, c, t = p.n, COLORS[p.c] or 6, tostr(#p.tiles)
+      local n, c, t = p.n, p.c, tostr(#p.tiles)
       w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
     end
   end,
@@ -71,12 +71,12 @@ Controls = Entity:create {
   move = function(_ENV, c)
     judge:move(c)
     if power then
-      power:move(c)
+      power:move(COLORS_IDX[c])
     end
 
     local p = judge:get_active()
     scolor = judge:move_color(p.c, function(c)
-      return (c % #COLORS) + 1
+      return COLORS[COLORS_IDX[c] % #COLORS + 1]
     end, p.w)
 
     freeze_update(5 + rnd(10))
@@ -112,7 +112,7 @@ function get_clusters(targets, tiles)
       seen[cnum] = true
       local t = tiles[tn]
       for cn in all(cl) do
-        add(clusters[t.c], cn)
+        add(clusters[COLORS_IDX[t.c]], cn)
       end
     end
   end

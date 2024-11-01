@@ -50,7 +50,7 @@ Field = Entity:create {
 
   draw = function(_ENV)
     foreach(tiles, function(t)
-      _ENV:draw_tile(t.n, COLORS[t.c] or 1)
+      _ENV:draw_tile(t.n, t.c)
     end)
   end,
 
