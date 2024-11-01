@@ -34,10 +34,11 @@ Judge = Entity:create {
     local init_player = function(pn, cpu, w)
       add(players, {
         n = pn,
-        s = 0,
+        skip = 0,
+        score = 0,
         w = w,
         cpu = cpu,
-        t = {},
+        tiles = {},
         c = _ENV:move_color(rndcolor(), rndcolor),
       })
     end
@@ -64,31 +65,34 @@ Judge = Entity:create {
         end
         t.c = p.c
         t.p = p.n
-        add(p.t, n)
+        add(p.tiles, n)
       end
     end
   end,
 
   finish = function(_ENV)
-    for t in all(field.tiles) do
-      if t.p == 0 then
-        return
+    local active_players = #filter(players, function(p)
+      return p.skip < 8
+    end)
+    if active_players > 0 then
+      for t in all(field.tiles) do
+        if t.p == 0 then
+          return
+        end
       end
     end
 
     -- sort places
     local res = sort(players, function(a, b)
-      return #a.t > #b.t
+      return #a.tiles > #b.tiles
     end)
 
     -- calculate scores
-    for pn = 1, #res do
-      local p = res[pn]
+    for pn, p in ipairs(res) do
+      p.score = min(field.size * (#res - pn + 1), #p.tiles)
       for sn = pn + 1, #res do
         local sp = res[sn]
-        if p.cpu or sp.cpu then
-          p.s += #p.t - #sp.t
-        end
+        p.score += #p.tiles - #sp.tiles
       end
     end
 
@@ -139,7 +143,7 @@ Judge = Entity:create {
 
   move = function(_ENV, c)
     local p = players[active]
-    local tiles, ptiles, pwr = field.tiles, p.t, power and power:active(c)
+    local tiles, ptiles, pwr = field.tiles, p.tiles, power and power:active(c)
     local grab = #ptiles
 
     p.c = c
@@ -168,14 +172,27 @@ Judge = Entity:create {
       end
     end)
 
+    local skip = #ptiles == grab
+    p.skip = skip and p.skip + 1 or 0
+    if p.skip >= 8 then
+      p.c = 0
+      foreach(ptiles, function(tn)
+        tiles[tn].c = 6
+      end)
+      active = (active % #players) + 1
+    end
+
     -- make a power move
-    if pwr and #ptiles > grab then
+    if pwr and not skip then
       sfx(59)
     else
+      -- go to the next player
       if p.cpu then
         sfx(62)
       end
-      active = (active % #players) + 1
+      repeat
+        active = (active % #players) + 1
+      until players[active].skip < 8
     end
   end,
 }

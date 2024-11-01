@@ -1,5 +1,6 @@
 function show_practice()
-  local arena, human, cpu, arena_available = 1, 1, 3, min(dget(CDATA.arena), #ARENAS)
+  local arena, human, cpu, arena_available, powers =
+    1, 1, 3, min(dget(CDATA.arena), #ARENAS), dget(CDATA.power)
 
   SCENE = {
     art(function()
@@ -45,7 +46,7 @@ function show_practice()
           for idx = 1, cpu do
             add(tcpu, idx % 2 + 1)
           end
-          show_mission(0, arena, 20, human, tcpu)
+          show_mission(0, arena, 20, human, tcpu, powers)
         end,
       },
       {

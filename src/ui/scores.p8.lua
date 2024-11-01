@@ -1,11 +1,12 @@
-function mission_scores(missions)
+function mission_scores(missions, offset)
   local entities = {
     Typewriter:new {
       txt = "mission scores",
     },
   }
   for i, m in ipairs(missions) do
-    local score, name = dget(CDATA.mscores + i - 1), m.n .. ":"
+    local num = i + offset
+    local score, name = dget(CDATA.mscores + num - 1), m.n .. ":"
     add(
       entities,
       Typewriter:new {
@@ -19,14 +20,15 @@ function mission_scores(missions)
   return entities
 end
 
-function practice_scores(arenas)
+function practice_scores(arenas, offset)
   local entities = {
     Typewriter:new {
       txt = "practice scores",
     },
   }
   for i, a in ipairs(arenas) do
-    local score, name = dget(CDATA.ascores + i - 1), "a" .. i .. " - " .. a[1] .. ": "
+    local num = i + offset
+    local score, name = dget(CDATA.ascores + num - 1), "a" .. num .. " - " .. a[1] .. ": "
     add(
       entities,
       Typewriter:new {

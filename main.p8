@@ -35,8 +35,8 @@ __lua__
 #include src/update.p8.lua
 #include src/draw.p8.lua
 
--- #include src/screens/debug.p8.lua
--- #include src/tools/debug.p8.lua
+#include src/screens/debug.p8.lua
+#include src/tools/debug.p8.lua
 
 inv = "\^i"
 

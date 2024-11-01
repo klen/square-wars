@@ -48,7 +48,7 @@ MISSIONS = {
   load_table_str "n=wood's guardian,a=15,w=16,cpu=2,plc=2,u=power,un=power of woods,uv=31", -- 15 woods
   load_table_str "n=cage,a=8,w=31,cpu=2/2/2,u=arena,un=arena 7", -- 16
 
-  load_table_str "n=storm's dominion,a=16,w=63,cpu=2/2/2,plc=3,u=power,un=power of woods,uv=63", -- 17 storm
+  load_table_str "n=storm's dominion,a=16,w=63,cpu=2/2/2,plc=3,u=power,un=power of storm,uv=63", -- 17 storm
   load_table_str "n=lines,a=9,w=63,cpu=2/2/2,u=arena,un=arena 8", -- 18
 
   load_table_str "n=apex,a=10,w=63,cpu=2/2/2,plc=4,un=mastery of all powers", -- 19

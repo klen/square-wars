@@ -46,7 +46,7 @@ Controls = Entity:create {
 
     -- active tiles ???
     -- local c = COLORS[scolor]
-    -- for n in all(p.t) do
+    -- for n in all(p.tiles) do
     --   judge.field:draw_tile(n, c)
     -- end
 
@@ -63,7 +63,7 @@ Controls = Entity:create {
     end
     local w, active = 51, judge.active
     for p in all(judge.players) do
-      local n, c, t = p.n, COLORS[p.c], tostr(#p.t)
+      local n, c, t = p.n, COLORS[p.c] or 6, tostr(#p.tiles)
       w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
     end
   end,
@@ -87,7 +87,7 @@ Controls = Entity:create {
 
 function get_targets(p, judge)
   local targets, seen, tiles = {}, {}, judge.field.tiles
-  for tn in all(p.t) do
+  for tn in all(p.tiles) do
     for fn in all(tiles[tn].hvrel) do
       local f = tiles[fn]
       if f.p == 0 then

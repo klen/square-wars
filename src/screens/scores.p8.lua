@@ -2,10 +2,10 @@ function show_scores()
   cls(1)
 
   local scene1, scene2, scene3, scene4 =
-    mission_scores(slice(MISSIONS, 2, 11)),
-    mission_scores(slice(MISSIONS, 12, #MISSIONS)),
-    practice_scores(slice(ARENAS, 1, 10)),
-    practice_scores(slice(ARENAS, 11, #ARENAS))
+    mission_scores(slice(MISSIONS, 2, 11), 1),
+    mission_scores(slice(MISSIONS, 12, #MISSIONS), 11),
+    practice_scores(slice(ARENAS, 1, 10), 0),
+    practice_scores(slice(ARENAS, 11, #ARENAS), 10)
 
   SCENE = scene1
 
