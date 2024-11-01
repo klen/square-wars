@@ -5,6 +5,7 @@ all:
 	$(PICO8) -run $(CURDIR)/main.p8
 
 build: src
+	rm -rf $(TARGET).p8.png
 	$(PICO8) -x main.p8 -export $(TARGET).p8.png
 
 sync: build
