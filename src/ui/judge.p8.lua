@@ -70,14 +70,28 @@ Judge = Entity:create {
     end
   end,
 
-  finish = function(_ENV)
+  next_move = function(_ENV, next)
+    if next then
+      repeat
+        active = (active % #players) + 1
+      until players[active].skip < 8
+    end
+
+    local p = players[active]
+    return _ENV:move_color(p.c, function(c)
+      local idx = COLORS_IDX[c] or 1
+      return COLORS[idx % #COLORS + 1]
+    end, p.w)
+  end,
+
+  finish_move = function(_ENV, next)
     local active_players = #filter(players, function(p)
       return p.skip < 8
     end)
     if active_players > 0 then
       for t in all(field.tiles) do
         if t.p == 0 then
-          return
+          return _ENV:next_move(next)
         end
       end
     end
@@ -173,27 +187,24 @@ Judge = Entity:create {
       end
     end)
 
-    local skip = #ptiles == grab
-    p.skip = skip and p.skip + 1 or 0
+    local empty = #ptiles == grab
+    p.skip = empty and p.skip + 1 or 0
     if p.skip >= 8 then
       p.c = 5
       foreach(ptiles, function(tn)
         tiles[tn].c = 5
       end)
-      active = (active % #players) + 1
     end
 
-    -- make a power move
-    if pwr and not skip then
+    -- keep the current player
+    if pwr and not empty then
       sfx(59)
-    else
-      -- go to the next player
-      if p.cpu then
-        sfx(62)
-      end
-      repeat
-        active = (active % #players) + 1
-      until players[active].skip < 8
+      return false
     end
+
+    if p.cpu then
+      sfx(62)
+    end
+    return true
   end,
 }

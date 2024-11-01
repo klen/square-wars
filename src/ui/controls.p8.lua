@@ -44,12 +44,6 @@ Controls = Entity:create {
   draw = function(_ENV)
     local p = judge:get_active()
 
-    -- active tiles ???
-    -- local c = COLORS[scolor]
-    -- for n in all(p.tiles) do
-    --   judge.field:draw_tile(n, c)
-    -- end
-
     for idx, c in ipairs(COLORS) do
       local s = idx * 8 - 8
 
@@ -69,19 +63,14 @@ Controls = Entity:create {
   end,
 
   move = function(_ENV, c)
-    judge:move(c)
+    local next = judge:move(c)
+
     if power then
       power:move(COLORS_IDX[c])
     end
+    freeze_update(5 + flr(rnd(10)))
 
-    local p = judge:get_active()
-    scolor = judge:move_color(p.c, function(c)
-      return COLORS[COLORS_IDX[c] % #COLORS + 1]
-    end, p.w)
-
-    freeze_update(5 + rnd(10))
-
-    judge:finish()
+    scolor = judge:finish_move(next)
   end,
 }
 
