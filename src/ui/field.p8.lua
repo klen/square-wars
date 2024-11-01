@@ -42,7 +42,7 @@ Field = Entity:create {
       local data = ARENAS[arena]
       for n = 2, #data do
         local t = tiles[data[n]]
-        t.c = 0
+        t.c = 1
         t.p = 5
       end
     end
