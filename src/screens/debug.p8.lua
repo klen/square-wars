@@ -46,11 +46,11 @@ function show_debug()
         for idx = 1, 2 + flr(rnd(3)) do
           add(players, {
             n = idx,
-            s = flr(rnd(100)),
+            score = flr(rnd(100)),
             cpu = flr(rnd(2)) == 1,
           })
           sort(players, function(a, b)
-            return a.s > b.s
+            return a.score > b.score
           end)
         end
         show_results(

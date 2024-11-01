@@ -36,6 +36,7 @@ function show_gameover()
     Confirmation:new {
       txt = "view scores",
       callback = function()
+        pal(0)
         SCENE = scores
       end,
     },
@@ -59,22 +60,27 @@ function show_gameover()
     Confirmation:new {
       txt = "view stats",
       callback = function()
+        pal(0)
         SCENE = stats
       end,
     },
   }
 
   -- stats
-  stats = mission_scores(slice(MISSIONS, 2, 11))
+  stats = mission_scores(slice(MISSIONS, 2, 11), 1)
   add(stats, Confirmation:new {
       txt = "next",
       callback = function(self)
-        if SCENE == stats then
-          SCENE = mission_scores(slice(MISSIONS, 12, #MISSIONS))
-          self.txt = "view credits"
-          return add(SCENE, self)
-        end
-        SCENE = credits
+        pal(0)
+        SCENE = mission_scores(slice(MISSIONS, 2, 11), 11)
+
+        add(SCENE, Confirmation:new {
+            txt = "view credits",
+            callback = function()
+              pal(0)
+              SCENE = credits
+            end,
+        })
       end,
   })
 
@@ -99,6 +105,7 @@ function show_gameover()
     Confirmation:new {
       txt = "main menu",
       callback = function()
+        pal(0)
         music(-1)
         show_start()
       end,

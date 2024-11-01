@@ -23,17 +23,17 @@ end
 
 function frame()
   cls()
+  pal(0)
   rect(2, 2, 126, 104, 7)
 end
 
 Confirmation = Entity:create {
   y = 112,
   txt = "confirm",
-  callback = noop,
   update = function(_ENV)
     local btn = getbtn()
     if btn == 4 or btn == 5 then
-      freeze_update(32, Fade:new { callback = function() callback(_ENV) end })
+      freezer:freeze(40, Fade:new {}, callback )
     end
   end,
   draw = function(_ENV)

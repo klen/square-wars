@@ -22,6 +22,7 @@ __lua__
 #include src/ui/report.p8.lua
 #include src/ui/scores.p8.lua
 #include src/ui/power.p8.lua
+#include src/ui/freezer.p8.lua
 
 #include src/screens/start.p8.lua
 #include src/screens/brief.p8.lua

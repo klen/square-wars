@@ -112,24 +112,18 @@ Judge = Entity:create {
 
     sfx(res[1].cpu and 60 or 61)
 
-    freeze_update(
-      62,
-      Fade:new {
-        frames = 60,
-        callback = function()
-          if mission ~= 0 then
-            dset(CDATA.place, place)
-          end
-          show_results(
-            res,
-            moves,
-            time() - start,
-            mission == 0 and arena or mission, -- mission or arena number
-            mission == 0 and "a" or "m" -- mode
-          )
-        end,
-      }
-    )
+    freezer:freeze(80, Fade:new { frames = 60 }, function()
+      if mission ~= 0 then
+        dset(CDATA.place, place)
+      end
+      show_results(
+        res,
+        moves,
+        time() - start,
+        mission == 0 and arena or mission, -- mission or arena number
+        mission == 0 and "a" or "m" -- mode
+      )
+    end)
   end,
 
   color_available = function(_ENV, c, w)

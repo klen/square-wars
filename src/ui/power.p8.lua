@@ -19,7 +19,8 @@ Power = Entity:create {
     end
   end,
 
-  move = function(_ENV, idx)
+  register = function(_ENV, c)
+    local idx = COLORS_IDX[c]
     if powers & (1 << (idx - 1)) > 0 then
       levels[idx] = (levels[idx] + 1) % (charge + 1)
     end

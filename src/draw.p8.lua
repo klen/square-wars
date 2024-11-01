@@ -1,7 +1,5 @@
 function draw()
-  foreach(frozenentities, function(e)
-    e:draw()
-  end)
+  freezer:draw()
   foreach(SCENE, function(e)
     e:draw()
   end)

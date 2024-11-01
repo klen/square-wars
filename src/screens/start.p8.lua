@@ -4,6 +4,7 @@ function show_start()
   end
   cls(1)
   menuitem(1)
+  freezer:freeze(40, Fade:new { reverse = true })
 
   local mission, place, practice, scores =
     dget(CDATA.mission), dget(CDATA.place), dget(CDATA.practice), dget(CDATA.done)
@@ -45,12 +46,7 @@ function show_start()
 end
 
 function start(mission)
-  freeze_update(
-    32,
-    Fade:new {
-      callback = function()
-        show_brief(mission)
-      end,
-    }
-  )
+  freezer:freeze(40, Fade:new {}, function()
+    show_brief(mission)
+  end)
 end

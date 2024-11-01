@@ -1,7 +1,8 @@
 function show_mission(mission, arena, size, human, bots, powers)
   sfx(0)
   cls()
-  freeze_update(62, Fade:new { reverse = true, frames = 60 })
+
+  freezer:freeze(60, Fade:new { reverse = true, frames = 60 })
 
   if mission ~= 0 then
     local mdata = MISSIONS[mission]

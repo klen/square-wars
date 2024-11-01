@@ -66,10 +66,10 @@ Controls = Entity:create {
     local next = judge:move(c)
 
     if power then
-      power:move(COLORS_IDX[c])
+      power:register(c)
     end
-    freeze_update(5 + flr(rnd(10)))
 
+    freezer:freeze(5 + flr(rnd(10)))
     scolor = judge:finish_move(next)
   end,
 }

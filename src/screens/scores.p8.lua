@@ -8,25 +8,22 @@ function show_scores()
     practice_scores(slice(ARENAS, 11, #ARENAS), 10)
 
   SCENE = scene1
+  local confirm = Confirmation:new { txt = "next" }
+  confirm.callback = function()
+    if SCENE == scene1 then
+      SCENE = scene2
+    elseif SCENE == scene2 then
+      SCENE = scene3
+    elseif SCENE == scene3 then
+      SCENE = scene4
+      confirm.txt = "main menu"
+    elseif SCENE == scene4 then
+      return show_start()
+    end
+    add(SCENE, confirm)
+    pal(0)
+    cls(1)
+  end
 
-  add(
-    SCENE,
-    Confirmation:new {
-      txt = "next",
-      callback = function(self)
-        if SCENE == scene1 then
-          SCENE = scene2
-        elseif SCENE == scene2 then
-          SCENE = scene3
-        elseif SCENE == scene3 then
-          SCENE = scene4
-          self.txt = "main menu"
-        elseif SCENE == scene4 then
-          return show_start()
-        end
-        add(SCENE, self)
-        cls(1)
-      end,
-    }
-  )
+  add(SCENE, confirm)
 end
