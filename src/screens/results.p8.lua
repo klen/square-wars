@@ -23,7 +23,7 @@ function show_results(players, moves, seconds, num, mode)
     else
       -- update mission data
       dset(CDATA.mission, num)
-      dset(CDATA.score, dget(CDATA.score) + players[place].s)
+      dset(CDATA.score, dget(CDATA.score) + players[place].score)
 
       local mdata = MISSIONS[num]
       local unlock, unlock_value = mdata.u, mdata.uv
