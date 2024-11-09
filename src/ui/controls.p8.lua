@@ -9,7 +9,7 @@ Ctrl = Ent:create {
 
   init = function(_ENV)
     while not jd:cfree(sc) do
-      sc = sc % #COLORS + 7
+      sc = (sc - CCR) % #COLORS + 1 + CCR
     end
   end,
 
@@ -32,7 +32,7 @@ Ctrl = Ent:create {
       if btn < 4 then
         local d = dir[btn + 1]
         sc = jd:move_color(sc, function(c)
-          return (c + d - 1) % #COLORS + 7
+          return (c + d - CCR - 1) % #COLORS + CCR + 1
         end, p.w)
         beep()
       else
@@ -56,7 +56,7 @@ Ctrl = Ent:create {
         rect(s + 1, 121, s + 5, 125, c)
       end
     end
-    local w, active = 51, jd.act
+    local w, active = 60, jd.act
     for p in all(jd.players) do
       local n, c, t = p.n, p.c, tostr(#p.t)
       w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
@@ -64,7 +64,10 @@ Ctrl = Ent:create {
   end,
 
   move = function(_ENV, c)
+    printh("ctrl move: " .. c)
     local next = jd:move(c)
+
+    printh("jd move: " .. tostr(next))
 
     if pwr then
       pwr:register(c)
@@ -94,7 +97,7 @@ function get_targets(p, jd)
 end
 
 function get_clusters(targets, tiles)
-  local seen, clusters = {}, { {}, {}, {}, {}, {}, {} }
+  local seen, clusters = {}, { {}, {}, {}, {}, {}, {}, {} }
   for tn in all(targets) do
     local cl = cluster(tn, tiles)
     local cnum = cl[1]
@@ -102,7 +105,7 @@ function get_clusters(targets, tiles)
       seen[cnum] = true
       local t = tiles[tn]
       for cn in all(cl) do
-        add(clusters[t.c - 6], cn)
+        add(clusters[t.c - CCR], cn)
       end
     end
   end

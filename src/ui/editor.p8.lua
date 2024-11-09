@@ -27,7 +27,8 @@ Editor = Ent:create {
     -- set tile color
     elseif btn == 4 then
       local t = field.t[tile]
-      if t.p == 0 then
+      t.t = (t.t + 1) % (#TPS + 1)
+      if t.t == 1 then
         t.p = 5
         t.c = 1
       else
@@ -37,15 +38,10 @@ Editor = Ent:create {
 
     -- copy tile data
     elseif btn == 5 then
-      local res = {}
-
-      for t in all(field.t) do
-        if t.p == 5 then
-          add(res, t.n)
-        end
-      end
-
-      printh(join(",", unpack(res)), "@clip")
+      local t = field.t[tile]
+      t.p = 0
+      t.t = 0
+      t.c = _ENV:color(t)
     end
   end,
 
@@ -56,12 +52,19 @@ Editor = Ent:create {
   end,
 
   draw = function(_ENV)
-    field:draw_tile(tile, band(FRMS, 8) == 0 and 1 or 5)
+    local t = field.t[tile]
+    local c = t.c
+    t.c = band(FRMS, 8) == 0 and 0 or c
+    t:draw(field.s, field.off, field.ts)
+    t.c = c
     print(ARENAS[field.a][1], 0, 120, 5)
-    print("tile: " .. tile, 84, 120, 5)
+    print("tile: " .. tile .. ":" .. hex(tile), 56, 120, 5)
   end,
 }
 
-function join(d, s, ...)
-  return not s and "" or not ... and s or s .. d .. join(d, ...)
+function hex(v) 
+  local s,l,r=tostr(v,true),3,11
+  while(ord(s,l)==48) l+=1
+  while(ord(s,r)==48) r-=1
+  return sub(s,min(l,6),r>7 and r or 6)
 end

@@ -5,11 +5,11 @@ function brief(n)
   pal(0)
   cls()
 
-  local pw, md, br = dget(CART.power), MISSIONS[n], split(BRIEFS[n], "/")
+  local pw, md = dget(CART.power), MISSIONS[n]
   local mw = pw | (md.pwr or pw)
 
   if md.c then
-    return custom_brief(n, md, br)
+    return custom_brief(n, md)
   end
 
   -- setup menu
@@ -30,8 +30,8 @@ function brief(n)
     art(function()
       frame()
     end),
-    Tw:new { txt = "mission " .. n .. ' "' .. br[1] .. '"' },
-    Tw:new { y = 28, txt = join("\n", slice(br, 2)) },
+    Tw:new { txt = "mission " .. n .. ' "' .. md.n .. '"' },
+    Tw:new { y = 28, txt = md.b },
     Conf:new {
       txt = "confirm",
       cb = function()
@@ -58,9 +58,7 @@ function brief(n)
 
   if md.o then
     bg = SCENE
-    local cr = Crawl:new {
-      txt = OPENS[md.o],
-    }
+    local cr = Crawl:new { txt = md.o }
     local lns = split(cr.txt, "\n")
 
     SCENE = {
@@ -81,7 +79,7 @@ function brief(n)
   end
 end
 
-function custom_brief(n, md, br)
+function custom_brief(n, md)
   local pwr, CNAMES = dget(CART.power), { "snow", "fire", "desert", "sun", "woods", "storm" }
   if pwr & 63 == 63 then
     return brief(14)
@@ -107,8 +105,8 @@ function custom_brief(n, md, br)
       frame(73)
     end),
 
-    Tw:new { txt = br[1] },
-    Tw:new { y = 28, txt = join("\n", slice(br, 2)) },
+    Tw:new { txt = md.n },
+    Tw:new { y = 28, txt = md.b },
 
     Menu:new({ y = 82 }, opts),
   }

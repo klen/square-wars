@@ -1,5 +1,6 @@
 Fd = Ent:create {
   s = 20,
+  o = nil,
   a = nil,
   eff = nil,
 
@@ -43,47 +44,57 @@ Fd = Ent:create {
       end
     end
 
+    foreach(t, function(tt)
+        fix_color(tt, t)
+    end)
+
+    if o then
+      local prv
+      for p, v in ipairs(o) do
+        for i, h in ipairs(split(v)) do
+          if h == "" then break end
+          local tt = t[tonum("0x" .. h)]
+          tt.t = p + 1
+          if p == 1 and i % 2 == 0 then
+            prv.c = tt.c
+          end
+          prv = tt
+        end
+      end
+    end
+
     if a then
-      for n = 2, #ARENAS[a] do
-        local tt = t[ARENAS[a][n]]
-        tt.c = 1
-        tt.p = 5
+      for h in all(split(ARENAS[a][2])) do
+        if h == "" then break end
+        local tt = t[tonum("0x" .. h)]
+        if tt.t == 0 then
+          tt.c = 1
+          tt.p = 5
+        end
       end
     end
   end,
 
   draw = function(_ENV)
     foreach(t, function(t)
-      _ENV:draw_tile(t.n, t.c)
+      t:draw(s, off, ts)
     end)
-  end,
-
-  draw_tile = function(_ENV, n, c)
-    local t = t[n]
-    local x, y = _ENV:tile_coords(n, s, off, ts)
-    if (t.p == 0) then
-      rectfill(x, y, x + ts - 2, y + ts - 2, c)
-    else
-      rect(x, y, x + ts - 2, y + ts - 2, c or 1)
-    end
   end,
 
   draw_dark = function(_ENV)
     foreach(t, function(pt)
       if pt.p == 1 then
-        return _ENV:draw_tile(pt.n, pt.c)
+        pt:draw(s, off, ts)
       end
       for n in all(pt.hvrel) do
         local ft = t[n]
         if ft.p == 1 then
-          return _ENV:draw_tile(pt.n, pt.c)
+          pt:draw(s, off, ts)
         end
       end
       for n in all(pt.diag) do
         local ft = t[n]
-        if ft.p == 1 then
-          return _ENV:draw_tile(pt.n, pt.c)
-        end
+        if ft.p == 1 then pt:draw(s, off, ts) end
       end
     end)
   end,
@@ -103,3 +114,13 @@ Fd = Ent:create {
     end
   end,
 }
+
+function fix_color(tt, t)
+  for n in all(tt.hvrel) do
+    local c = t[n].c
+    if c == tt.c then
+      return
+    end
+  end
+  tt.c = rndcolor()
+end

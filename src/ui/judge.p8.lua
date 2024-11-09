@@ -43,9 +43,10 @@ Judge = Ent:create {
     end
 
     -- placement
+    local s = f.s
+    plc = plc or { "1", tostr(s * s), tostr(s), tostr(s * s - s + 1) }
     for p in all(players) do
-      local pos = positions(f.s, plc)
-      for n in all(pos[p.n]) do
+      for n in all(split(plc[p.n])) do
         local tt = t[n]
         for nn in all(tt.hvrel) do
           local nt = t[nn]
@@ -60,6 +61,11 @@ Judge = Ent:create {
         t[tt].c = p.c
       end
     end
+
+    local pt = players[1].t[1]
+    for n in all(t[pt].hvrel) do
+      t[n].c = _ENV:move_color(t[n].c, rndcolor)
+    end
   end,
 
   cfree = function(_ENV, c, w)
@@ -68,9 +74,9 @@ Judge = Ent:create {
         return false
       end
     end
-    local idx = c - 6
+    local idx = c - CCR
     if w and pwr and pwr:active(c) then
-      return w & (1 << (c - 7)) > 0
+      return w & (1 << (c - CCR - 1)) > 0
     end
     return true
   end,
@@ -89,35 +95,22 @@ Judge = Ent:create {
   move = function(_ENV, c)
     local p = players[act]
     local tiles, ptiles, pwr = f.t, p.t, pwr and pwr:active(c)
-    local grab = #ptiles
+    local npt = #ptiles
 
     p.c = c
     moves += 1
 
     -- make a move
     foreach(ptiles, function(tn)
-      local t = tiles[tn]
-      t.c = c
-      for nn in all(t.hvrel) do
-        local n = tiles[nn]
-        if n.p == 0 and n.c == c then
-          n.p = act
-          add(ptiles, nn)
-        end
-      end
-      -- grab diag
+      local pt = tiles[tn]
+      pt.c = c
+      grab(pt.hvrel, tiles, p)
       if pwr then
-        for nn in all(t.diag) do
-          local n = tiles[nn]
-          if n.c == c and n.p == 0 then
-            n.p = act
-            add(ptiles, nn)
-          end
-        end
+        grab(pt.diag, tiles, p)
       end
     end)
 
-    local empty = #ptiles == grab
+    local empty = #ptiles == npt
     p.skip = empty and p.skip + 1 or 0
     if p.skip >= 8 then
       p.c = 5
@@ -148,11 +141,12 @@ Judge = Ent:create {
     local p = players[act]
 
     return _ENV:move_color(p.c, function(c)
-      return COLORS[c % #COLORS + 1]
+      return COLORS[(c - CCR) % #COLORS + 1]
     end, p.w)
   end,
 
   finish = function(_ENV, next)
+    printh "jd finish"
     local active_players = #filter(players, function(p)
       return p.skip < 8
     end)
@@ -189,14 +183,20 @@ Judge = Ent:create {
   end,
 }
 
-function positions(s, plc)
-  if not plc then
-    return { { 1 }, { s * s }, { s }, { s * s - s + 1 } }
+function grab(nts, ts, p)
+  for nn in all(nts) do
+    nt = ts[nn]
+    if nt.p == 0 and nt.c == p.c then
+      nt.p = p.n
+      add(p.t, nn)
+      if nt.t == 2 then
+        foreach(ts, function(t)
+          if t.p == 0 and t.t == 2 and t.c == nt.c then
+            t.p = p.n
+            add(p.t, t.n)
+          end
+        end)
+      end
+    end
   end
-
-  for k, v in pairs(plc) do
-    plc[k] = split(v)
-  end
-
-  return plc
 end

@@ -14,6 +14,13 @@ sync: build
 clean_data:
 	rm -f ../../cdata/horneds-sw*
 
-gamedata:
-	cd $(CURDIR)/data && lua table-string.lua > $(CURDIR)/src/data.p8.lua
-	$(PICO8) -run $(CURDIR)/data.p8
+memdata:
+	lua $(CURDIR)/data/convert.lua
+	make inject TARGET=editor.p8
+	make inject TARGET=main.p8
+
+inject:
+	@csplit $(TARGET) /__gfx__/
+	@rm -f xx01 $(TARGET)
+	@mv xx00 $(TARGET)
+	@cat memdata.rom >> $(TARGET)

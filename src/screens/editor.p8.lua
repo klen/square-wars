@@ -15,6 +15,18 @@ function editor()
             local f = Fd:new { a = arena }
             local e = Editor:new { field = f }
 
+            menuitem(1, "copy arena", function()
+              local res = {}
+
+              for t in all(f.t) do
+                if t.p == 5 then
+                  add(res, hex(t.n))
+                end
+              end
+
+              printh(join(",", res), "@clip")
+            end)
+
             SCENE = { art(cls), f, e }
           end
         end,

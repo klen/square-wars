@@ -1,10 +1,10 @@
 Power = Ent:create {
   mx = 4,
   plw = 0,
-  pwr = 0b111111,
+  pwr = 0b1111111,
 
   init = function(_ENV)
-    lvl = split "0,0,0,0,0,0"
+    lvl = split "0,0,0,0,0,0,0"
   end,
 
   draw = function(_ENV)
@@ -22,13 +22,13 @@ Power = Ent:create {
   end,
 
   register = function(_ENV, c)
-    local i = c - 6
+    local i = c - CCR
     if pwr & (1 << (i - 1)) > 0 then
       lvl[i] = (lvl[i] + 1) % (mx + 1)
     end
   end,
 
   active = function(_ENV, c)
-    return lvl[c - 6] == mx
+    return lvl[c - CCR] == mx
   end,
 }
