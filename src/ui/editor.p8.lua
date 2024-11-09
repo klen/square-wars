@@ -1,10 +1,19 @@
-Editor = Entity:create {
+Editor = Ent:create {
 
   tile = 1,
+  inv = {[7]=12, [12]=7},
+
   field = nil,
 
   init = function(_ENV)
-    dir = { -1, 1, -field.size, field.size }
+    dir = { -1, 1, -field.s, field.s }
+
+    for t in all(field.t) do
+      if t.p == 0 do
+        t.c = _ENV:color(t)
+      end
+    end
+
   end,
 
   update = function(_ENV)
@@ -13,24 +22,24 @@ Editor = Entity:create {
 
     -- move cursor
     if d then
-      tile = (tile + d - 1) % field.size ^ 2 + 1
+      tile = (tile + d - 1) % field.s ^ 2 + 1
 
     -- set tile color
     elseif btn == 4 then
-      local t = field.tiles[tile]
+      local t = field.t[tile]
       if t.p == 0 then
         t.p = 5
-        t.c = 0
+        t.c = 1
       else
         t.p = 0
-        t.c = rndcolor()
+        t.c = _ENV:color(t)
       end
 
     -- copy tile data
     elseif btn == 5 then
       local res = {}
 
-      for t in all(field.tiles) do
+      for t in all(field.t) do
         if t.p == 5 then
           add(res, t.n)
         end
@@ -40,8 +49,16 @@ Editor = Entity:create {
     end
   end,
 
+  color = function(_ENV, t)
+    local c = t.c
+    c = (t.n - 1) % 4 < 2 and 7 or 12
+    return t.n \ field.s % 4 < 2 and inv[c] or c
+  end,
+
   draw = function(_ENV)
-    draw_tile({ n = tile, c = 0 }, 20, 0)
+    field:draw_tile(tile, band(FRMS, 8) == 0 and 1 or 5)
+    print(ARENAS[field.a][1], 0, 120, 5)
+    print("tile: " .. tile, 84, 120, 5)
   end,
 }
 

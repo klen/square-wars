@@ -7,8 +7,7 @@ function debug(t, indent)
   indent = indent or " "
   for k, v in pairs(t) do
     if type(v) == "table" then
-      res = res .. indent .. k .. ":\n"
-      debug(v, indent .. " ")
+      res = res .. indent .. k .. ":\n" .. debug(v, indent .. " ")
     else
       res = res .. indent .. k .. ": " .. tostr(v) .. "\n"
     end

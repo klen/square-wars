@@ -1,32 +1,34 @@
-Power = Entity:create {
-  charge = 4,
-  powers = 0b111111,
+Power = Ent:create {
+  mx = 4,
+  plw = 0,
+  pwr = 0b111111,
 
   init = function(_ENV)
-    levels = split "0,0,0,0,0,0"
+    lvl = split "0,0,0,0,0,0"
   end,
 
   draw = function(_ENV)
-    for idx = 1, #COLORS do
-      if powers & (1 << (idx - 1)) > 0 then
-        local cy, v, cc = idx * 20, levels[idx], COLORS[idx]
-        rect(121, cy - 20, 127, cy - 2, v == charge and cc or 1)
+    for i = 1, #COLORS do
+      local px = 1 << (i - 1)
+      if pwr & px > 0 then
+        local cy, v, cc = i * 20, lvl[i], COLORS[i]
+        rect(121, cy - 20, 127, cy - 2, v == mx and cc or plw & px > 0 and 1 or 2)
 
-        for idx = 1, levels[idx] do
-          rectfill(123, cy - idx * 4 - 2, 125, cy - idx * 4, cc)
+        for i = 1, lvl[i] do
+          rectfill(123, cy - i * 4 - 2, 125, cy - i * 4, cc)
         end
       end
     end
   end,
 
   register = function(_ENV, c)
-    local idx = COLORS_IDX[c]
-    if powers & (1 << (idx - 1)) > 0 then
-      levels[idx] = (levels[idx] + 1) % (charge + 1)
+    local i = c - 6
+    if pwr & (1 << (i - 1)) > 0 then
+      lvl[i] = (lvl[i] + 1) % (mx + 1)
     end
   end,
 
-  active = function(_ENV, idx)
-    return levels[idx] == charge
+  active = function(_ENV, c)
+    return lvl[c - 6] == mx
   end,
 }

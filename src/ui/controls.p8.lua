@@ -1,95 +1,96 @@
 -- globals: colors
 --
-Controls = Entity:create {
-  scolor = COLORS[1],
-  judge = nil,
-  power = nil,
+Ctrl = Ent:create {
+  sc = 7,
+  dir = split "-1,1,1,-1",
+
+  jd = nil,
+  pwr = nil,
 
   init = function(_ENV)
-    while not judge:color_available(scolor) do
-      scolor = COLORS[(COLORS_IDX[scolor] + 1) % #COLORS + 1]
+    while not jd:cfree(sc) do
+      sc = sc % #COLORS + 7
     end
   end,
 
-  update = function(self)
-    local judge = self.judge
-    local dir, p = { -1, 1, 1, -1 }, judge:get_active()
+  update = function(_ENV)
+    local p = jd:active()
 
     if p.cpu then
-      local targets = get_targets(p, judge)
-      if #targets == 0 then
-        return self:move(judge:move_color(rndcolor(), rndcolor))
+      local tts = get_targets(p, jd)
+      if #tts == 0 then
+        return _ENV:move(jd:move_color(rndcolor(), rndcolor))
       end
 
       local bot = ai[p.cpu]
-      self:move(bot(targets, judge.field.tiles))
+      _ENV:move(bot(tts, jd.f.t))
     else
-      local btn = getbtn(judge.active - 1)
+      local btn = getbtn(jd.act - 1)
       if btn < 0 then
         return
       end
       if btn < 4 then
         local d = dir[btn + 1]
-        self.scolor = judge:move_color(self.scolor, function(c)
-          return COLORS[(COLORS_IDX[c] + d - 1) % #COLORS + 1]
+        sc = jd:move_color(sc, function(c)
+          return (c + d - 1) % #COLORS + 7
         end, p.w)
         beep()
       else
         sfx(63)
-        self:move(self.scolor)
+        _ENV:move(sc)
       end
     end
   end,
 
   draw = function(_ENV)
-    local p = judge:get_active()
+    local p = jd:active()
 
     for idx, c in ipairs(COLORS) do
       local s = idx * 8 - 8
 
-      if c == scolor then
+      if c == sc then
         rectfill(s, 120, s + 6, 126, c)
-      elseif judge:color_available(c, p.w) then
+      elseif jd:cfree(c, p.w) then
         rectfill(s + 1, 121, s + 5, 125, c)
       else
         rect(s + 1, 121, s + 5, 125, c)
       end
     end
-    local w, active = 51, judge.active
-    for p in all(judge.players) do
-      local n, c, t = p.n, p.c, tostr(#p.tiles)
+    local w, active = 51, jd.act
+    for p in all(jd.players) do
+      local n, c, t = p.n, p.c, tostr(#p.t)
       w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
     end
   end,
 
   move = function(_ENV, c)
-    local next = judge:move(c)
+    local next = jd:move(c)
 
-    if power then
-      power:register(c)
+    if pwr then
+      pwr:register(c)
     end
 
-    freezer:freeze(5 + flr(rnd(10)))
-    scolor = judge:finish_move(next)
+    frz:freeze(5 + flr(rnd(10)))
+    sc = jd:finish(next)
   end,
 }
 
-function get_targets(p, judge)
-  local targets, seen, tiles = {}, {}, judge.field.tiles
-  for tn in all(p.tiles) do
-    for fn in all(tiles[tn].hvrel) do
-      local f = tiles[fn]
-      if f.p == 0 then
+function get_targets(p, jd)
+  local r, seen, t = {}, {}, jd.f.t
+  for tn in all(p.t) do
+    for fn in all(t[tn].hvrel) do
+      local ft = t[fn]
+      if ft.p == 0 then
         if not seen[fn] then
           seen[fn] = true
-          if judge:color_available(f.c) then
-            add(targets, fn)
+          if jd:cfree(ft.c) then
+            add(r, fn)
           end
         end
       end
     end
   end
-  return targets
+  return r
 end
 
 function get_clusters(targets, tiles)
@@ -101,7 +102,7 @@ function get_clusters(targets, tiles)
       seen[cnum] = true
       local t = tiles[tn]
       for cn in all(cl) do
-        add(clusters[COLORS_IDX[t.c]], cn)
+        add(clusters[t.c - 6], cn)
       end
     end
   end
@@ -114,13 +115,13 @@ function get_clusters(targets, tiles)
 end
 
 -- random bot
-function bot1(targets, tiles)
-  return tiles[rnd(targets)].c
+function bot1(tts, t)
+  return t[rnd(tts)].c
 end
 
 -- greedy bot (selects the target with biggest cluster)
-function bot2(targets, tiles)
-  return tiles[get_clusters(targets, tiles)[1][1]].c
+function bot2(tts, t)
+  return t[get_clusters(tts, t)[1][1]].c
 end
 
 ai = { bot1, bot2 }

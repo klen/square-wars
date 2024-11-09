@@ -1,56 +1,115 @@
-function show_brief(mission)
-  music(-1)
-  frame()
+function brief(n)
+  if stat(24) <= 0 then
+    music(0, 1000)
+  end
+  pal(0)
+  cls()
+
+  local pw, md, br = dget(CART.power), MISSIONS[n], split(BRIEFS[n], "/")
+  local mw = pw | (md.pwr or pw)
+
+  if md.c then
+    return custom_brief(n, md, br)
+  end
 
   -- setup menu
   menuitem(1, "restart mission ", function()
-    show_brief(mission)
+    brief(n)
   end)
 
   -- reset campaign data
-  if mission == 1 then
-    dset(CDATA.time, 0)
-    dset(CDATA.score, 0)
-    dset(CDATA.power, 0)
+  if n == 1 then
+    pw = 0
+    dset(CART.time, 0)
+    dset(CART.score, 0)
+    dset(CART.power, 0)
+    dset(CART.mission, 0)
   end
 
-  local power, mdata = dget(CDATA.power), MISSIONS[mission]
-  power = power & (mdata.w or 0)
-
   SCENE = {
-    -- title
-    Typewriter:new {
-      txt = "mission " .. mission .. ' "' .. MISSIONS[mission].n .. '"',
-      speed = 3,
-    },
-
-    -- information
-    Typewriter:new {
-      y = 24,
-      c = 6,
-      speed = 1,
-      txt = BRIEFS[mission],
-    },
-
-    -- powers
-    power > 0
-        and Entity:new {
-          draw = function()
-            for c = 1, #COLORS do
-              if power & (1 << (c - 1)) > 0 then
-                circ(128 - (c * 5), 100, 1, COLORS[c])
-              end
-            end
-          end,
-        }
-      or nil,
-
-    -- confirm
-    Confirmation:new {
+    art(function()
+      frame()
+    end),
+    Tw:new { txt = "mission " .. n .. ' "' .. br[1] .. '"' },
+    Tw:new { y = 28, txt = join("\n", slice(br, 2)) },
+    Conf:new {
       txt = "confirm",
-      callback = function()
-        show_mission(mission)
+      cb = function()
+        md.j.num = n
+        game(md.f, md.j, mw)
       end,
     },
+  }
+
+  if pw > 0 then
+    add(
+      SCENE,
+      Ent:new {
+        draw = function()
+          for c = 1, #COLORS do
+            if pw & (1 << (c - 1)) > 0 then
+              print("◆", 121 - (c * 6), 101, COLORS[c])
+            end
+          end
+        end,
+      }
+    )
+  end
+
+  if md.o then
+    bg = SCENE
+    local cr = Crawl:new {
+      txt = OPENS[md.o],
+    }
+    local lns = split(cr.txt, "\n")
+
+    SCENE = {
+      art(cls),
+      cr,
+      Ent:new {
+        update = function()
+          if cr.y < -#lns * 8 then
+            SCENE = bg
+            cls()
+          end
+          if cr.y < 120 and getbtn() ~= -1 then
+            cr.s = 2
+          end
+        end,
+      },
+    }
+  end
+end
+
+function custom_brief(n, md, br)
+  local pwr, CNAMES = dget(CART.power), { "snow", "fire", "desert", "sun", "woods", "storm" }
+  if pwr & 63 == 63 then
+    return brief(14)
+  end
+
+  local opts = {}
+  for i = 1, 6 do
+    local c = 6 + i
+    local off = pwr & (1 << (i - 1)) > 0
+    add(opts, {
+      c = c,
+      n = CNAMES[i] .. (off and " (done)" or ""),
+      off = off,
+      cb = function()
+        brief(c + 1)
+      end,
+    })
+  end
+
+  SCENE = {
+    art(function()
+      cls()
+      frame(73)
+    end),
+
+    Tw:new { txt = br[1] },
+    Tw:new { y = 28, txt = join("\n", slice(br, 2)) },
+
+    Menu:new({ y = 82 }, opts),
   }
 end

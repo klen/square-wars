@@ -1,28 +1,28 @@
-freezer = Entity:new {
-  frames = 0,
-  entities = {},
-  callback = noop,
+frz = Ent:new {
+  fr = 0,
+  es = {},
+  cb = noop,
 
   update = function(_ENV)
-    frames -= 1
-    for e in all(entities) do
+    fr -= 1
+    for e in all(es) do
       e:update()
     end
-    if frames == 0 then
-      entities = {}
-      callback()
+    if fr == 0 then
+      es = {}
+      cb()
     end
   end,
 
   draw = function(_ENV)
-    for e in all(entities) do
+    for e in all(es) do
       e:draw()
     end
   end,
 
-  freeze = function(_ENV, fr, e, cb)
-    frames += fr
-    add(entities, e)
-    callback = cb or noop
+  freeze = function(_ENV, _fr, e, _cb)
+    fr += _fr
+    add(es, e)
+    cb = _cb or noop
   end,
 }

@@ -1,9 +1,7 @@
 function report(players, moves, seconds, num, mode)
-  local year, month, day, time = stat(90), stat(91), stat(92), seconds \ 60 .. ":" .. lzero(flr(seconds % 60))
-  local report = "report " .. mode .. num .. "/" .. year .. "-" .. month .. "-" .. day .. "\n\n\n"
-  local ckey = mode == "m" and CDATA.mscores or CDATA.ascores
+  local res = "report " .. mode .. num .. "/" .. stat(90) .. "-" .. stat(91) .. "-" .. stat(92) .. "\n\n"
+  local ckey = mode == "m" and CART.mscores or CART.ascores
   local stored, humans = dget(ckey - 1 + num), #filter(players, function(p) return not p.cpu end)
-
 
   for place, p in ipairs(players) do
     local prefix, score, smode =  p.cpu and "c" or "p", tostr(p.score), ""
@@ -13,14 +11,15 @@ function report(players, moves, seconds, num, mode)
         smode = " (" .. mode .. num .. " top)"
       end
     end
-    report ..= place .. "st " .. prefix .. p.n .. " score: " .. pspace(score, 5) .. score .. smode .. "\n"
+    res ..= place .. "st " .. prefix .. p.n .. " score: " .. pspace(score, 4) .. score .. smode .. "\n"
   end
 
   moves = tostr(moves)
-  report ..= "\n" .. (
-    "moves: " .. pspace(moves, 12) .. moves .. "\n\n" ..
-    "time:  " .. pspace(time, 12) .. time
+  local tm = seconds \ 60 .. ":" .. lzero(flr(seconds % 60))
+  res ..= (
+    "moves: " .. pspace(moves, 11) .. moves .. "\n" ..
+    "time:  " .. pspace(tm, 11) .. tm
   )
-  return function() return Typewriter:new { txt = report } end
+  return function() return Tw:new { txt = res } end
 end
 

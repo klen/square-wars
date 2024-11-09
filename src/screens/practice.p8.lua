@@ -1,6 +1,7 @@
-function show_practice()
-  local arena, human, cpu, arena_available, powers =
-    1, 1, 3, min(dget(CDATA.arena), #ARENAS), dget(CDATA.power)
+function practice()
+  local arenas = slice(ARENAS, 1, 1 + dget(CART.arena))
+
+  local arena, human, cpu, powers = 0, 1, 3, dget(CART.power)
 
   SCENE = {
     art(function()
@@ -8,52 +9,49 @@ function show_practice()
       print("practice mode", 16, 16, 7)
       print("choose preferences\n\nstart to begin.", 16, 40, 6)
     end),
+
     Menu:new(nil, {
       {
-        name = "start",
-        callback = function()
+        n = "start",
+        cb = function()
           music(-1)
-          arena = arena == 1 and flr(rnd(#ARENAS)) + 1 or arena - 1
           local tcpu = {}
           for idx = 1, cpu do
             add(tcpu, idx % 2 + 1)
           end
-          show_mission(0, arena, 20, human, tcpu, powers)
+          local a = arena == 0 and flr(rnd(#arenas)) + 1 or arena
+          game({ a = a }, { a = a, human = human, cpu = join(",", tcpu) }, dget(CART.power))
         end,
       },
-      arena_available > 0 and {
-        name = "arena: random",
-        callback = function(self, dir)
-          arena = (arena - 1 + dir) % (arena_available + 2) + 1
-          local data = ARENAS[arena - 1] or { "random" }
-          self.name = "arena: " .. data[1]
+      #arenas > 1 and {
+        n = "arena: random",
+        cb = function(self, dir)
+          arena = (arena + dir) % #arenas
+          local data = arenas[arena] or { "random" }
+          self.n = "arena: " .. data[1]
         end,
       } or nil,
       {
-        name = "human: 1",
+        n = "human: 1",
         update = function(_ENV)
-          name = "human: " .. human
+          n = "human: " .. human
         end,
-        callback = function(self, dir)
+        cb = function(self, dir)
           human = (human - 1 + dir) % 4 + 1
           cpu = min(cpu, 4 - human)
         end,
       },
       {
-        name = "cpu: 3",
+        n = "cpu: 3",
         update = function(_ENV)
-          name = "cpu: " .. cpu
+          n = "cpu: " .. cpu
         end,
-        callback = function(self, dir)
+        cb = function(self, dir)
           cpu = (cpu - 1 + dir) % 4 + 1
           human = min(human, 4 - cpu)
         end,
       },
-      {
-        name = "back",
-        c = 6,
-        callback = show_start,
-      },
+      { n = "back", c = 6, cb = start },
     }),
   }
 end

@@ -1,52 +1,55 @@
-function show_start()
-  if stat(24) <= 0 and dget(CDATA.mute) == 0 then
+function start()
+  if stat(24) <= 0 then
     music(0, 1000)
   end
-  cls(1)
+  cls()
   menuitem(1)
-  freezer:freeze(40, Fade:new { reverse = true })
 
-  local mission, place, practice, scores =
-    dget(CDATA.mission), dget(CDATA.place), dget(CDATA.practice), dget(CDATA.done)
+  frz:freeze(40, Fade:new { rev = true })
+
+  local CART = DATA.CART
+  local num, train, done = dget(CART.mission), dget(CART.practice), dget(CART.done)
 
   SCENE = {
     -- clear the scene (we don't use cls because of the fade)
-    art(function()
-      rectfill(0, 0, 127, 127, 1)
-    end),
+    -- art(function()
+    --   rectfill(0, 0, 127, 127, 1)
+    -- end),
     -- field
-    Field:new { size = 12, offset = 16 },
+    -- Fd:new { s = 12, off = 16 },
     -- the title
+    art(cls),
+    Stars:new { cols = COLORS },
     art(function()
-      rectfill(0, 48, 127, 127, 1)
-      printb("square wars", 16, 56, 7)
-      print("a game by horneds 2024\nmusic by gruber", 16, 114, 6)
+      -- rectfill(0, 48, 127, 127, 1)
+      printb(ctrl .. "x5square", 38, 26, 1)
+      printb(ctrl .. "x5square", 37, 25, 9)
+      printb(ctrl .. "x8wars", 39, 42, 1)
+      printb(ctrl .. "x8wars", 38, 41, 9)
+      print("a game by horneds 2024\nmusic by gruber", 16, 114, 9)
     end),
     -- main menu
     Menu:new(nil, {
-      mission > 1
-          and mission < #MISSIONS
-          and {
-            name = (place == 1 and "continue" or "try again") .. " (m" .. mission + 1 .. ")",
-            callback = function()
-              start(mission + 1)
-            end,
-          }
-        or nil,
+      num > 1 and num < #MISSIONS and {
+        n = "continue (m" .. num + 1 .. ")",
+        cb = function()
+          _start(num + 1)
+        end,
+      } or nil,
       {
-        name = "new campaign",
-        callback = function()
-          start(1)
+        n = "new story",
+        cb = function()
+          _start(1)
         end,
       },
-      scores > 0 and { name = "scores", callback = show_scores } or nil,
-      practice > 0 and { name = "practice", callback = show_practice } or nil,
+      done > 0 and { n = "scores", cb = scores } or nil,
+      train > 0 and { n = "practice", cb = practice } or nil,
     }),
   }
 end
 
-function start(mission)
-  freezer:freeze(40, Fade:new {}, function()
-    show_brief(mission)
+function _start(num)
+  frz:freeze(40, Fade:new {}, function()
+    brief(num)
   end)
 end

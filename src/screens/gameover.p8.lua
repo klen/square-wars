@@ -1,113 +1,102 @@
-function show_gameover()
+function gameover()
   frame()
-  dset(CDATA.done, 1)
+  dset(CART.done, 1)
 
-  local start, ctime = time(), dget(CDATA.time)
-  local minutes, seconds = ctime \ 60, flr(ctime % 60)
-  local scores, stats, credits
+  local ts, tc = time(), dget(CART.time)
+  local min, sec = tc \ 60, flr(tc % 60)
 
   SCENE = {
-    Typewriter:new {
+    Tw:new {
       txt = "you have mastered the field",
     },
-    Typewriter:new {
+    Tw:new {
       txt = "the secrets of the board\n\nare now yours to command.",
       y = 32,
       c = 6,
     },
-    Typewriter:new {
+    Tw:new {
       txt = "but remember,\n\nnew challengers prepare, and",
       y = 56,
       c = 6,
     },
-    Typewriter:new {
+    Tw:new {
       txt = "the field awaits.",
       y = 84,
       c = 12,
     },
-    Entity:new {
+    Ent:new {
       update = function(self)
-        if dget(CDATA.mute) == 0 and time() - start > 0.1 then
+        if dget(CART.mute) == 0 and time() - ts > 0.1 then
           music(6, 1000)
           self.update = noop
         end
       end,
     },
-    Confirmation:new {
+    Conf:new {
       txt = "view scores",
-      callback = function()
+      cb = function()
         pal(0)
-        SCENE = scores
-      end,
-    },
-  }
-
-  -- scores
-  scores = {
-    Typewriter:new {
-      txt = "you have done " .. #MISSIONS .. " missions",
-    },
-    Typewriter:new {
-      txt = "total score: " .. dget(CDATA.score),
-      y = 32,
-      c = 6,
-    },
-    Typewriter:new {
-      txt = "total time: " .. minutes .. ":" .. lzero(seconds, 10),
-      y = 46,
-      c = 6,
-    },
-    Confirmation:new {
-      txt = "view stats",
-      callback = function()
-        pal(0)
-        SCENE = stats
-      end,
-    },
-  }
-
-  -- stats
-  stats = mission_scores(slice(MISSIONS, 2, 11), 1)
-  add(stats, Confirmation:new {
-      txt = "next",
-      callback = function(self)
-        pal(0)
-        SCENE = mission_scores(slice(MISSIONS, 2, 11), 11)
-
-        add(SCENE, Confirmation:new {
-            txt = "view credits",
-            callback = function()
+        SCENE = {
+          Tw:new {
+            txt = "you have done " .. #MISSIONS .. " missions",
+          },
+          Tw:new {
+            txt = "total score: " .. dget(CART.score),
+            y = 32,
+            c = 6,
+          },
+          Tw:new {
+            txt = "total time: " .. min .. ":" .. lzero(sec, 10),
+            y = 46,
+            c = 6,
+          },
+          Conf:new {
+            txt = "view stats",
+            cb = function()
               pal(0)
-              SCENE = credits
+              SCENE = mission_scores(slice(MISSIONS, 2, 11), 1)
+              add(SCENE, Conf:new {
+                  txt = "next",
+                  cb = function()
+                    pal(0)
+                    SCENE = mission_scores(slice(MISSIONS, 12), 11)
+                    add(SCENE, Conf:new {
+                        txt = "view credits",
+                        cb = function()
+                          pal(0)
+                          SCENE = {
+                            Tw:new {
+                              txt = "square wars",
+                            },
+                            Tw:new {
+                              txt = "a game by horneds 2024",
+                              y = 32,
+                            },
+                            Tw:new {
+                              txt = "music composed by gruber",
+                              y = 48,
+                            },
+                            Tw:new {
+                              txt = "thanks for playing!",
+                              y = 86,
+                              c = 12,
+                            },
+                            Conf:new {
+                              txt = "main menu",
+                              cb = function()
+                                pal(0)
+                                music(-1)
+                                start()
+                              end,
+                            },
+                          }
+                        end,
+                    })
+                  end,
+              })
             end,
-        })
-      end,
-  })
-
-  -- credits
-  credits = {
-    Typewriter:new {
-      txt = "square wars",
-    },
-    Typewriter:new {
-      txt = "a game by horneds 2024",
-      y = 32,
-    },
-    Typewriter:new {
-      txt = "music composed by gruber",
-      y = 48,
-    },
-    Typewriter:new {
-      txt = "thanks for playing!",
-      y = 86,
-      c = 12,
-    },
-    Confirmation:new {
-      txt = "main menu",
-      callback = function()
-        pal(0)
-        music(-1)
-        show_start()
+          },
+        }
       end,
     },
   }

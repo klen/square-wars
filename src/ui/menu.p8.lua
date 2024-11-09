@@ -1,22 +1,23 @@
-Menu = Entity:create {
-  offset = 76,
-  selected = 1,
+Menu = Ent:create {
+  y = 76,
+  sel = 1,
   dir = { -1, 1, -1, 1, 1, 1 },
 
-  init = function(_ENV, opts)
-    options = {}
-    foreach(opts, function(props)
-      props.idx = #options
-      props.offset = offset
-      add(options, Option:new(props))
+  init = function(_ENV, items)
+    opts = {}
+    foreach(items, function(t)
+      t.idx = #opts
+      t.y = y
+      add(opts, Opt:new(t))
     end)
-    if #options > 0 then
-      options[selected].selected = true
+    if #opts > 0 then
+      sel = #opts
+      _ENV:move(1)
     end
   end,
 
   update = function(_ENV)
-    local opt, btn = options[selected], getbtn()
+    local opt, btn = opts[sel], getbtn()
     local d = dir[btn + 1]
 
     if btn == -1 then
@@ -26,40 +27,43 @@ Menu = Entity:create {
     beep()
 
     if btn == 2 or btn == 3 then
-      opt.selected = false
-      repeat
-        selected = (selected - 1 + d) % #options + 1
-      until options[selected].disabled ~= true
-      options[selected].selected = true
+      _ENV:move(d)
     else
-      opt:callback(d)
+      opt:cb(d, btn)
     end
 
-    foreach(options, function(opt)
+    foreach(opts, function(opt)
       opt:update()
     end)
   end,
 
+  move = function(_ENV, d)
+    opts[sel].sel = false
+    repeat
+      sel = (sel - 1 + d) % #opts + 1
+    until opts[sel].off ~= true
+    opts[sel].sel = true
+  end,
+
   draw = function(_ENV)
-    foreach(options, function(opt)
+    foreach(opts, function(opt)
       opt:draw()
     end)
   end,
 }
 
-Option = Entity:create {
-  c = 7,
+Opt = Ent:create {
+  c = 12,
+  y = 76,
+  n = "",
   idx = 0,
-  name = "",
-  offset = 76,
-  selected = false,
-  callback = function() end,
+  cb = noop,
+  sel = false,
   draw = function(_ENV)
-    print(
-      (selected and "❎ " or "") .. name,
-      selected and 4 or 16,
-      offset + 8 * idx,
-      selected and band(FRAMES, 8) == 0 and (c - 1) or c
-    )
+    if sel then
+      print("❎", 4, y + 8 * idx, band(FRMS, 8) == 0 and 1 or c)
+    end
+    print(n, 17, y + 1 + 8 * idx, 0)
+    print(n, 16, y + 8 * idx, off and 1 or c)
   end,
 }

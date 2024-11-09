@@ -2,7 +2,7 @@ function rndcolor()
   return rnd(COLORS)
 end
 
-Tile = Entity:create {
+Tile = Ent:create {
   n = 0,
   p = 0,
 

@@ -1,29 +1,26 @@
-function show_scores()
+function scores()
   cls(1)
 
-  local scene1, scene2, scene3, scene4 =
+  local s1, s2, s3 =
     mission_scores(slice(MISSIONS, 2, 11), 1),
-    mission_scores(slice(MISSIONS, 12, #MISSIONS), 11),
-    practice_scores(slice(ARENAS, 1, 10), 0),
-    practice_scores(slice(ARENAS, 11, #ARENAS), 10)
+    mission_scores(slice(MISSIONS, 12), 11),
+    practice_scores(slice(ARENAS, 1, 10), 0)
 
-  SCENE = scene1
-  local confirm = Confirmation:new { txt = "next" }
-  confirm.callback = function()
-    if SCENE == scene1 then
-      SCENE = scene2
-    elseif SCENE == scene2 then
-      SCENE = scene3
-    elseif SCENE == scene3 then
-      SCENE = scene4
-      confirm.txt = "main menu"
-    elseif SCENE == scene4 then
-      return show_start()
+  SCENE = s3
+  local conf = Conf:new { txt = "next" }
+  conf.cb = function()
+    if SCENE == s3 then
+      SCENE = s1
+    elseif SCENE == s1 then
+      SCENE = s2
+      conf.txt = "main menu"
+    elseif SCENE == s2 then
+      return start()
     end
-    add(SCENE, confirm)
+    add(SCENE, conf)
     pal(0)
     cls(1)
   end
 
-  add(SCENE, confirm)
+  add(SCENE, conf)
 end

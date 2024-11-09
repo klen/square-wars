@@ -1,9 +1,8 @@
-Fade = Entity:create {
-  past = 0,
-  size = 29,
-  frames = 30,
-  reverse = false,
-  fadetable = {
+Fade = Ent:create {
+  x = 0,
+  fr = 30,
+  rev = false,
+  ft = {
     split "1,1,1,1,1,129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,0,0,0,0,0,0,0,0,0",
     split "2,2,2,2,2,2,130,130,130,130,130,130,130,130,130,130,128,128,128,128,128,128,128,128,0,0,0,0,0",
     split "3,3,3,3,3,3,3,131,131,131,131,131,131,129,129,129,129,129,129,129,129,129,0,0,0,0,0,0,0",
@@ -22,22 +21,23 @@ Fade = Entity:create {
   },
 
   init = function(_ENV)
-    past = 0
-    speed = size / frames
+    x = 0
+    d = 29 / fr
+    _ENV:draw()
   end,
 
   update = function(_ENV)
-    past += speed
-    if past > size then
-      _ENV.draw = noop
-      _ENV.update = noop
+    x += d
+    if x > 29 then
+      draw = noop
+      update = noop
     end
   end,
 
   draw = function(_ENV)
-    local idx = flr(past) + 1
-    for f in all(fadetable) do
-      pal(f[1], f[not reverse and idx or (size - idx + 1)])
+    local i = flr(x) + 1
+    for f in all(ft) do
+      pal(f[1], f[not rev and i or (30 - i)])
     end
   end,
 }

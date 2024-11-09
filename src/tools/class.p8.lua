@@ -1,6 +1,6 @@
 noop = function() end
 
-Class = setmetatable({
+Cls = setmetatable({
   create = function(self, tbl, ...)
     return setmetatable(tbl or {}, { __index = self })
   end,
@@ -12,8 +12,8 @@ Class = setmetatable({
   init = noop,
 }, { __index = _ENV })
 
-Entity = Class:create { update = noop, draw = noop }
+Ent = Cls:create { update = noop, draw = noop }
 
-function art(draw)
-  return Entity:new { draw = draw }
+function art(fn)
+  return Ent:new { draw = fn }
 end

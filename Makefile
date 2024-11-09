@@ -13,3 +13,7 @@ sync: build
 
 clean_data:
 	rm -f ../../cdata/horneds-sw*
+
+gamedata:
+	cd $(CURDIR)/data && lua table-string.lua > $(CURDIR)/src/data.p8.lua
+	$(PICO8) -run $(CURDIR)/data.p8

@@ -1,14 +1,14 @@
-function update()
-  if freezer.frames > 0 then
-    freezer:update()
+function _update60()
+  if frz.fr > 0 then
+    frz:update()
   else
     foreach(SCENE, function(e)
       e:update()
     end)
   end
 
-  FRAMES += 1
+  FRMS += 1
 end
 
 SCENE = {}
-FRAMES = 0
+FRMS = 0

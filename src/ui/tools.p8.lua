@@ -15,28 +15,41 @@ end
 
 function pspace(txt, w)
   local res = ""
-  for i = #txt, w - 1 do
+  for _ = #txt, w - 1 do
     res = " " .. res
   end
   return res
 end
 
-function frame()
-  cls()
+function frame(h)
   pal(0)
-  rect(2, 2, 126, 104, 7)
+  h = h or 104
+  rect(0, 0, 127, h + 4, 10)
+
+  for t in all({{0, 0}, {123, 0}, {0, h}, {123, h}}) do
+    local x, y = t[1], t[2]
+    clip(x, y, x + 4, y + 4)
+    rectfill(0, 0, 127, 127, 0)
+    circ(x == 0 and 4 or 123, y == 0 and 4 or h, 4, 10)
+  end
+
+  clip()
+  line(4, 2, 4, h + 2, 8)
+  line(123, 2, 123, h + 2, 8)
 end
 
-Confirmation = Entity:create {
+Conf = Ent:create {
   y = 112,
+  cb = nil,
   txt = "confirm",
   update = function(_ENV)
     local btn = getbtn()
     if btn == 4 or btn == 5 then
-      freezer:freeze(40, Fade:new {}, callback )
+      frz:freeze(40, Fade:new {}, cb )
     end
   end,
   draw = function(_ENV)
-    print("❎ " .. txt, 8, y, band(FRAMES, 8) == 0 and 6 or 7)
+    print("❎", 4, y, band(FRMS, 8) == 0 and 1 or 12)
+    print(txt, 16, y, 12)
   end,
 }

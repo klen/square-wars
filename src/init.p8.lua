@@ -1,10 +1,11 @@
-cartdata "horneds-sw-1"
+cartdata "horneds-sw-2"
 
-function init()
+function _init()
   init_palette(function()
-    return dget(CDATA.palette) == 1
+    return dget(CART.palette) == 1
   end, function(alt)
-    dset(CDATA.palette, alt and 1 or 0)
+    dset(CART.palette, alt and 1 or 0)
   end)
-  show_start()
+  splash()
+  -- brief(1)
 end

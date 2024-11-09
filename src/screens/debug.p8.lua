@@ -1,48 +1,49 @@
 function show_debug()
   cls()
   music(-1)
-  local mode, mission = 1, dget(CDATA.mission)
+
+  local mode, mission = 1, dget(CART.mission)
   local toggle, sep =
     {
-      name = "toggle mode: 1",
-      callback = function(self, dir)
+      n = "toggle mode: 1",
+      cb = function(self, dir)
         mode = (mode - 1 + dir) % 5 + 1
-        self.name = "toggle mode: " .. mode
+        self.n = "toggle mode: " .. mode
       end,
     }, {
-      name = "----------------",
-      disabled = true,
+      n = "----------------",
+      off = true,
       c = 1,
     }
 
-  local ms = Menu:new({ offset = 0 }, {
+  local ms = Menu:new({ y = 0 }, {
     toggle,
     sep,
     {
-      name = "screen - start",
-      callback = show_start,
+      n = "screen - start",
+      cb = start,
     },
     {
-      name = "screen - brief " .. mission + 1,
-      callback = function()
-        local mission = dget(CDATA.mission)
-        show_brief(mission + 1)
+      n = "screen - brief " .. mission + 1,
+      cb = function()
+        local mission = dget(CART.mission)
+        brief(mission + 1)
       end,
     },
     {
-      name = "screen - mission " .. mission,
-      callback = function()
-        local mission = dget(CDATA.mission)
+      n = "screen - mission " .. mission,
+      cb = function()
+        local mission = dget(CART.mission)
         if mission == 0 then
-          show_mission(0, 2, 6, 20)
+          mission(0, 2, 6, 20)
         end
-        show_mission(mission)
+        mission(mission)
       end,
     },
     {
-      name = "screen - results " .. mission,
-      callback = function()
-        local mission, players = dget(CDATA.mission), {}
+      n = "screen - results " .. mission,
+      cb = function()
+        local mission, players = dget(CART.mission), {}
         for idx = 1, 2 + flr(rnd(3)) do
           add(players, {
             n = idx,
@@ -53,7 +54,7 @@ function show_debug()
             return a.score > b.score
           end)
         end
-        show_results(
+        results(
           players,
           flr(rnd(100)),
           flr(rnd(100)),
@@ -63,90 +64,74 @@ function show_debug()
       end,
     },
     {
-      name = "screen - gameover",
-      callback = show_gameover,
+      n = "screen - gameover",
+      cb = gameover,
     },
     {
-      name = "screen - practice",
-      callback = show_practice,
+      n = "screen - practice",
+      cb = practice,
     },
     {
-      name = "screen - scores",
-      callback = show_scores,
+      n = "screen - scores",
+      cb = scores,
     },
   })
 
-  local mc = Menu:new({
-    offset = 0,
-  }, {
+  local mc = Menu:new({ y = 0 }, {
     toggle,
     sep,
     {
-      name = "campaign - mission done: " .. dget(CDATA.mission),
-      callback = function(self, dir)
-        dset(CDATA.mission, (dget(CDATA.mission) - 1 + dir) % #MISSIONS + 1)
-        self.name = "campaign - mission done: " .. dget(CDATA.mission)
-        ms.options[4].name = "screen - brief " .. dget(CDATA.mission) + 1
-        ms.options[5].name = "screen - mission " .. dget(CDATA.mission)
-        ms.options[6].name = "screen - results " .. dget(CDATA.mission)
+      n = "campaign - mission done: " .. dget(CART.mission),
+      cb = function(self, dir)
+        dset(CART.mission, (dget(CART.mission) - 1 + dir) % #MISSIONS + 1)
+        self.n = "campaign - mission done: " .. dget(CART.mission)
+        ms.opts[4].n = "screen - brief " .. dget(CART.mission) + 1
+        ms.opts[5].n = "screen - mission " .. dget(CART.mission)
+        ms.opts[6].n = "screen - results " .. dget(CART.mission)
       end,
     },
     {
-      name = "campaign - place: " .. dget(CDATA.place),
-      callback = function(self, dir)
-        dset(CDATA.place, (dget(CDATA.place) - 1 + dir) % 4 + 1)
-        self.name = "campaign - place: " .. dget(CDATA.place)
+      n = "campaign - score: " .. dget(CART.score),
+      cb = function(self, dir)
+        dset(CART.score, dget(CART.score) + dir)
+        self.n = "campaign - score: " .. dget(CART.score)
       end,
     },
     {
-      name = "campaign - score: " .. dget(CDATA.score),
-      callback = function(self, dir)
-        dset(CDATA.score, dget(CDATA.score) + dir)
-        self.name = "campaign - score: " .. dget(CDATA.score)
+      n = "campaign - time: " .. dget(CART.time),
+      cb = function(self, dir)
+        dset(CART.time, dget(CART.time) + dir)
+        self.n = "campaign - time: " .. dget(CART.time)
       end,
     },
     {
-      name = "campaign - time: " .. dget(CDATA.time),
-      callback = function(self, dir)
-        dset(CDATA.time, dget(CDATA.time) + dir)
-        self.name = "campaign - time: " .. dget(CDATA.time)
-      end,
-    },
-    {
-      name = "campaign - done: " .. dget(CDATA.done),
-      callback = function(self, dir)
-        dset(CDATA.done, (dget(CDATA.done) + dir) % 2)
-        self.name = "campaign - done: " .. dget(CDATA.done)
+      n = "campaign - done: " .. dget(CART.done),
+      cb = function(self, dir)
+        dset(CART.done, (dget(CART.done) + dir) % 2)
+        self.n = "campaign - done: " .. dget(CART.done)
       end,
     },
     sep,
     {
-      name = "option - palette: " .. dget(CDATA.palette),
-      callback = function(self, dir)
-        dset(CDATA.palette, (dget(CDATA.palette) + dir) % 2)
-        self.name = "option - palette: " .. dget(CDATA.palette)
-      end,
-    },
-    {
-      name = "option - mute: " .. dget(CDATA.mute),
-      callback = function(self, dir)
-        dset(CDATA.mute, (dget(CDATA.mute) + dir) % 2)
-        self.name = "option - mute: " .. dget(CDATA.mute)
+      n = "option - palette: " .. dget(CART.palette),
+      cb = function(self, dir)
+        dset(CART.palette, (dget(CART.palette) + dir) % 2)
+        self.n = "option - palette: " .. dget(CART.palette)
       end,
     },
     sep,
     {
-      name = "unlock - arena: " .. dget(CDATA.arena),
-      callback = function(self, dir)
-        dset(CDATA.arena, (dget(CDATA.arena) - 1 + dir) % #ARENAS + 1)
-        self.name = "unlock - arena: " .. dget(CDATA.arena)
+      n = "unlock - arena: " .. dget(CART.arena),
+      cb = function(self, dir)
+        dset(CART.arena, (dget(CART.arena) - 1 + dir) % #ARENAS + 1)
+        self.n = "unlock - arena: " .. dget(CART.arena)
       end,
     },
     {
-      name = "unlock - practice: " .. dget(CDATA.practice),
-      callback = function(self, dir)
-        dset(CDATA.practice, (dget(CDATA.practice) + dir) % 2)
-        self.name = "unlock - practice: " .. dget(CDATA.practice)
+      n = "unlock - practice: " .. dget(CART.practice),
+      cb = function(self, dir)
+        dset(CART.practice, (dget(CART.practice) + dir) % 2)
+        self.n = "unlock - practice: " .. dget(CART.practice)
       end,
     },
   })
@@ -154,77 +139,77 @@ function show_debug()
   local mmopts = { toggle, sep }
   for idx = 1, #MISSIONS do
     add(mmopts, {
-      name = "score - m" .. idx .. ": " .. dget(CDATA.mscores + idx - 1),
-      callback = function(self, dir)
-        dset(CDATA.mscores + idx - 1, dget(CDATA.mscores + idx - 1) + dir)
-        self.name = "score - m" .. idx .. ": " .. dget(CDATA.mscores + idx - 1)
+      n = "score - m" .. idx .. ": " .. dget(CART.mscores + idx - 1),
+      cb = function(self, dir)
+        dset(CART.mscores + idx - 1, dget(CART.mscores + idx - 1) + dir)
+        self.n = "score - m" .. idx .. ": " .. dget(CART.mscores + idx - 1)
       end,
     })
   end
-  local mm = Menu:new({ offset = 0 }, mmopts)
+  local mm = Menu:new({ y = 0 }, mmopts)
 
   local maopts = { toggle, sep }
   for idx = 1, #ARENAS do
     add(maopts, {
-      name = "score - a" .. idx .. ": " .. dget(CDATA.ascores + idx - 1),
-      callback = function(self, dir)
-        dset(CDATA.ascores + idx - 1, dget(CDATA.ascores + idx - 1) + dir)
-        self.name = "score - a" .. idx .. ": " .. dget(CDATA.ascores + idx - 1)
+      n = "score - a" .. idx .. ": " .. dget(CART.ascores + idx - 1),
+      cb = function(self, dir)
+        dset(CART.ascores + idx - 1, dget(CART.ascores + idx - 1) + dir)
+        self.n = "score - a" .. idx .. ": " .. dget(CART.ascores + idx - 1)
       end,
     })
   end
-  local ma = Menu:new({ offset = 0 }, maopts)
+  local ma = Menu:new({ y = 0 }, maopts)
 
-  local power = dget(CDATA.power)
-  local mp = Menu:new({ offset = 0 }, {
+  local power = dget(CART.power)
+  local mp = Menu:new({ y = 0 }, {
     toggle,
     sep,
     {
-      name = "power - snow: " .. (power & 1),
-      callback = function(self, dir)
+      n = "power - snow: " .. (power & 1),
+      cb = function(self, dir)
         power = invert(power, 1)
-        dset(CDATA.power, power)
-        self.name = "power - snow: " .. (power & 1)
+        dset(CART.power, power)
+        self.n = "power - snow: " .. (power & 1)
       end,
     },
     {
-      name = "power - fire: " .. (power & 2),
-      callback = function(self, dir)
+      n = "power - fire: " .. (power & 2),
+      cb = function(self, dir)
         power = invert(power, 2)
-        dset(CDATA.power, power)
-        self.name = "power - fire: " .. (power & 2)
+        dset(CART.power, power)
+        self.n = "power - fire: " .. (power & 2)
       end,
     },
     {
-      name = "power - desert: " .. (power & 4),
-      callback = function(self, dir)
+      n = "power - desert: " .. (power & 4),
+      cb = function(self, dir)
         power = invert(power, 4)
-        dset(CDATA.power, power)
-        self.name = "power - desert: " .. (power & 4)
+        dset(CART.power, power)
+        self.n = "power - desert: " .. (power & 4)
       end,
     },
     {
-      name = "power - sun: " .. (power & 8),
-      callback = function(self, dir)
+      n = "power - sun: " .. (power & 8),
+      cb = function(self, dir)
         power = invert(power, 8)
-        dset(CDATA.power, power)
-        self.name = "power - sun: " .. (power & 8)
+        dset(CART.power, power)
+        self.n = "power - sun: " .. (power & 8)
       end,
     },
     {
-      name = "power - woods: " .. (power & 16),
-      callback = function(self, dir)
+      n = "power - woods: " .. (power & 16),
+      cb = function(self, dir)
         power = invert(power, 16)
-        dset(CDATA.power, power)
-        self.name = "power - woods: " .. (power & 16)
+        dset(CART.power, power)
+        self.n = "power - woods: " .. (power & 16)
       end,
     },
     {
-      name = "power - storm: " .. (power & 32),
-      callback = function(self, dir)
+      n = "power - storm: " .. (power & 32),
+      cb = function(self, dir)
         power = invert(power, 32)
-        dset(CDATA.power, power)
-        self.name = "power - storm: " .. (power & 32)
+        dset(CART.power, power)
+        self.n = "power - storm: " .. (power & 32)
       end,
     },
   })
@@ -233,7 +218,7 @@ function show_debug()
 
   SCENE = {
     art(cls),
-    Entity:new {
+    Ent:new {
       update = function()
         local m = menus[mode]
         m:update()

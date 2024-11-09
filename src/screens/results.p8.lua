@@ -1,44 +1,33 @@
-function show_results(players, moves, seconds, num, mode)
+function results(players, moves, seconds, num, mode)
   frame()
 
   local r = report(#players > 1 and players or {}, moves, seconds, num, mode)
 
   -- practice mode
   if mode == "m" then
-    local place = find(players, function(p)
-      return not p.cpu
-    end)
+    local win = players[1]
+    dset(CART.time, dget(CART.time) + seconds)
 
-    -- mission lost (update campaign stats)
-    dset(CDATA.place, place)
-    dset(CDATA.time, dget(CDATA.time) + seconds)
-
-    if place ~= 1 then
+    if win.cpu then
       SCENE = {
         r(),
-        Typewriter:new { txt = "status: disqualified", c = 8, y = 95 },
-        Confirmation:new { txt = "main menu", callback = show_start },
+        Tw:new { txt = "status: disqualified", c = 8, y = 95 },
+        Conf:new { txt = "main menu", cb = start },
       }
-    -- mission won
     else
-      -- update mission data
-      dset(CDATA.mission, num)
-      dset(CDATA.score, dget(CDATA.score) + players[place].score)
-
       local mdata = MISSIONS[num]
-      local unlock, unlock_value = mdata.u, mdata.uv
-      if unlock then
-        dset(CDATA[unlock], unlock_value and unlock_value or (dget(CDATA[unlock]) + 1))
-      end
+      local done = mdata.r or num
+      dset(CART.mission, done)
+      dset(CART.score, dget(CART.score) + win.score)
 
       SCENE = {
         r(),
-        Typewriter:new { txt = "status: mission complete", c = 12, y = 95 },
-        mdata.un and Typewriter:new { txt = "unlocked: " .. mdata.un, c = 6, y = 82 } or nil,
-        Confirmation:new {
+        Tw:new { txt = "status: mission complete", c = 12, y = 95 },
+        unlock(MISSIONS[num]),
+        Conf:new {
           txt = "confirm",
-          callback = num == #MISSIONS and show_gameover or function()
-            show_brief(num + 1)
+          cb = num == #MISSIONS and gameover or function()
+            brief(done + 1)
           end,
         },
       }
@@ -46,7 +35,7 @@ function show_results(players, moves, seconds, num, mode)
   else
     SCENE = {
       r(),
-      Confirmation:new { txt = "main menu", callback = show_start },
+      Conf:new { txt = "main menu", cb = start },
     }
   end
 end

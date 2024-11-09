@@ -1,140 +1,76 @@
-Judge = Entity:create {
-  active = 1,
+Judge = Ent:create {
+  act = 1,
   moves = 0,
 
-  plc = 1,
-  arena = 0,
-  mission = 0,
+  a = 0,
+  num = 0,
   human = 1,
-  bots = nil,
-  powers = 63,
+  plc = nil,
 
-  -- @param power Power
-  power = nil,
-  -- @param field Field
-  field = nil,
-
-  positions = function(size, plc)
-    if plc == 2 then
-      return { { 1, size * size - size + 1 }, { size, size * size } }
-    elseif plc == 3 then
-      return { { 169 }, { 172 }, { 229 }, { 232 } }
-    elseif plc == 4 then
-      return { { 85 }, { 96 }, { 305 }, { 316 } }
-    end
-    return { { 1 }, { size * size }, { size }, { size * size - size + 1 } }
-  end,
+  -- @param pwr Power
+  pwr = nil,
+  -- @param f Field
+  f = nil,
 
   init = function(_ENV)
     moves, start = 0, time()
-    local size, tiles = field.size, field.tiles
+    local t = f.t
 
     players = {}
 
     local init_player = function(pn, cpu, w)
       add(players, {
         n = pn,
+        w = w,
+        t = {},
+        cpu = cpu,
         skip = 0,
         score = 0,
-        w = w,
-        cpu = cpu,
-        tiles = {},
         c = _ENV:move_color(rndcolor(), rndcolor),
       })
     end
 
     -- init players
     for pn = 1, human do
-      init_player(pn, false, powers)
+      init_player(pn, false, dget(CART.power))
     end
 
-    for b in all(bots) do
-      init_player(#players + 1, b, 63)
+    -- init bots
+    if cpu then
+      for b in all(split(cpu)) do
+        init_player(#players + 1, b, 63)
+      end
     end
 
     -- placement
     for p in all(players) do
-      local pos = _ENV.positions(size, _ENV.plc)
+      local pos = positions(f.s, plc)
       for n in all(pos[p.n]) do
-        local t = tiles[n]
-        for nn in all(t.hvrel) do
-          local nt = tiles[nn]
+        local tt = t[n]
+        for nn in all(tt.hvrel) do
+          local nt = t[nn]
           while nt.c == p.c do
             nt.c = rndcolor()
           end
         end
-        t.c = p.c
-        t.p = p.n
-        add(p.tiles, n)
+        tt.p = p.n
+        add(p.t, n)
+      end
+      for tt in all(p.t) do
+        t[tt].c = p.c
       end
     end
   end,
 
-  next_move = function(_ENV, next)
-    if next then
-      repeat
-        active = (active % #players) + 1
-      until players[active].skip < 8
-    end
-
-    local p = players[active]
-    return _ENV:move_color(p.c, function(c)
-      local idx = COLORS_IDX[c] or 1
-      return COLORS[idx % #COLORS + 1]
-    end, p.w)
-  end,
-
-  finish_move = function(_ENV, next)
-    local active_players = #filter(players, function(p)
-      return p.skip < 8
-    end)
-    if active_players > 0 then
-      for t in all(field.tiles) do
-        if t.p == 0 then
-          return _ENV:next_move(next)
-        end
-      end
-    end
-
-    -- sort places
-    local res = sort(players, function(a, b)
-      return #a.tiles > #b.tiles
-    end)
-
-    -- calculate scores
-    for pn, p in ipairs(res) do
-      p.score = min(field.size * (#res - pn + 1), #p.tiles)
-      for sn = pn + 1, #res do
-        local sp = res[sn]
-        p.score += #p.tiles - #sp.tiles
-      end
-    end
-
-    sfx(res[1].cpu and 60 or 61)
-
-    freezer:freeze(80, Fade:new { frames = 60 }, function()
-      if mission ~= 0 then
-        dset(CDATA.place, place)
-      end
-      show_results(
-        res,
-        moves,
-        time() - start,
-        mission == 0 and arena or mission, -- mission or arena number
-        mission == 0 and "a" or "m" -- mode
-      )
-    end)
-  end,
-
-  color_available = function(_ENV, c, w)
+  cfree = function(_ENV, c, w)
     for p in all(players) do
       if p.c == c then
         return false
       end
     end
-    local idx = COLORS_IDX[c]
-    if w and power and power:active(idx) then
-      return 2 ^ (idx - 1) & w > 0
+    local idx = c - 6
+    if w and pwr and pwr:active(c) then
+      return w & (1 << (c - 7)) > 0
     end
     return true
   end,
@@ -142,17 +78,17 @@ Judge = Entity:create {
   move_color = function(self, c, fn, w)
     repeat
       c = fn(c)
-    until self:color_available(c, w)
+    until self:cfree(c, w)
     return c
   end,
 
-  get_active = function(_ENV)
-    return players[active]
+  active = function(_ENV)
+    return players[act]
   end,
 
   move = function(_ENV, c)
-    local p = players[active]
-    local tiles, ptiles, pwr = field.tiles, p.tiles, power and power:active(COLORS_IDX[c])
+    local p = players[act]
+    local tiles, ptiles, pwr = f.t, p.t, pwr and pwr:active(c)
     local grab = #ptiles
 
     p.c = c
@@ -165,7 +101,7 @@ Judge = Entity:create {
       for nn in all(t.hvrel) do
         local n = tiles[nn]
         if n.p == 0 and n.c == c then
-          n.p = active
+          n.p = act
           add(ptiles, nn)
         end
       end
@@ -174,7 +110,7 @@ Judge = Entity:create {
         for nn in all(t.diag) do
           local n = tiles[nn]
           if n.c == c and n.p == 0 then
-            n.p = active
+            n.p = act
             add(ptiles, nn)
           end
         end
@@ -201,4 +137,66 @@ Judge = Entity:create {
     end
     return true
   end,
+
+  next_move = function(_ENV, next)
+    if next then
+      repeat
+        act = (act % #players) + 1
+      until players[act].skip < 8
+    end
+
+    local p = players[act]
+
+    return _ENV:move_color(p.c, function(c)
+      return COLORS[c % #COLORS + 1]
+    end, p.w)
+  end,
+
+  finish = function(_ENV, next)
+    local active_players = #filter(players, function(p)
+      return p.skip < 8
+    end)
+    if active_players > 0 then
+      f:move()
+      for t in all(f.t) do
+        if t.p == 0 then
+          return _ENV:next_move(next)
+        end
+      end
+    end
+
+    -- sort players
+    local res = sort(players, function(a, b)
+      return #a.t > #b.t
+    end)
+
+    -- calculate scores
+    for pn, p in ipairs(res) do
+      p.score = min(f.s * (#res - pn + 1), #p.t)
+      for sn = pn + 1, #res do
+        local sp = res[sn]
+        p.score += #p.t - #sp.t
+      end
+    end
+
+    -- play finish sound
+    printh(res[1].cpu and 60 or 61)
+    sfx(res[1].cpu and 60 or 61)
+
+    frz:freeze(40, Fade:new {}, function()
+      results(res, moves, time() - start, num == 0 and a or num, num == 0 and "a" or "m")
+    end)
+  end,
 }
+
+function positions(s, plc)
+  if not plc then
+    return { { 1 }, { s * s }, { s }, { s * s - s + 1 } }
+  end
+
+  for k, v in pairs(plc) do
+    plc[k] = split(v)
+  end
+
+  return plc
+end
