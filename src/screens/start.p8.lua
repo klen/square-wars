@@ -11,13 +11,6 @@ function start()
   local num, train, done = dget(CART.mission), dget(CART.practice), dget(CART.done)
 
   SCENE = {
-    -- clear the scene (we don't use cls because of the fade)
-    -- art(function()
-    --   rectfill(0, 0, 127, 127, 1)
-    -- end),
-    -- field
-    -- Fd:new { s = 12, off = 16 },
-    -- the title
     art(cls),
     Stars:new { cols = COLORS },
     art(function()

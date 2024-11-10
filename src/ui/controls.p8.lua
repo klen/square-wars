@@ -69,7 +69,7 @@ Ctrl = Ent:create {
       pwr:register(c)
     end
 
-    frz:freeze(5 + flr(rnd(10)))
+    frz:freeze(rint(10, 5))
     sc = jd:finish(next)
   end,
 }

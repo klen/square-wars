@@ -47,7 +47,7 @@ inv = "\^i"
 ctrl = "\^"
 
 function printb(t, x, y, c)
-	print("\^w\^t" .. t, x, y, c)
+	return print("\^w\^t" .. t, x, y, c)
 end
 
 __label__

@@ -43,3 +43,7 @@ function join(d, t)
   end
   return t[1] .. d .. join(d, slice(t, 2))
 end
+
+function rint(n, t)
+  return flr(rnd(n)) + t
+end

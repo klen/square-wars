@@ -19,7 +19,7 @@ function practice()
           for idx = 1, cpu do
             add(tcpu, idx % 2 + 1)
           end
-          local a = arena == 0 and flr(rnd(#arenas)) + 1 or arena
+          local a = arena == 0 and rint(#arenas, 1) or arena
           game({ a = a }, { a = a, human = human, cpu = join(",", tcpu) }, dget(CART.power))
         end,
       },

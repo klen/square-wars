@@ -1,8 +1,6 @@
 function mission_scores(missions, off)
   local entities = {
-    Tw:new {
-      txt = "mission scores",
-    },
+    Tw:new { txt = "mission scores" },
   }
   for i, m in ipairs(missions) do
     local num = i + off

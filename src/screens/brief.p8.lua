@@ -27,9 +27,7 @@ function brief(n)
   end
 
   SCENE = {
-    art(function()
-      frame()
-    end),
+    art(frame),
     Tw:new { txt = "mission " .. n .. ' "' .. md.n .. '"' },
     Tw:new { y = 28, txt = md.b },
     Conf:new {
@@ -57,7 +55,11 @@ function brief(n)
   end
 
   if md.o then
-    credits(md.o, SCENE)
+    local bscn = SCENE
+    credits(md.o, function()
+      cls()
+      SCENE = bscn
+    end)
   end
 end
 
@@ -94,7 +96,7 @@ function custom_brief(n, md)
   }
 end
 
-function credits(txt, bg)
+function credits(txt, cb)
   local cr = Crawl:new { txt = txt }
   local lns = split(cr.txt, "\n")
   SCENE = {
@@ -103,8 +105,7 @@ function credits(txt, bg)
     Ent:new {
       update = function()
         if cr.y < -#lns * 8 then
-          SCENE = bg
-          cls()
+          cb()
         end
         if cr.y < 120 and getbtn() ~= -1 then
           cr.s = 2

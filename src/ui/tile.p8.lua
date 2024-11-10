@@ -1,5 +1,5 @@
 function rndcolor()
-  return flr(rnd(#COLORS) + 1)
+  return rint(#COLORS, 1)
 end
 
 TPS = split ",☉,✽,◆,♥,⧗"

@@ -15,5 +15,9 @@ Cls = setmetatable({
 Ent = Cls:create { update = noop, draw = noop }
 
 function art(fn)
-  return Ent:new { draw = fn }
+  return Ent:new {
+    draw = function()
+      fn()
+    end,
+  }
 end
