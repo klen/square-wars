@@ -27,6 +27,11 @@ Judge = Ent:create {
         skip = 0,
         score = 0,
         c = _ENV:move_color(rndcolor(), rndcolor),
+        take = function(self, t)
+          t.p = self.n
+          t.c = self.c
+          add(self.t, t.n)
+        end,
       })
     end
 
@@ -54,18 +59,14 @@ Judge = Ent:create {
             nt.c = rndcolor()
           end
         end
-        tt.p = p.n
-        add(p.t, n)
-      end
-      for n in all(p.t) do
-        t[n].c = p.c
+        p:take(tt)
       end
     end
 
     local pt = players[1].t[1]
     for n in all(t[pt].hvrel) do
       local tt = t[n]
-      if not tt.p then
+      if tt:free() then
         t[n].c = _ENV:move_color(t[n].c, rndcolor)
       end
     end
@@ -112,18 +113,15 @@ Judge = Ent:create {
       end
 
       -- portals
-      if pt.tp == 2 then
-        pt.tp = nil
+      if pt.tp == 3 then
         foreach(tiles, function(t)
-          if not t.p and t.tp == 2 and t.c == c then
-            t.p = act
-            t.tp = nil
-            add(ptiles, t.n)
+          if t.tp == 3 and t:free(c) then
+            p:take(t)
           end
         end)
 
       -- bombs
-      elseif pt.tp == 3 then
+      elseif pt.tp == 4 then
         add(bombs, tn)
       end
     end)
@@ -193,7 +191,7 @@ Judge = Ent:create {
     if active_players > 0 then
       f:move()
       for t in all(f.t) do
-        if not t.p then
+        if t:free() then
           return _ENV:next_move(next)
         end
       end
@@ -224,10 +222,9 @@ Judge = Ent:create {
 
 function grab(nts, ts, p)
   for nn in all(nts) do
-    nt = ts[nn]
-    if not nt.p and nt.c == p.c then
-      nt.p = p.n
-      add(p.t, nn)
+    local nt = ts[nn]
+    if nt:free(p.c) then
+      p:take(nt)
     end
   end
 end

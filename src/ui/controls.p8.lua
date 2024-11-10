@@ -79,12 +79,10 @@ function get_targets(p, jd)
   for tn in all(p.t) do
     for fn in all(t[tn].hvrel) do
       local ft = t[fn]
-      if not ft.p then
+      if ft:free() then
         if not seen[fn] then
           seen[fn] = true
-          if jd:cfree(ft.c) then
-            add(r, fn)
-          end
+          add(r, fn)
         end
       end
     end

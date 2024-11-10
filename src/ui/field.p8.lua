@@ -50,17 +50,17 @@ Fd = Ent:create {
 
     if o then
       local prv
-      for p, v in ipairs(o) do
+      for tp, v in pairs(o) do
         for i, h in ipairs(split(v)) do
           if h == "" then
             break
           end
           local tt = t[tonum("0x" .. h)]
-          tt.tp = p + 1
+          tt.tp = tp
           while tt.c == #COLORS do
             tt.c = rndcolor()
           end
-          if p == 1 and i % 2 == 0 then
+          if tp == 3 and i % 2 == 0 then
             prv.c = tt.c
           end
           prv = tt
@@ -76,8 +76,7 @@ Fd = Ent:create {
         local tt = t[tonum("0x" .. h)]
         if not tt.tp then
           tt.tp = 1
-          tt.c = nil
-          tt.p = 5
+          tt.av = false
         end
       end
     end

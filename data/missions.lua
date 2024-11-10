@@ -106,7 +106,7 @@ each victory grants new power,
 but the path is fraught
 with peril.
 
-will the hero's powers
+will the hero powers
 be enough to confront
 the looming shadow?]],
   },
@@ -252,13 +252,14 @@ the title of square master]],
   -- 15 (3) cage
   {
     n = "warp field",
-    f = { a = 8, o = { "40,fd,151,94,4d,f8,144,99" } },
+    f = { a = 8, o = { [3] = "40,fd,151,94,4d,f8,144,99" } },
     j = { cpu = "2,1,2" },
     u = { s = "arena" },
     b = [[new paths open, as
 portals appear on the field.
-use them wisely to outmaneuver
-your opponents, and claim victory.]],
+use them wisely to pass
+your opponents,
+and claim victory.]],
   },
 
   -- 16 (3) mirror
@@ -299,7 +300,7 @@ and earn your place
 among the elite.]],
   },
 
-  -- 17 (3) collapse
+  -- 19 (3) collapse
   {
     n = "collapse",
     f = { a = 1, eff = "erosion" },
@@ -325,7 +326,7 @@ behind in the dust.]],
   -- 21 (3) spikes (bombs)
   {
     n = "spikes",
-    f = { a = 10, o = { "", "55,13c,60,131" } },
+    f = { a = 10, o = { [4] = "55,13c,60,131" } },
     j = { cpu = "2,2,2" },
     u = { s = "arena" },
     b = [[victory is within reach,
