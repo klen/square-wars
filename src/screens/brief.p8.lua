@@ -57,25 +57,7 @@ function brief(n)
   end
 
   if md.o then
-    bg = SCENE
-    local cr = Crawl:new { txt = md.o }
-    local lns = split(cr.txt, "\n")
-
-    SCENE = {
-      art(cls),
-      cr,
-      Ent:new {
-        update = function()
-          if cr.y < -#lns * 8 then
-            SCENE = bg
-            cls()
-          end
-          if cr.y < 120 and getbtn() ~= -1 then
-            cr.s = 2
-          end
-        end,
-      },
-    }
+    credits(md.o, SCENE)
   end
 end
 
@@ -109,5 +91,25 @@ function custom_brief(n, md)
     Tw:new { y = 28, txt = md.b },
 
     Menu:new({ y = 82 }, opts),
+  }
+end
+
+function credits(txt, bg)
+  local cr = Crawl:new { txt = txt }
+  local lns = split(cr.txt, "\n")
+  SCENE = {
+    art(cls),
+    cr,
+    Ent:new {
+      update = function()
+        if cr.y < -#lns * 8 then
+          SCENE = bg
+          cls()
+        end
+        if cr.y < 120 and getbtn() ~= -1 then
+          cr.s = 2
+        end
+      end,
+    },
   }
 end

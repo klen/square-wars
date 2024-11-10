@@ -90,9 +90,10 @@ a graduate you become.]],
     f = { a = 3 },
     j = { cpu = "1,1,1" },
     u = { s = "arena" },
-    b = [[you have reached. victory
-here will guide you
-toward your true path.]],
+    b = [[contenders clash here,
+each seeking the path
+to the masters of power.
+prove your worth, you must.]],
     o = [[episode ii: the powers awaken
 
 now, the hero must challenge
@@ -112,14 +113,13 @@ the looming shadow?]],
 
   -- 7 (2) episode menu
   {
-    n = "masters",
+    n = "path of masters",
     c = 1,
-    b = [[
-no sense in entering
+    b = [[no sense in entering
 the championship without
 powers. visit the masters,
 learn their skill, you must.
-choose any path.]],
+gray has no power—choose wisely.]],
   },
 
   -- 8 (2) master of snow
@@ -223,9 +223,13 @@ will bring you my power.]],
   {
     n = "brothers",
     f = { a = 4 },
-    j = { cpu = "1,1,1" },
+    j = { cpu = "2,1,1" },
     u = { s = "arena" },
-    b = "",
+    b = [[the championship begins.
+rookies from all around
+join the field show
+your skill to advance
+to the next round.]],
     o = [[episode iii:
 return of the champion
 
@@ -245,13 +249,16 @@ who truly deserves
 the title of square master]],
   },
 
-  -- 15 (3) obscura
+  -- 15 (3) cage
   {
-    n = "obscura",
-    f = { a = 5, eff = "dark" },
-    j = { cpu = "2,2" },
+    n = "warp field",
+    f = { a = 8, o = { "40,fd,151,94,4d,f8,144,99" } },
+    j = { cpu = "2,1,2" },
     u = { s = "arena" },
-    b = "",
+    b = [[new paths open, as
+portals appear on the field.
+use them wisely to outmaneuver
+your opponents, and claim victory.]],
   },
 
   -- 16 (3) mirror
@@ -260,31 +267,59 @@ the title of square master]],
     f = { a = 6 },
     j = { cpu = "2", plc = { "161,180", "221,240" } },
     u = { s = "arena" },
-    b = "",
+    b = [[a lone opponent from
+the mirror planet awaits.
+they reflect your every move
+determined to knock you
+out of the games.]],
+  },
+
+  -- 17 (3) obscura
+  {
+    n = "obscura",
+    f = { a = 5, eff = "dark" },
+    j = { cpu = "2" },
+    u = { s = "arena" },
+    b = [[your progress, they
+have noticed. the master
+of darkness arrives, seeking
+to halt you here.]],
+  },
+
+  -- 18 (3) labyrinth
+  {
+    n = "labyrinth",
+    f = { a = 7 },
+    j = { cpu = "2,2,2" },
+    u = { s = "arena" },
+    b = [[the last qualifier
+before the final rounds.
+navigate this maze,
+and earn your place
+among the elite.]],
   },
 
   -- 17 (3) collapse
-  { n = "collapse", f = { a = 1, eff = "erosion" }, j = { cpu = "2,2" }, b = "" },
-
-  -- 18 (3) labyrinth
-  { n = "labyrinth", f = { a = 7 }, j = { cpu = "2" }, u = { s = "arena" }, b = "" },
-
-  -- 19 (3) cage
   {
-    n = "cage",
-    f = { a = 8, o = { "40,fd,151,94,4d,f8,144,99" } },
-    j = { cpu = "2,2,2" },
-    u = { s = "arena" },
-    b = "",
+    n = "collapse",
+    f = { a = 1, eff = "erosion" },
+    j = { cpu = "2,2" },
+    b = [[the field begins to
+crumble beneath you.
+someone seeks to halt
+the contenders progress.]],
   },
 
   -- 20 (3) lines
   {
     n = "lines",
     f = { a = 9 },
-    j = { cpu = "2", plc = { "1,381", "20,400" } },
+    j = { cpu = "2,2,2" },
     u = { s = "arena" },
-    b = "",
+    b = [[a race against time.
+move swiftly between
+sections, or be left
+behind in the dust.]],
   },
 
   -- 21 (3) spikes (bombs)
@@ -293,15 +328,24 @@ the title of square master]],
     f = { a = 10, o = { "", "55,13c,60,131" } },
     j = { cpu = "2,2,2" },
     u = { s = "arena" },
-    b = "",
+    b = [[victory is within reach,
+yet bombs now cover
+the field. every step
+must be careful if
+you are to succeed.]],
   },
 
   -- 22 (3) apex
   {
     n = "apex",
     f = { a = 11 },
-    u = { s = "square master" },
+    u = { n = "square master" },
     j = { cpu = "2,2,2", plc = { "85", "316", "96", "305" } },
-    b = "",
+    b = [[the final battle awaits.
+to earn the champion title,
+you must wield every power
+at your command.
+prove your mastery
+once and for all.]],
   },
 }

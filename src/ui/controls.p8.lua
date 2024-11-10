@@ -63,10 +63,7 @@ Ctrl = Ent:create {
   end,
 
   move = function(_ENV, c)
-    printh("ctrl move: " .. c)
     local next = jd:move(c)
-
-    printh("jd move: " .. tostr(next))
 
     if pwr then
       pwr:register(c)

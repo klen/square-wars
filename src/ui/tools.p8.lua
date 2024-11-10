@@ -34,8 +34,8 @@ function frame(h)
   end
 
   clip()
-  line(4, 2, 4, h + 2, 8)
-  line(123, 2, 123, h + 2, 8)
+  line(2, 4, 2, h, 8)
+  line(125, 4, 125, h, 8)
 end
 
 Conf = Ent:create {

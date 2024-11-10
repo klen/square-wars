@@ -113,6 +113,7 @@ Judge = Ent:create {
 
       -- portals
       if pt.tp == 2 then
+        pt.tp = nil
         foreach(tiles, function(t)
           if not t.p and t.tp == 2 and t.c == c then
             t.p = act
@@ -213,7 +214,6 @@ Judge = Ent:create {
     end
 
     -- play finish sound
-    printh(res[1].cpu and 60 or 61)
     sfx(res[1].cpu and 60 or 61)
 
     frz:freeze(40, Fade:new {}, function()

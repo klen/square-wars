@@ -4,11 +4,9 @@ function game(fd, jd, pwr)
   cls()
 
   local f, w = Fd:new(fd), pwr and Power:new { pwr = pwr, plw = dget(CART.power) } or nil
-  printh "field init"
   jd.f = f
   jd.pwr = w
   local j = Judge:new(jd)
-  printh "judge init"
 
   SCENE = {
     art(cls),

@@ -1,5 +1,5 @@
 Tw = Ent:create {
-  x = 8,
+  x = 6,
   y = 5,
   c = 7,
   sd = 1,

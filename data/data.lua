@@ -1,6 +1,10 @@
 local ARENAS = require "data.arenas"
 local MISSIONS = require "data.missions"
 
+function update_cr(txt)
+  return txt:gsub("\n", "/")
+end
+
 DATA = {
   -- white (1), red (2), orange (4), yellow (8), green (16), blue (32)
   COLORS = { 7, 8, 9, 10, 11, 12, 5 },
@@ -13,12 +17,28 @@ DATA = {
   ARENAS = ARENAS,
   BRIEFS = BRIEFS,
   MISSIONS = MISSIONS,
+  FINAL = update_cr [[victory is yours!
+
+through every challenge,
+you have triumphed.
+with every power mastered,
+you now stand as
+the true square master
+and champion of square wars.
+
+yet remember, the journey
+does not end here.
+legends say new rivals await
+across the galaxy,
+preparing for their chance
+to claim the title.]]
+,
 }
 
 for i, m in ipairs(DATA.MISSIONS) do
-  m.b = m.b:gsub("\n", "/")
+  m.b = update_cr(m.b)
   if m.o then
-    m.o = m.o:gsub("\n", "/")
+    m.o = update_cr(m.o)
   end
 end
 
