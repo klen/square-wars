@@ -2,7 +2,7 @@ Tw = Ent:create {
   x = 8,
   y = 5,
   c = 7,
-  sd = 2,
+  sd = 1,
   txt = "",
 
   draw = function(_ENV)

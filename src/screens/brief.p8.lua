@@ -19,7 +19,7 @@ function brief(n)
 
   -- reset campaign data
   if n == 1 then
-    pw = 0
+    pw, mw = 0, 0
     dset(CART.time, 0)
     dset(CART.score, 0)
     dset(CART.power, 0)

@@ -3,7 +3,7 @@ local MISSIONS = require "data.missions"
 
 DATA = {
   -- white (1), red (2), orange (4), yellow (8), green (16), blue (32)
-  COLORS = { 6, 7, 8, 9, 10, 11, 12 },
+  COLORS = { 7, 8, 9, 10, 11, 12, 5 },
   -- stylua: ignore start
   -- TODO: slot 3 is empty
   CART = {

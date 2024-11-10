@@ -122,7 +122,7 @@ learn their skill, you must.
 choose any path.]],
   },
 
-  -- 8 (2) master of white
+  -- 8 (2) master of snow
   {
     n = "master of snow",
     r = 6,
@@ -138,7 +138,7 @@ show me calm resolve,
 and my power is yours.]],
   },
 
-  -- 9 (2) master of red
+  -- 9 (2) master of fire
   {
     n = "master of fire",
     r = 6,
@@ -154,7 +154,7 @@ yourself bold, and
 claim my fire.]],
   },
 
-  -- 10 (2) master of orange
+  -- 10 (2) master of desert
   {
     n = "master of desert",
     r = 6,
@@ -169,7 +169,7 @@ prove your strength,
 and take my power.]],
   },
 
-  -- 11 (2) master of yellow
+  -- 11 (2) master of sun
   {
     n = "master of sun",
     r = 6,
@@ -178,13 +178,13 @@ and take my power.]],
     j = { cpu = "2", plc = { "127,274", "267,134" } },
     u = { v = 8, s = "power", n = "power of sun" },
     b = [[rays of light, i command
-from the sun's core, all
+from the core, all
 paths radiate. withstand
 the blazing field, and
 my power you will gain.]],
   },
 
-  -- 12 (2) master of green
+  -- 12 (2) master of woods
   {
     n = "master of woods",
     r = 6,
@@ -200,7 +200,7 @@ root yourself,
 and my power is yours.]],
   },
 
-  -- 13 (2) master of blue
+  -- 13 (2) master of storm
   {
     n = "master of storm",
     r = 6,
@@ -279,9 +279,15 @@ the title of square master]],
   },
 
   -- 20 (3) lines
-  { n = "lines", f = { a = 9 }, j = { cpu = "2,2,2" }, u = { s = "arena" }, b = "" },
+  {
+    n = "lines",
+    f = { a = 9 },
+    j = { cpu = "2", plc = { "1,381", "20,400" } },
+    u = { s = "arena" },
+    b = "",
+  },
 
-  -- 21 (3) spikes
+  -- 21 (3) spikes (bombs)
   {
     n = "spikes",
     f = { a = 10, o = { "", "55,13c,60,131" } },

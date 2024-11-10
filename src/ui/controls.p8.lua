@@ -9,7 +9,7 @@ Ctrl = Ent:create {
 
   init = function(_ENV)
     while not jd:cfree(sc) do
-      sc = (sc - CCR) % #COLORS + 1 + CCR
+      sc = sc % #COLORS + 1
     end
   end,
 
@@ -32,7 +32,7 @@ Ctrl = Ent:create {
       if btn < 4 then
         local d = dir[btn + 1]
         sc = jd:move_color(sc, function(c)
-          return (c + d - CCR - 1) % #COLORS + CCR + 1
+          return (c + d - 1) % #COLORS + 1
         end, p.w)
         beep()
       else
@@ -45,21 +45,20 @@ Ctrl = Ent:create {
   draw = function(_ENV)
     local p = jd:active()
 
-    for idx, c in ipairs(COLORS) do
-      local s = idx * 8 - 8
-
+    for c = 1, #COLORS do
+      local s, cl = c * 8 - 8, COLORS[c]
       if c == sc then
-        rectfill(s, 120, s + 6, 126, c)
+        rectfill(s, 120, s + 6, 126, cl)
       elseif jd:cfree(c, p.w) then
-        rectfill(s + 1, 121, s + 5, 125, c)
+        rectfill(s + 1, 121, s + 5, 125, cl)
       else
-        rect(s + 1, 121, s + 5, 125, c)
+        rect(s + 1, 121, s + 5, 125, cl)
       end
-    end
-    local w, active = 60, jd.act
-    for p in all(jd.players) do
-      local n, c, t = p.n, p.c, tostr(#p.t)
-      w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, c)
+      local w, active = 60, jd.act
+      for p in all(jd.players) do
+        local n, c, t = p.n, p.c, tostr(#p.t)
+        w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, COLORS[p.c] or 1)
+      end
     end
   end,
 
@@ -83,7 +82,7 @@ function get_targets(p, jd)
   for tn in all(p.t) do
     for fn in all(t[tn].hvrel) do
       local ft = t[fn]
-      if ft.p == 0 then
+      if not ft.p then
         if not seen[fn] then
           seen[fn] = true
           if jd:cfree(ft.c) then
@@ -94,27 +93,6 @@ function get_targets(p, jd)
     end
   end
   return r
-end
-
-function get_clusters(targets, tiles)
-  local seen, clusters = {}, { {}, {}, {}, {}, {}, {}, {} }
-  for tn in all(targets) do
-    local cl = cluster(tn, tiles)
-    local cnum = cl[1]
-    if not seen[cnum] then
-      seen[cnum] = true
-      local t = tiles[tn]
-      for cn in all(cl) do
-        add(clusters[t.c - CCR], cn)
-      end
-    end
-  end
-  clusters = sort(clusters, function(a, b)
-    return #a > #b
-  end)
-  return filter(clusters, function(c)
-    return #c > 0
-  end)
 end
 
 -- random bot

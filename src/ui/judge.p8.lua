@@ -57,14 +57,17 @@ Judge = Ent:create {
         tt.p = p.n
         add(p.t, n)
       end
-      for tt in all(p.t) do
-        t[tt].c = p.c
+      for n in all(p.t) do
+        t[n].c = p.c
       end
     end
 
     local pt = players[1].t[1]
     for n in all(t[pt].hvrel) do
-      t[n].c = _ENV:move_color(t[n].c, rndcolor)
+      local tt = t[n]
+      if not tt.p then
+        t[n].c = _ENV:move_color(t[n].c, rndcolor)
+      end
     end
   end,
 
@@ -74,9 +77,8 @@ Judge = Ent:create {
         return false
       end
     end
-    local idx = c - CCR
     if w and pwr and pwr:active(c) then
-      return w & (1 << (c - CCR - 1)) > 0
+      return w & (1 << (c - 1)) > 0
     end
     return true
   end,
@@ -95,7 +97,7 @@ Judge = Ent:create {
   move = function(_ENV, c)
     local p = players[act]
     local tiles, ptiles, pwr = f.t, p.t, pwr and pwr:active(c)
-    local npt = #ptiles
+    local npt, bombs = #ptiles, {}
 
     p.c = c
     moves += 1
@@ -108,15 +110,53 @@ Judge = Ent:create {
       if pwr then
         grab(pt.diag, tiles, p)
       end
+
+      -- portals
+      if pt.tp == 2 then
+        foreach(tiles, function(t)
+          if not t.p and t.tp == 2 and t.c == c then
+            t.p = act
+            t.tp = nil
+            add(ptiles, t.n)
+          end
+        end)
+
+      -- bombs
+      elseif pt.tp == 3 then
+        add(bombs, tn)
+      end
     end)
 
     local empty = #ptiles == npt
     p.skip = empty and p.skip + 1 or 0
     if p.skip >= 8 then
-      p.c = 5
+      p.c = nil
       foreach(ptiles, function(tn)
-        tiles[tn].c = 5
+        tiles[tn].c = nil
       end)
+    end
+
+    if #bombs > 0 then
+      foreach(bombs, function(bn)
+        local bt = tiles[bn]
+        bt:boom()
+        foreach(bt.hvrel, function(n)
+          local t = tiles[n]
+          t:boom()
+          foreach(t.hvrel, function(nn)
+            local nt = tiles[nn]
+            nt:boom()
+            foreach(nt.hvrel, function(nnn)
+              tiles[nnn]:boom()
+            end)
+          end)
+        end)
+      end)
+      for p in all(players) do
+        p.t = filter(p.t, function(tn)
+          return tiles[tn].p == p.n
+        end)
+      end
     end
 
     -- keep the current player
@@ -141,19 +181,18 @@ Judge = Ent:create {
     local p = players[act]
 
     return _ENV:move_color(p.c, function(c)
-      return COLORS[(c - CCR) % #COLORS + 1]
+      return c % #COLORS + 1
     end, p.w)
   end,
 
   finish = function(_ENV, next)
-    printh "jd finish"
     local active_players = #filter(players, function(p)
       return p.skip < 8
     end)
     if active_players > 0 then
       f:move()
       for t in all(f.t) do
-        if t.p == 0 then
+        if not t.p then
           return _ENV:next_move(next)
         end
       end
@@ -186,17 +225,9 @@ Judge = Ent:create {
 function grab(nts, ts, p)
   for nn in all(nts) do
     nt = ts[nn]
-    if nt.p == 0 and nt.c == p.c then
+    if not nt.p and nt.c == p.c then
       nt.p = p.n
       add(p.t, nn)
-      if nt.t == 2 then
-        foreach(ts, function(t)
-          if t.p == 0 and t.t == 2 and t.c == nt.c then
-            t.p = p.n
-            add(p.t, t.n)
-          end
-        end)
-      end
     end
   end
 end

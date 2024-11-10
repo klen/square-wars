@@ -1,31 +1,37 @@
 function rndcolor()
-  return rnd(COLORS)
+  return flr(rnd(#COLORS) + 1)
 end
 
-TPS = split ",☉,✽,◆,♥,⧗,❎"
+TPS = split ",☉,✽,◆,♥,⧗"
 
 Tile = Ent:create {
   n = 0,
-  p = 0,
-  t = 0,
+  p = nil,
+  tp = nil,
 
   init = function(_ENV)
+    diag = {}
+    hvrel = {}
     c = rndcolor()
-    diag = {} -- diagonal
-    hvrel = {} -- horizontal and vertical
   end,
 
   draw = function(_ENV, sz, of, ts)
-    local idx = n - 1
-    local x, y = idx % sz * ts + of, idx \ sz * ts + of
-    if p > 0 then
-      rect(x, y, x + ts - 2, y + ts - 2, c)
-    elseif t == 0 then
-      rectfill(x, y, x + ts - 2, y + ts - 2, c)
+    local i, cl = n - 1, COLORS[c] or 1
+    local x, y = i % sz * ts + of, i \ sz * ts + of
+    if tp and tp > 1 then
+      if TPS[tp] then
+        print(TPS[tp] or '', x - 1, y, cl)
+        rect(x-1, y-1, x - 1 + ts, y - 1 + ts, 0)
+      end
+    elseif p then
+      rect(x, y, x + ts - 2, y + ts - 2, cl)
     else
-      print(TPS[t], x - 1, y, c)
-      rect(x-1, y-1, x - 1 + ts, y - 1 + ts, 0)
+      rectfill(x, y, x + ts - 2, y + ts - 2, cl)
     end
+  end,
+
+  boom = function(_ENV)
+    p, tp, c = 5, 0, nil
   end,
 }
 
@@ -39,7 +45,7 @@ function cluster(tn, tiles)
     deli(q, 1)
 
     local t = tiles[qn]
-    if t.p == 0 and t.c == c then
+    if not t.p and t.c == c then
       add(res, qn)
       for fn in all(t.hvrel) do
         if not seen[fn] then

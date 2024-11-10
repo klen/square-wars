@@ -22,13 +22,12 @@ Power = Ent:create {
   end,
 
   register = function(_ENV, c)
-    local i = c - CCR
-    if pwr & (1 << (i - 1)) > 0 then
-      lvl[i] = (lvl[i] + 1) % (mx + 1)
+    if pwr & (1 << (c - 1)) > 0 then
+      lvl[c] = (lvl[c] + 1) % (mx + 1)
     end
   end,
 
   active = function(_ENV, c)
-    return lvl[c - CCR] == mx
+    return lvl[c] == mx
   end,
 }

@@ -9,7 +9,7 @@ Editor = Ent:create {
     dir = { -1, 1, -field.s, field.s }
 
     for t in all(field.t) do
-      if t.p == 0 do
+      if not t.p do
         t.c = _ENV:color(t)
       end
     end
@@ -24,23 +24,23 @@ Editor = Ent:create {
     if d then
       tile = (tile + d - 1) % field.s ^ 2 + 1
 
-    -- set tile color
+    -- update tile
     elseif btn == 4 then
       local t = field.t[tile]
-      t.t = (t.t + 1) % (#TPS + 1)
-      if t.t == 1 then
+      t.tp = (t.tp + 1) % (#TPS + 1)
+      if t.tp == 1 then
         t.p = 5
         t.c = 1
       else
-        t.p = 0
+        t.p = nil
         t.c = _ENV:color(t)
       end
 
     -- copy tile data
     elseif btn == 5 then
       local t = field.t[tile]
-      t.p = 0
-      t.t = 0
+      t.p = nil
+      t.tp = nil
       t.c = _ENV:color(t)
     end
   end,
