@@ -1,4 +1,4 @@
-cartdata "horneds-sw-2"
+cartdata "horneds-sw-3"
 
 function _init()
   init_palette(function()
