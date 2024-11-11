@@ -35,7 +35,7 @@ Ctrl = Ent:create {
           return (c + d - 1) % #COLORS + 1
         end, p.w)
         beep()
-      else
+      elseif jd:cfree(sc, p.w) then
         sfx(63)
         _ENV:move(sc)
       end
@@ -66,11 +66,12 @@ Ctrl = Ent:create {
     local next = jd:move(c)
 
     if pwr then
-      pwr:register(c)
+      pwr:move(c)
     end
 
     frz:freeze(rint(10, 5))
     sc = jd:finish(next)
+    log("ctr: move " .. c .. " sc " .. sc)
   end,
 }
 

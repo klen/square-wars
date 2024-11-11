@@ -47,3 +47,5 @@ end
 function rint(n, t)
   return flr(rnd(n)) + t
 end
+
+log = noop

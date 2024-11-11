@@ -8,4 +8,5 @@ function _init()
   end)
   splash()
   -- brief(1)
+  log "\n--------------------------"
 end

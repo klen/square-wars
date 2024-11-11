@@ -24,7 +24,7 @@ function editor()
                 end
               end
 
-              printh(join(",", res), "@clip")
+              log(join(",", res), "@clip")
             end)
 
             SCENE = { art(cls), f, e }

@@ -158,6 +158,8 @@ Judge = Ent:create {
       end
     end
 
+    log("jud: move " .. "p " .. p.n .. " c " .. c .. " t " .. #ptiles .. " s " .. p.skip)
+
     -- keep the current player
     if pwr and not empty then
       sfx(59)

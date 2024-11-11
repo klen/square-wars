@@ -14,3 +14,10 @@ function debug(t, indent)
   end
   return res
 end
+
+function log(m)
+  if type(m) ~= "string" then
+    m = debug(m)
+  end
+  printh(m, "log")
+end
