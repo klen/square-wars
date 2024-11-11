@@ -82,7 +82,7 @@ to advance.]],
     f = { a = 2 },
     j = { cpu = "2" },
     u = { s = "arena" },
-    b = [[awaits the academy's
+    b = [[awaits the academy
 finest student, on
 the true arena. only
 through victory here,

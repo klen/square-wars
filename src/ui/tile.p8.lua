@@ -49,43 +49,31 @@ Tile = Ent:create {
 
   anim = function(_ENV, _c)
     c = _c
-    add(
-      frz.es,
-      GTile:new {
-        cn = COLORS[c],
-        cp = COLORS[_c],
-        x = x,
-        y = y,
-        ts = ts,
-      }
-    )
+    add(frz.es, atile(x, y, ts, COLORS[c], COLORS[_c]))
   end,
 }
 
-GTile = Ent:create {
-  cp = 0,
-  cn = 0,
-  x = 0,
-  y = 0,
-  ts = 8,
-  fr = 10,
-  update = function(_ENV)
-    if fr > -10 then
-      fr -= 1
-    end
-  end,
-  draw = function(_ENV)
-    local cl, d = COLORS[cp] or 1, 10 - abs(fr)
-    local h = ts / 20 * d
-    if fr > 0 then
-      rectfill(x, y, x + ts - 2, y + ts - 2, cp)
-    else
-      draw_plr(x, y, ts, cn)
-    end
-    rectfill(x, y, x + ts - 1, y + h - 1, 0)
-    rectfill(x, y + ts - h - 1, x + ts - 1, y + ts - 1, 0)
-  end,
-}
+function atile(x, y, ts, cn, cp)
+  local fr = 10
+  return {
+    update = function()
+      if fr > -10 then
+        fr -= 1
+      end
+    end,
+    draw = function()
+      local d = 10 - abs(fr)
+      local h = ts / 20 * d
+      if fr > 0 then
+        rectfill(x, y, x + ts - 2, y + ts - 2, cp)
+      else
+        draw_plr(x, y, ts, cn)
+      end
+      rectfill(x, y, x + ts - 1, y + h - 1, 0)
+      rectfill(x, y + ts - h - 1, x + ts - 1, y + ts - 1, 0)
+    end,
+  }
+end
 
 -- find free tiles same color
 function cluster(tn, tiles)

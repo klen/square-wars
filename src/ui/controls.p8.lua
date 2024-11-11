@@ -63,14 +63,18 @@ Ctrl = Ent:create {
   end,
 
   move = function(_ENV, c)
+    local p = jd:active()
+    local score = #p.t
     local next = jd:move(c)
 
     if pwr then
       pwr:move(c)
     end
 
-    frz:freeze(20)
-    sc = jd:finish(next)
+    add(frz.es, cnt(p, score, #p.t))
+    frz:freeze(20, nil, function()
+      sc = jd:finish(next)
+    end)
     log("ctr: move " .. c .. " sc " .. sc)
   end,
 }
@@ -102,3 +106,17 @@ function bot2(tts, t)
 end
 
 ai = { bot1, bot2 }
+
+function cnt(p, sp, sn)
+  local spd = (sn - sp) / 20
+  return {
+    update = function()
+      sp += spd
+    end,
+    draw = function()
+      local t, x = tostr(flr(sp)), 65 + 17 * (p.n - 1)
+      rectfill(x - 1, 120, x + 12, 126, 0)
+      print(inv .. pspace(t, 3) .. t, x, 121, COLORS[p.c])
+    end,
+  }
+end
