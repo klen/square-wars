@@ -90,7 +90,7 @@ function custom_brief(n, md)
     end),
 
     Tw:new { txt = md.n },
-    Tw:new { y = 28, txt = md.b },
+    Tw:new { y = 24, txt = md.b },
 
     Menu:new({ y = 82 }, opts),
   }

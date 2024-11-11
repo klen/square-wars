@@ -5,6 +5,7 @@ return {
   --------------
 
   -- 1 (1) awakening
+  ------------------
   {
     n = "awakening",
     f = { s = 5 },
@@ -33,7 +34,9 @@ their training begins.
 the path to greatness is set, and
 the first battle awaits...]],
   },
+
   -- 2 (1) first test
+  -------------------
   {
     n = "first test",
     f = { s = 8 },
@@ -45,7 +48,9 @@ their path,
 learn well
 the ways of the square.]],
   },
+
   -- 3 (1) dual challenge
+  -----------------------
   {
     n = "dual challenge",
     f = { s = 12 },
@@ -55,7 +60,9 @@ a trial of focus and skill
 ready to advance,
 you must be.]],
   },
+
   -- 4 (1) the proving
+  --------------------
   {
     n = "the proving",
     f = { s = 15 },
@@ -67,7 +74,9 @@ students clash, to find
 the one worthy
 to advance.]],
   },
+
   -- 5 (1) final duel
+  -------------------
   {
     n = "final duel",
     f = { a = 2 },
@@ -85,6 +94,7 @@ a graduate you become.]],
   --------------
 
   -- 6 (2) crossroad
+  ------------------
   {
     n = "crossroad",
     f = { a = 3 },
@@ -112,17 +122,19 @@ the looming shadow?]],
   },
 
   -- 7 (2) episode menu
+  ---------------------
   {
     n = "path of masters",
     c = 1,
-    b = [[no sense in entering
+    b = [[no sense entering
 the championship without
 powers. visit the masters,
-learn their skill, you must.
-gray has no power—choose wisely.]],
+learn their skill. gray
+holds no power choose wisely.]],
   },
 
   -- 8 (2) master of snow
+  -----------------------
   {
     n = "master of snow",
     r = 6,
@@ -139,6 +151,7 @@ and my power is yours.]],
   },
 
   -- 9 (2) master of fire
+  -----------------------
   {
     n = "master of fire",
     r = 6,
@@ -155,6 +168,7 @@ claim my fire.]],
   },
 
   -- 10 (2) master of desert
+  --------------------------
   {
     n = "master of desert",
     r = 6,
@@ -170,6 +184,7 @@ and take my power.]],
   },
 
   -- 11 (2) master of sun
+  -----------------------
   {
     n = "master of sun",
     r = 6,
@@ -185,6 +200,7 @@ my power you will gain.]],
   },
 
   -- 12 (2) master of woods
+  -------------------------
   {
     n = "master of woods",
     r = 6,
@@ -201,6 +217,7 @@ and my power is yours.]],
   },
 
   -- 13 (2) master of storm
+  -------------------------
   {
     n = "master of storm",
     r = 6,
@@ -220,6 +237,7 @@ will bring you my power.]],
   --------------
 
   -- 14 (3) brothers
+  -------------------------
   {
     n = "brothers",
     f = { a = 4 },
@@ -250,9 +268,10 @@ the title of square master]],
   },
 
   -- 15 (3) cage
+  -------------------------
   {
     n = "warp field",
-    f = { a = 8, o = { [3] = "40,fd,151,94,4d,f8,144,99" } },
+    f = { a = 5, o = { [3] = "40,fd,151,94,4d,f8,144,99" } },
     j = { cpu = "2,1,2" },
     u = { s = "arena" },
     b = [[new paths open, as
@@ -263,6 +282,7 @@ and claim victory.]],
   },
 
   -- 16 (3) mirror
+  -------------------------
   {
     n = "mirror",
     f = { a = 6 },
@@ -276,9 +296,10 @@ out of the games.]],
   },
 
   -- 17 (3) obscura
+  -------------------------
   {
     n = "obscura",
-    f = { a = 5, eff = "dark" },
+    f = { a = 7, eff = "dark" },
     j = { cpu = "2" },
     u = { s = "arena" },
     b = [[your progress, they
@@ -288,9 +309,10 @@ to halt you here.]],
   },
 
   -- 18 (3) labyrinth
+  -------------------------
   {
     n = "labyrinth",
-    f = { a = 7 },
+    f = { a = 8 },
     j = { cpu = "2,2,2" },
     u = { s = "arena" },
     b = [[the last qualifier
@@ -301,10 +323,12 @@ among the elite.]],
   },
 
   -- 19 (3) collapse
+  -------------------------
   {
     n = "collapse",
     f = { a = 1, eff = "erosion" },
     j = { cpu = "2,2" },
+    u = { n = "practice modes" },
     b = [[the field begins to
 crumble beneath you.
 someone seeks to halt
@@ -312,6 +336,7 @@ the contenders progress.]],
   },
 
   -- 20 (3) lines
+  -------------------------
   {
     n = "lines",
     f = { a = 9 },
@@ -324,6 +349,7 @@ behind in the dust.]],
   },
 
   -- 21 (3) spikes (bombs)
+  -------------------------
   {
     n = "spikes",
     f = { a = 10, o = { [4] = "55,13c,60,131" } },
@@ -337,6 +363,7 @@ you are to succeed.]],
   },
 
   -- 22 (3) apex
+  -------------------------
   {
     n = "apex",
     f = { a = 11 },
