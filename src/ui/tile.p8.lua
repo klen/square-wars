@@ -7,14 +7,16 @@ draw_plr = function(x, y, ts, c)
 end
 
 -- WLL: 1, EMT: 2, PRT: 3, BMB: 4
-OBS = {[3]="☉",[4]="✽"}
-
+OBS = { [3] = "☉", [4] = "✽" }
 
 Tile = Ent:create {
-  n = 0,
   p = nil,
   tp = nil,
   av = true,
+  n = 0,
+  x = 0,
+  y = 0,
+  ts = 8,
 
   init = function(_ENV)
     diag = {}
@@ -22,9 +24,8 @@ Tile = Ent:create {
     c = rndcolor()
   end,
 
-  draw = function(_ENV, sz, of, ts)
-    local i, cl = n - 1, COLORS[c] or 1
-    local x, y = i % sz * ts + of, i \ sz * ts + of
+  draw = function(_ENV)
+    local cl = COLORS[c] or 1
 
     if p then
       draw_plr(x, y, ts, cl)
@@ -33,8 +34,8 @@ Tile = Ent:create {
     elseif tp == 1 then
       draw_plr(x, y, ts, 1)
     elseif tp > 2 then
-      print(OBS[tp] or '', x - 1, y, cl)
-      rect(x-1, y-1, x - 1 + ts, y - 1 + ts, 0)
+      print(OBS[tp] or "", x - 1, y, cl)
+      rect(x - 1, y - 1, x - 1 + ts, y - 1 + ts, 0)
     end
   end,
 
@@ -44,6 +45,45 @@ Tile = Ent:create {
 
   boom = function(_ENV)
     p, tp, c, av = nil, 2, nil, false
+  end,
+
+  anim = function(_ENV, _c)
+    c = _c
+    add(
+      frz.es,
+      GTile:new {
+        cn = COLORS[c],
+        cp = COLORS[_c],
+        x = x,
+        y = y,
+        ts = ts,
+      }
+    )
+  end,
+}
+
+GTile = Ent:create {
+  cp = 0,
+  cn = 0,
+  x = 0,
+  y = 0,
+  ts = 8,
+  fr = 10,
+  update = function(_ENV)
+    if fr > -10 then
+      fr -= 1
+    end
+  end,
+  draw = function(_ENV)
+    local cl, d = COLORS[cp] or 1, 10 - abs(fr)
+    local h = ts / 20 * d
+    if fr > 0 then
+      rectfill(x, y, x + ts - 2, y + ts - 2, cp)
+    else
+      draw_plr(x, y, ts, cn)
+    end
+    rectfill(x, y, x + ts - 1, y + h - 1, 0)
+    rectfill(x, y + ts - h - 1, x + ts - 1, y + ts - 1, 0)
   end,
 }
 

@@ -1,4 +1,5 @@
 function results(players, moves, seconds, num, mode)
+  pal(0)
   frame()
 
   local r = report(#players > 1 and players or {}, moves, seconds, num, mode)

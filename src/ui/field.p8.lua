@@ -17,7 +17,12 @@ Fd = Ent:create {
 
     t = {}
     for n = 1, s * s do
-      local tt = Tile:new { n = n }
+      local tt = Tile:new {
+        n = n,
+        ts = ts,
+        x = (n - 1) % s * ts + off,
+        y = (n - 1) \ s * ts + off,
+      }
       add(t, tt)
 
       if n % s ~= 1 then
@@ -84,7 +89,7 @@ Fd = Ent:create {
 
   draw = function(_ENV)
     foreach(t, function(t)
-      t:draw(s, off, ts)
+      t:draw()
     end)
   end,
 

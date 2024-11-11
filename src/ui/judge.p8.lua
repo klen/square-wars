@@ -27,9 +27,13 @@ Judge = Ent:create {
         skip = 0,
         score = 0,
         c = _ENV:move_color(rndcolor(), rndcolor),
-        take = function(self, t)
+        take = function(self, t, an)
           t.p = self.n
-          t.c = self.c
+          if an then
+            t:anim(self.c)
+          else
+            t.c = self.c
+          end
           add(self.t, t.n)
         end,
       })
@@ -216,7 +220,7 @@ Judge = Ent:create {
     -- play finish sound
     sfx(res[1].cpu and 60 or 61)
 
-    frz:freeze(40, Fade:new {}, function()
+    frz:freeze(60, Fade:new {}, function()
       results(res, moves, time() - start, num == 0 and a or num, num == 0 and "a" or "m")
     end)
   end,
@@ -226,7 +230,7 @@ function grab(nts, ts, p)
   for nn in all(nts) do
     local nt = ts[nn]
     if nt:free(p.c) then
-      p:take(nt)
+      p:take(nt, true)
     end
   end
 end

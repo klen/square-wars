@@ -69,7 +69,7 @@ Ctrl = Ent:create {
       pwr:move(c)
     end
 
-    frz:freeze(rint(10, 5))
+    frz:freeze(20)
     sc = jd:finish(next)
     log("ctr: move " .. c .. " sc " .. sc)
   end,
@@ -79,10 +79,10 @@ function get_targets(p, jd)
   local r, seen, t = {}, {}, jd.f.t
   for tn in all(p.t) do
     for fn in all(t[tn].hvrel) do
-      local ft = t[fn]
-      if ft:free() then
-        if not seen[fn] then
-          seen[fn] = true
+      if not seen[fn] then
+        seen[fn] = true
+        local ft = t[fn]
+        if ft:free() and jd:cfree(ft.c) then
           add(r, fn)
         end
       end

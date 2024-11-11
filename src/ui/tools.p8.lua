@@ -22,7 +22,6 @@ function pspace(txt, w)
 end
 
 function frame(h)
-  pal(0)
   h = h or 104
   rect(0, 0, 127, h + 4, 10)
 
