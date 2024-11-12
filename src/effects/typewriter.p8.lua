@@ -21,8 +21,6 @@ Tw = Ent:create {
     end
     print(_txt, x, y, c)
 
-    draw = function()
-      print(ctrl .. "ya" .. txt, x, y, c)
-    end
+    draw = part(print, ctrl .. "ya" .. txt, x, y, c)
   end,
 }

@@ -48,4 +48,11 @@ function rint(n, t)
   return flr(rnd(n)) + t
 end
 
+function part(fn, ...)
+  local arg = { ... }
+  return function()
+    return fn(unpack(arg))
+  end
+end
+
 log = noop

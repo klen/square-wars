@@ -57,7 +57,7 @@ Ctrl = Ent:create {
       local w, active = 60, jd.act
       for p in all(jd.players) do
         local n, c, t = p.n, p.c, tostr(#p.t)
-        w = print((n == active and inv or "") .. pspace(t, 3) .. t, w + 5, 121, COLORS[p.c] or 1)
+        w = print((n == active and inv or "") .. pspace(t, 3), w + 5, 121, COLORS[p.c] or 1)
       end
     end
   end,
@@ -140,7 +140,7 @@ function cnt(p, sp, sn)
     draw = function()
       local t, x = tostr(flr(sp)), 65 + 17 * (p.n - 1)
       rectfill(x - 1, 120, x + 12, 126, 0)
-      print(inv .. pspace(t, 3) .. t, x, 121, COLORS[p.c])
+      print(inv .. pspace(t, 3), x, 121, COLORS[p.c])
     end,
   }
 end

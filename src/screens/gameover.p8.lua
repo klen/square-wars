@@ -49,12 +49,8 @@ function gameover()
   local sc2 = {
     Tw:new { txt = "you have done " .. #MISSIONS .. " missions" },
     Tw:new {
-      txt = "total score: " .. dget(CART.score),
+      txt = "total score: " .. dget(CART.score) .. "\ntotal time: " .. min .. ":" .. lzero(sec, 10),
       y = 32, c = 6,
-    },
-    Tw:new {
-      txt = "total time: " .. min .. ":" .. lzero(sec, 10),
-      y = 46, c = 6,
     },
     Conf:new {
       txt = "view stats",

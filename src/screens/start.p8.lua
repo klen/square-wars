@@ -1,4 +1,5 @@
 function start()
+  pal(0)
   if stat(24) <= 0 then
     music(0, 1000)
   end
@@ -8,7 +9,7 @@ function start()
   frz:freeze(40, Fade:new { rev = true })
 
   local CART = DATA.CART
-  local num, train, done = dget(CART.mission), dget(CART.practice), dget(CART.done)
+  local num, done = dget(CART.mission), dget(CART.done) > 0
 
   SCENE = {
     art(cls),
@@ -23,26 +24,26 @@ function start()
     end),
     -- main menu
     Menu:new(nil, {
-      num > 1 and num < #MISSIONS and {
+      {
+        n = "infinite mode",
+        cb = part(infinite),
+        hide = not done,
+      },
+      {
         n = "continue (m" .. num + 1 .. ")",
-        cb = function()
-          _start(num + 1)
-        end,
-      } or nil,
+        cb = part(_start, num + 1),
+        hide = num == 0 or num >= #MISSIONS,
+      },
       {
         n = "new story",
-        cb = function()
-          _start(1)
-        end,
+        cb = part(_start, 1),
       },
-      done > 0 and { n = "scores", cb = scores } or nil,
-      train > 0 and { n = "practice", cb = practice } or nil,
+      { n = "scores", cb = scores, hide = not done },
+      { n = "practice", cb = practice, hide = not done and num < 4 },
     }),
   }
 end
 
 function _start(num)
-  frz:freeze(40, Fade:new {}, function()
-    brief(num)
-  end)
+  frz:freeze(40, Fade:new {}, part(brief, num))
 end

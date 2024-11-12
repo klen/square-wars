@@ -8,9 +8,7 @@ function splash()
     Ent:new {
       update = function()
         if getbtn() ~= -1 then
-          frz:freeze(40, Fade:new {}, function()
-            start()
-          end)
+          frz:freeze(40, Fade:new {}, start)
         end
       end,
     },

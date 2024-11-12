@@ -13,9 +13,7 @@ function brief(n)
   end
 
   -- setup menu
-  menuitem(1, "restart mission ", function()
-    brief(n)
-  end)
+  menuitem(1, "restart mission ", part(brief, n))
 
   -- reset campaign data
   if n == 1 then
@@ -37,22 +35,14 @@ function brief(n)
         game(md.f, md.j, mw)
       end,
     },
+    pw > 0 and art(function()
+      for c = 1, #COLORS do
+        if pw & (1 << (c - 1)) > 0 then
+          print("◆", 121 - (c * 6), 101, COLORS[c])
+        end
+      end
+    end) or nil,
   }
-
-  if pw > 0 then
-    add(
-      SCENE,
-      Ent:new {
-        draw = function()
-          for c = 1, #COLORS do
-            if pw & (1 << (c - 1)) > 0 then
-              print("◆", 121 - (c * 6), 101, COLORS[c])
-            end
-          end
-        end,
-      }
-    )
-  end
 
   if md.o then
     local bscn = SCENE
@@ -64,7 +54,7 @@ function brief(n)
 end
 
 function custom_brief(n, md)
-  local pwr, CNAMES = dget(CART.power), { "snow", "fire", "desert", "sun", "woods", "storm" }
+  local pwr, CNAMES = dget(CART.power), split "snow,fire,desert,sun,woods,storm"
   if pwr & 63 == 63 then
     return brief(14)
   end
@@ -77,9 +67,7 @@ function custom_brief(n, md)
       c = c,
       n = CNAMES[i] .. (off and " (done)" or ""),
       off = off,
-      cb = function()
-        brief(c + 1)
-      end,
+      cb = part(brief, c + 1),
     })
   end
 

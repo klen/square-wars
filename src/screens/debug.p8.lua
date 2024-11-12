@@ -5,33 +5,31 @@ function show_debug()
   local mode, mission = 1, dget(CART.mission)
   local toggle, sep =
     {
-      n = "toggle mode: 1",
+      n = function()
+        return "toggle mode: " .. mode
+      end,
       cb = function(self, dir)
         mode = (mode - 1 + dir) % 5 + 1
-        self.n = "toggle mode: " .. mode
       end,
-    }, {
-      n = "----------------",
-      off = true,
-      c = 1,
-    }
+    }, { n = "----------------", c = 1, off = true }
 
   local ms = Menu:new({ y = 0 }, {
     toggle,
     sep,
+    { n = "screen - start", cb = start },
     {
-      n = "screen - start",
-      cb = start,
-    },
-    {
-      n = "screen - brief " .. mission + 1,
+      n = function()
+        return "screen - brief " .. mission + 1
+      end,
       cb = function()
         local mission = dget(CART.mission)
         brief(mission + 1)
       end,
     },
     {
-      n = "screen - mission " .. mission,
+      n = function()
+        return "screen - mission " .. mission
+      end,
       cb = function()
         local mission = dget(CART.mission)
         if mission == 0 then
@@ -41,7 +39,9 @@ function show_debug()
       end,
     },
     {
-      n = "screen - results " .. mission,
+      n = function()
+        return "screen - results " .. mission
+      end,
       cb = function()
         local mission, players = dget(CART.mission), {}
         for idx = 1, 2 + flr(rnd(3)) do
@@ -63,17 +63,14 @@ function show_debug()
         )
       end,
     },
+    { n = "screen - gameover", cb = gameover },
+    { n = "screen - practice", cb = practice },
+    { n = "screen - scores", cb = scores },
     {
-      n = "screen - gameover",
-      cb = gameover,
-    },
-    {
-      n = "screen - practice",
-      cb = practice,
-    },
-    {
-      n = "screen - scores",
-      cb = scores,
+      n = "screen - infinite",
+      cb = function()
+        infinite(1)
+      end,
     },
   })
 
@@ -81,57 +78,79 @@ function show_debug()
     toggle,
     sep,
     {
-      n = "campaign - mission done: " .. dget(CART.mission),
+      n = function()
+        return "campaign - mission done: " .. mission
+      end,
       cb = function(self, dir)
         dset(CART.mission, (dget(CART.mission) - 1 + dir) % #MISSIONS + 1)
-        self.n = "campaign - mission done: " .. dget(CART.mission)
-        ms.opts[4].n = "screen - brief " .. dget(CART.mission) + 1
-        ms.opts[5].n = "screen - mission " .. dget(CART.mission)
-        ms.opts[6].n = "screen - results " .. dget(CART.mission)
+        mission = dget(CART.mission)
       end,
     },
     {
-      n = "campaign - score: " .. dget(CART.score),
+      n = function()
+        return "campaign - score: " .. dget(CART.score)
+      end,
       cb = function(self, dir)
         dset(CART.score, dget(CART.score) + dir)
-        self.n = "campaign - score: " .. dget(CART.score)
       end,
     },
     {
-      n = "campaign - time: " .. dget(CART.time),
+      n = function()
+        return "campaign - time: " .. dget(CART.time)
+      end,
       cb = function(self, dir)
         dset(CART.time, dget(CART.time) + dir)
-        self.n = "campaign - time: " .. dget(CART.time)
       end,
     },
     {
-      n = "campaign - done: " .. dget(CART.done),
+      n = function()
+        return "campaign - done: " .. dget(CART.done)
+      end,
       cb = function(self, dir)
         dset(CART.done, (dget(CART.done) + dir) % 2)
-        self.n = "campaign - done: " .. dget(CART.done)
       end,
     },
     sep,
     {
-      n = "option - palette: " .. dget(CART.palette),
+      n = function()
+        return "run - run: " .. dget(CART.run)
+      end,
+      cb = function(self, dir)
+        dset(CART.run, dget(CART.run) + dir)
+      end,
+    },
+    {
+      n = function()
+        return "run - runmax: " .. dget(CART.runmax)
+      end,
+      cb = function(self, dir)
+        dset(CART.runmax, dget(CART.runmax) + dir)
+      end,
+    },
+    {
+      n = function()
+        return "run - rscore: " .. dget(CART.rscore)
+      end,
+      cb = function(self, dir)
+        dset(CART.rscore, dget(CART.rscore) + dir)
+      end,
+    },
+    sep,
+    {
+      n = function()
+        return "option - palette: " .. dget(CART.palette)
+      end,
       cb = function(self, dir)
         dset(CART.palette, (dget(CART.palette) + dir) % 2)
-        self.n = "option - palette: " .. dget(CART.palette)
       end,
     },
     sep,
     {
-      n = "unlock - arena: " .. dget(CART.arena),
+      n = function()
+        return "unlock - arena: " .. dget(CART.arena)
+      end,
       cb = function(self, dir)
         dset(CART.arena, (dget(CART.arena) - 1 + dir) % #ARENAS + 1)
-        self.n = "unlock - arena: " .. dget(CART.arena)
-      end,
-    },
-    {
-      n = "unlock - practice: " .. dget(CART.practice),
-      cb = function(self, dir)
-        dset(CART.practice, (dget(CART.practice) + dir) % 2)
-        self.n = "unlock - practice: " .. dget(CART.practice)
       end,
     },
   })
@@ -139,10 +158,11 @@ function show_debug()
   local mmopts = { toggle, sep }
   for idx = 1, #MISSIONS do
     add(mmopts, {
-      n = "score - m" .. idx .. ": " .. dget(CART.mscores + idx - 1),
+      n = function()
+        return "score - m" .. idx .. ": " .. dget(CART.mscores + idx - 1)
+      end,
       cb = function(self, dir)
         dset(CART.mscores + idx - 1, dget(CART.mscores + idx - 1) + dir)
-        self.n = "score - m" .. idx .. ": " .. dget(CART.mscores + idx - 1)
       end,
     })
   end
@@ -151,10 +171,11 @@ function show_debug()
   local maopts = { toggle, sep }
   for idx = 1, #ARENAS do
     add(maopts, {
-      n = "score - a" .. idx .. ": " .. dget(CART.ascores + idx - 1),
+      n = function()
+        return "score - a" .. idx .. ": " .. dget(CART.ascores + idx - 1)
+      end,
       cb = function(self, dir)
         dset(CART.ascores + idx - 1, dget(CART.ascores + idx - 1) + dir)
-        self.n = "score - a" .. idx .. ": " .. dget(CART.ascores + idx - 1)
       end,
     })
   end
@@ -166,65 +187,66 @@ function show_debug()
     toggle,
     sep,
     {
-      n = "power all: " .. (power == 63 and "on" or "off"),
+      n = function()
+        return "power all: " .. (power == 63 and "on" or "off")
+      end,
       cb = function(self, dir)
         power = dir == 1 and 63 or 0
         dset(CART.power, power)
-        self.n = "power all: " .. (power == 63 and "on" or "off")
-        mp.opts[4].n = "power - snow: " .. (power & 1)
-        mp.opts[5].n = "power - fire: " .. (power & 2)
-        mp.opts[6].n = "power - desert: " .. (power & 4)
-        mp.opts[7].n = "power - sun: " .. (power & 8)
-        mp.opts[8].n = "power - woods: " .. (power & 16)
-        mp.opts[9].n = "power - storm: " .. (power & 32)
       end,
     },
     {
-      n = "power - snow: " .. (power & 1),
+      n = function()
+        return "power - snow: " .. (power & 1)
+      end,
       cb = function(self, dir)
         power = invert(power, 1)
         dset(CART.power, power)
-        self.n = "power - snow: " .. (power & 1)
       end,
     },
     {
-      n = "power - fire: " .. (power & 2),
+      n = function()
+        return "power - fire: " .. (power & 2)
+      end,
       cb = function(self, dir)
         power = invert(power, 2)
         dset(CART.power, power)
-        self.n = "power - fire: " .. (power & 2)
       end,
     },
     {
-      n = "power - desert: " .. (power & 4),
+      n = function()
+        return "power - desert: " .. (power & 4)
+      end,
       cb = function(self, dir)
         power = invert(power, 4)
         dset(CART.power, power)
-        self.n = "power - desert: " .. (power & 4)
       end,
     },
     {
-      n = "power - sun: " .. (power & 8),
+      n = function()
+        return "power - sun: " .. (power & 8)
+      end,
       cb = function(self, dir)
         power = invert(power, 8)
         dset(CART.power, power)
-        self.n = "power - sun: " .. (power & 8)
       end,
     },
     {
-      n = "power - woods: " .. (power & 16),
+      n = function()
+        return "power - woods: " .. (power & 16)
+      end,
       cb = function(self, dir)
         power = invert(power, 16)
         dset(CART.power, power)
-        self.n = "power - woods: " .. (power & 16)
       end,
     },
     {
-      n = "power - storm: " .. (power & 32),
+      n = function()
+        return "power - storm: " .. (power & 32)
+      end,
       cb = function(self, dir)
         power = invert(power, 32)
         dset(CART.power, power)
-        self.n = "power - storm: " .. (power & 32)
       end,
     },
   })
@@ -249,9 +271,5 @@ end
 menuitem(3, "debug", show_debug)
 
 function invert(var, b)
-  if var & b == 0 then
-    return var | b
-  else
-    return var & ~b
-  end
+  return var & b == 0 and var | b or var & ~b
 end

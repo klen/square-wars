@@ -1,14 +1,16 @@
 Menu = Ent:create {
-  y = 76,
+  y = 68,
   sel = 1,
   dir = { -1, 1, -1, 1, 1, 1 },
 
   init = function(_ENV, items)
     opts = {}
     foreach(items, function(t)
-      t.idx = #opts
-      t.y = y
-      add(opts, Opt:new(t))
+      if not t.hide then
+        t.idx = #opts
+        t.y = y
+        add(opts, Opt:new(t))
+      end
     end)
     if #opts > 0 then
       sel = #opts
@@ -17,6 +19,10 @@ Menu = Ent:create {
   end,
 
   update = function(_ENV)
+    if sel == 0 then
+      return
+    end
+
     local opt, btn = opts[sel], getbtn()
     local d = dir[btn + 1]
 
@@ -31,24 +37,18 @@ Menu = Ent:create {
     else
       opt:cb(d, btn)
     end
-
-    foreach(opts, function(opt)
-      opt:update()
-    end)
   end,
 
   move = function(_ENV, d)
-    opts[sel].sel = false
     repeat
       sel = (sel - 1 + d) % #opts + 1
     until opts[sel].off ~= true
-    opts[sel].sel = true
   end,
 
   draw = function(_ENV)
-    foreach(opts, function(opt)
-      opt:draw()
-    end)
+    for idx, opt in ipairs(opts) do
+      opt:draw(idx == sel)
+    end
   end,
 }
 
@@ -58,12 +58,12 @@ Opt = Ent:create {
   n = "",
   idx = 0,
   cb = noop,
-  sel = false,
-  draw = function(_ENV)
+  draw = function(_ENV, sel)
+    local _n = type(n) == "function" and n() or n
     if sel then
       print("❎", 4, y + 8 * idx, band(FRMS, 8) == 0 and 1 or c)
     end
-    print(n, 17, y + 1 + 8 * idx, 0)
-    print(n, 16, y + 8 * idx, off and 1 or c)
+    print(_n, 17, y + 1 + 8 * idx, 0)
+    print(_n, 16, y + 8 * idx, off and 1 or c)
   end,
 }

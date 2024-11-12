@@ -17,7 +17,7 @@ function practice()
         n = "start",
         cb = function()
           music(-1)
-          local bots, tcpu = {}, { 3, 2, 1, 1 }
+          local bots, tcpu = {}, split "3,2,1,1"
           for idx = 1, cpu do
             add(tcpu, bots[idx])
           end
@@ -30,25 +30,25 @@ function practice()
         end,
       },
       #arenas > 1 and {
-        n = "arena: random",
+        n = function()
+          return "arena: " .. (arenas[arena] or { "random" })[1]
+        end,
         cb = function(self, dir)
           arena = (arena + dir) % #arenas
-          local data = arenas[arena] or { "random" }
-          self.n = "arena: " .. data[1]
         end,
       } or nil,
       eff and {
-        n = "mode: --",
+        n = function()
+          return "mode: " .. modes[mode + 1]
+        end,
         cb = function(self, dir)
           mode = (mode + dir) % #modes
           eff = mode > 0 and modes[mode + 1]
-          self.n = "mode: " .. modes[mode + 1]
         end,
       } or nil,
       {
-        n = "human: 1",
-        update = function(_ENV)
-          n = "human: " .. human
+        n = function()
+          return "human: " .. human
         end,
         cb = function(self, dir)
           human = (human - 1 + dir) % 4 + 1
@@ -56,9 +56,8 @@ function practice()
         end,
       },
       {
-        n = "cpu: 3",
-        update = function(_ENV)
-          n = "cpu: " .. cpu
+        n = function()
+          return "cpu: " .. cpu
         end,
         cb = function(self, dir)
           cpu = (cpu - 1 + dir) % 4 + 1

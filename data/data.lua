@@ -9,9 +9,8 @@ DATA = {
   -- white (1), red (2), orange (4), yellow (8), green (16), blue (32)
   COLORS = { 7, 8, 9, 10, 11, 12, 5 },
   -- stylua: ignore start
-  -- TODO: slot 3 is empty
   CART = {
-    done=0, palette=1, mission=2, practice=4, arena=5, score=6, time=7, power=9, mscores=11, ascores=41
+    done=0, palette=1, mission=2, run=3, rscore=4, arena=5, score=6, time=7, runmax=8, power=9, mscores=11, ascores=41
   },
 
   ARENAS = ARENAS,
@@ -31,8 +30,7 @@ does not end here.
 legends say new rivals await
 across the galaxy,
 preparing for their chance
-to claim the title.]]
-,
+to claim the title.]],
 }
 
 for i, m in ipairs(DATA.MISSIONS) do

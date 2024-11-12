@@ -1,5 +1,5 @@
 function report(players, moves, seconds, num, mode)
-  local res = "report " .. mode .. num .. "/" .. stat(90) .. "-" .. stat(91) .. "-" .. stat(92) .. "\n\n"
+  local res = "report " .. mode .. num  .. "/" .. stat(90) .. "-" .. stat(91) .. "-" .. stat(92) .. "\n\n"
   local ckey = mode == "m" and CART.mscores or CART.ascores
   local stored, humans = dget(ckey - 1 + num), #filter(players, function(p) return not p.cpu end)
 
@@ -11,14 +11,14 @@ function report(players, moves, seconds, num, mode)
         smode = " (" .. mode .. num .. " top)"
       end
     end
-    res ..= place .. "st " .. prefix .. p.n .. " score: " .. pspace(score, 4) .. score .. smode .. "\n"
+    res ..= place .. "st " .. prefix .. p.n .. " score: " .. pspace(score, 4) .. smode .. "\n"
   end
 
   moves = tostr(moves)
   local tm = seconds \ 60 .. ":" .. lzero(flr(seconds % 60))
   res ..= (
-    "moves: " .. pspace(moves, 11) .. moves .. "\n" ..
-    "time:  " .. pspace(tm, 11) .. tm
+    "moves: " .. pspace(moves, 11) .. "\n" ..
+    "time:  " .. pspace(tm, 11)
   )
   return function() return Tw:new { txt = res } end
 end

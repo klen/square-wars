@@ -13,10 +13,10 @@ function lzero(n)
   return n < 10 and "0" .. n or n
 end
 
-function pspace(txt, w)
-  local res = ""
+function pspace(txt, w, sp)
+  local res, s = txt, sp or " "
   for _ = #txt, w - 1 do
-    res = " " .. res
+    res = s .. res
   end
   return res
 end

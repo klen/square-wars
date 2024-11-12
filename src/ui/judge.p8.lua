@@ -7,10 +7,9 @@ Judge = Ent:create {
   human = 1,
   plc = nil,
 
-  -- @param pwr Power
-  pwr = nil,
-  -- @param f Field
   f = nil,
+  pwr = nil,
+  seed = nil,
 
   init = function(_ENV)
     moves, start = 0, time()
@@ -220,7 +219,7 @@ Judge = Ent:create {
 
     pause(function()
       frz:freeze(60, Fade:new {}, function()
-        results(res, moves, time() - start, num == 0 and a or num, num == 0 and "a" or "m")
+        results(res, moves, time() - start, num == 0 and a or num, num == 0 and "a" or "m", seed)
       end)
     end)
   end,

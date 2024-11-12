@@ -67,7 +67,7 @@ you must be.]],
     n = "the proving",
     f = { s = 15 },
     j = { cpu = "1,1,1" },
-    u = { n = "practice mode", s = "practice" },
+    u = { n = "practice mode" },
     b = [[in the academy,
 not easy it is.
 students clash, to find

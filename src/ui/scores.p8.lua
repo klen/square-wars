@@ -8,7 +8,7 @@ function mission_scores(missions, off)
     add(
       entities,
       Tw:new {
-        txt = name .. pspace(name, 25) .. pspace(tostr(score), 3) .. score,
+        txt = name .. pspace("", 25 - #name) .. pspace(tostr(score), 3),
         y = i * 8 + 16,
         c = 6,
       }
@@ -27,7 +27,7 @@ function practice_scores(arenas, off)
     add(
       entities,
       Tw:new {
-        txt = name .. pspace(name, 25) .. pspace(tostr(score), 3) .. score,
+        txt = name .. pspace("", 25 - #name) .. pspace(tostr(score), 3),
         y = i * 8 + 16,
         c = 6,
       }
