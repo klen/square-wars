@@ -12,7 +12,7 @@ function editor()
             local data = ARENAS[arena]
             self.n = "arena: " .. arena .. " - " .. data[1]
           else
-            local f = Fd:new { a = arena }
+            local f = Fld:new { a = arena }
             local e = Editor:new { field = f }
 
             SCENE = { art(cls), f, e }

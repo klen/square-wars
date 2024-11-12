@@ -23,7 +23,7 @@ Ctrl = Ent:create {
       end
 
       local bot = ai[p.cpu]
-      _ENV:move(bot(tts, jd.f.t))
+      _ENV:move(bot(tts, jd.f.t, pwr))
     else
       local btn = getbtn(jd.act - 1)
       if btn < 0 then
@@ -107,7 +107,29 @@ function bot2(tts, t)
   return t[get_clusters(tts, t)[1][1]].c
 end
 
-ai = { bot1, bot2 }
+-- same as bot2 but pays respect to powers
+-- TOOD: diagonales
+function bot3(tts, t, pwr)
+  local cs = {}
+  foreach(tts, function(n)
+    cs[t[n].c] = true
+  end)
+
+  if pwr then
+    local prs = {}
+    for c, l in ipairs(pwr.lvl) do
+      if l == pwr.mx and cs[c] then
+        add(prs, c)
+      end
+    end
+    if #prs > 0 then
+      return rnd(prs)
+    end
+  end
+  return bot2(tts, t)
+end
+
+ai = { bot1, bot2, bot3 }
 
 function cnt(p, sp, sn)
   local spd = (sn - sp) / 20

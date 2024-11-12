@@ -17,9 +17,9 @@ function practice()
         n = "start",
         cb = function()
           music(-1)
-          local tcpu = {}
+          local bots, tcpu = {}, { 3, 2, 1, 1 }
           for idx = 1, cpu do
-            add(tcpu, idx % 2 + 1)
+            add(tcpu, bots[idx])
           end
           local a = arena == 0 and rint(#arenas, 1) or arena
           game(

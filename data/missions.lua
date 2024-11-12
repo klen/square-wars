@@ -286,7 +286,7 @@ and claim victory.]],
   {
     n = "mirror",
     f = { a = 6 },
-    j = { cpu = "2", plc = { "161,180", "221,240" } },
+    j = { cpu = "3", plc = { "161,180", "221,240" } },
     u = { s = "arena" },
     b = [[a lone opponent from
 the mirror planet awaits.
@@ -300,7 +300,7 @@ out of the games.]],
   {
     n = "obscura",
     f = { a = 7, eff = "dark" },
-    j = { cpu = "2" },
+    j = { cpu = "3" },
     u = { s = "arena" },
     b = [[your progress, they
 have noticed. the master
@@ -313,7 +313,7 @@ to halt you here.]],
   {
     n = "labyrinth",
     f = { a = 8 },
-    j = { cpu = "2,2,2" },
+    j = { cpu = "3,2,1" },
     u = { s = "arena" },
     b = [[the last qualifier
 before the final rounds.
@@ -327,7 +327,7 @@ among the elite.]],
   {
     n = "collapse",
     f = { a = 1, eff = "erosion" },
-    j = { cpu = "2,2" },
+    j = { cpu = "3,2" },
     u = { n = "practice modes" },
     b = [[the field begins to
 crumble beneath you.
@@ -340,7 +340,7 @@ the contenders progress.]],
   {
     n = "lines",
     f = { a = 9 },
-    j = { cpu = "2,2,2" },
+    j = { cpu = "3,2,2" },
     u = { s = "arena" },
     b = [[a race against time.
 move swiftly between
@@ -352,8 +352,8 @@ behind in the dust.]],
   -------------------------
   {
     n = "spikes",
-    f = { a = 10, o = { [4] = "55,13c,60,131" } },
-    j = { cpu = "2,2,2" },
+    f = { a = 10, o = { [4] = "55,13c,60,131,be,bf,d2,d3" } },
+    j = { cpu = "3,3,2" },
     u = { s = "arena" },
     b = [[victory is within reach,
 yet bombs now cover
@@ -368,7 +368,7 @@ you are to succeed.]],
     n = "apex",
     f = { a = 11 },
     u = { n = "square master" },
-    j = { cpu = "2,2,2", plc = { "85", "316", "96", "305" } },
+    j = { cpu = "3,3,3", plc = { "85", "316", "96", "305" } },
     b = [[the final battle awaits.
 to earn the champion title,
 you must wield every power

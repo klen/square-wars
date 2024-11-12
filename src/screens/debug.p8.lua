@@ -161,9 +161,24 @@ function show_debug()
   local ma = Menu:new({ y = 0 }, maopts)
 
   local power = dget(CART.power)
-  local mp = Menu:new({ y = 0 }, {
+  local mp
+  mp = Menu:new({ y = 0 }, {
     toggle,
     sep,
+    {
+      n = "power all: " .. (power == 63 and "on" or "off"),
+      cb = function(self, dir)
+        power = dir == 1 and 63 or 0
+        dset(CART.power, power)
+        self.n = "power all: " .. (power == 63 and "on" or "off")
+        mp.opts[4].n = "power - snow: " .. (power & 1)
+        mp.opts[5].n = "power - fire: " .. (power & 2)
+        mp.opts[6].n = "power - desert: " .. (power & 4)
+        mp.opts[7].n = "power - sun: " .. (power & 8)
+        mp.opts[8].n = "power - woods: " .. (power & 16)
+        mp.opts[9].n = "power - storm: " .. (power & 32)
+      end,
+    },
     {
       n = "power - snow: " .. (power & 1),
       cb = function(self, dir)
