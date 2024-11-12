@@ -1,6 +1,6 @@
 Tw = Ent:create {
   x = 6,
-  y = 5,
+  y = 6,
   c = 7,
   sd = 1,
   txt = "",

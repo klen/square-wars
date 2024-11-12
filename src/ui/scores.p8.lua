@@ -8,9 +8,9 @@ function mission_scores(missions, off)
     add(
       entities,
       Tw:new {
-        c = 6,
-        y = i * 8 + 16,
         txt = name .. pspace(name, 25) .. pspace(tostr(score), 3) .. score,
+        y = i * 8 + 16,
+        c = 6,
       }
     )
   end
@@ -19,9 +19,7 @@ end
 
 function practice_scores(arenas, off)
   local entities = {
-    Tw:new {
-      txt = "practice scores",
-    },
+    Tw:new { txt = "practice scores" },
   }
   for i, a in ipairs(arenas) do
     local num = i + off
@@ -29,9 +27,9 @@ function practice_scores(arenas, off)
     add(
       entities,
       Tw:new {
-        c = 6,
-        y = i * 8 + 16,
         txt = name .. pspace(name, 25) .. pspace(tostr(score), 3) .. score,
+        y = i * 8 + 16,
+        c = 6,
       }
     )
   end

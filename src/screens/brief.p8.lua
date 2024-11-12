@@ -29,7 +29,7 @@ function brief(n)
   SCENE = {
     art(frame),
     Tw:new { txt = "mission " .. n .. ' "' .. md.n .. '"' },
-    Tw:new { y = 28, txt = md.b },
+    Tw:new { txt = md.b, y = 28 },
     Conf:new {
       txt = "confirm",
       cb = function()
@@ -90,7 +90,7 @@ function custom_brief(n, md)
     end),
 
     Tw:new { txt = md.n },
-    Tw:new { y = 24, txt = md.b },
+    Tw:new { txt = md.b, y = 24 },
 
     Menu:new({ y = 82 }, opts),
   }

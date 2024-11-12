@@ -1,4 +1,4 @@
-Fd = Ent:create {
+Fld = Ent:create {
   s = 20,
   o = nil,
   a = nil,
@@ -115,8 +115,10 @@ Fd = Ent:create {
 
   move = function(_ENV)
     if eff == "erosion" then
-      local tc = rnd(t)
-      tc:boom()
+      local tr = rnd(t)
+      if tr:free() then
+        tr:boom()
+      end
     end
   end,
 }

@@ -44,32 +44,33 @@ Tile = Ent:create {
   end,
 
   boom = function(_ENV)
+    _ENV:anim(c, 0)
     p, tp, c, av = nil, 2, nil, false
   end,
 
-  anim = function(_ENV, _c)
-    c = _c
-    add(frz.es, atile(x, y, ts, COLORS[c], COLORS[_c]))
+  anim = function(_ENV, cl, min)
+    add(frz.es, atile(x, y, ts, COLORS[c], cl, min))
   end,
 }
 
-function atile(x, y, ts, cn, cp)
-  local fr = 10
+function atile(x, y, ts, cn, cp, min)
+  local fr = 11
+  min = min or -10
   return {
     update = function()
-      if fr > -10 then
+      if fr > min then
         fr -= 1
       end
     end,
     draw = function()
       local d = 10 - abs(fr)
       local h = ts / 20 * d
-      if fr > 0 then
+      if fr >= 0 then
         rectfill(x, y, x + ts - 2, y + ts - 2, cp)
       else
         draw_plr(x, y, ts, cn)
       end
-      rectfill(x, y, x + ts - 1, y + h - 1, 0)
+      rectfill(x, y, x + ts - 1, y + h, 0)
       rectfill(x, y + ts - h - 1, x + ts - 1, y + ts - 1, 0)
     end,
   }

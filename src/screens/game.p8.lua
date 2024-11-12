@@ -3,10 +3,12 @@ function game(fd, jd, pwr)
   sfx(0)
   cls()
 
-  local f, w = Fd:new(fd), pwr and Power:new { pwr = pwr, plw = dget(CART.power) } or nil
+  local f, w = Fld:new(fd), pwr and Power:new { pwr = pwr, plw = dget(CART.power) } or nil
   jd.f = f
   jd.pwr = w
   local j = Judge:new(jd)
+
+  pause()
 
   SCENE = {
     art(cls),

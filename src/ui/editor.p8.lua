@@ -1,7 +1,7 @@
 Editor = Ent:create {
 
   tile = 1,
-  inv = {[7]=12, [12]=7},
+  inv = {[1]=6, [6]=1},
 
   field = nil,
 
@@ -13,6 +13,18 @@ Editor = Ent:create {
         t.c = _ENV:color(t)
       end
     end
+
+    menuitem(1, "copy arena walls", function()
+      local res = {}
+
+      for t in all(field.t) do
+        if t.tp == 1 then
+          add(res, hex(t.n))
+        end
+      end
+
+      printh(join(",", res), "@clip")
+    end)
 
   end,
 
@@ -27,16 +39,17 @@ Editor = Ent:create {
     -- update tile
     elseif btn == 4 then
       local t = field.t[tile]
-      t.tp = (t.tp + 1) % 5
+      local tp = t.tp or 0
+      t.tp = (tp + 1) % 5
       if t.tp == 1 then
-        t.p = 5
-        t.c = 1
+        t.c = nil
+        t.av = false
       else
         t.p = nil
         t.c = _ENV:color(t)
       end
 
-    -- copy tile data
+    -- delete tile
     elseif btn == 5 then
       local t = field.t[tile]
       t.p = nil
@@ -47,7 +60,7 @@ Editor = Ent:create {
 
   color = function(_ENV, t)
     local c = t.c
-    c = (t.n - 1) % 4 < 2 and 7 or 12
+    c = (t.n - 1) % 4 < 2 and 1 or 6
     return t.n \ field.s % 4 < 2 and inv[c] or c
   end,
 

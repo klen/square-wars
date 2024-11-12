@@ -71,6 +71,8 @@ Ctrl = Ent:create {
       pwr:move(c)
     end
 
+    jd.f:move()
+
     add(frz.es, cnt(p, score, #p.t))
     frz:freeze(20, nil, function()
       sc = jd:finish(next)

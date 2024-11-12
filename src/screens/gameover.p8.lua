@@ -1,4 +1,5 @@
 function gameover()
+  pal(0)
   frame()
   music(6, 1000)
   dset(CART.done, 1)
@@ -46,9 +47,7 @@ function gameover()
   })
 
   local sc2 = {
-    Tw:new {
-      txt = "you have done " .. #MISSIONS .. " missions",
-    },
+    Tw:new { txt = "you have done " .. #MISSIONS .. " missions" },
     Tw:new {
       txt = "total score: " .. dget(CART.score),
       y = 32, c = 6,
@@ -69,6 +68,6 @@ function gameover()
 
   credits(mem_txt(DATA.FINAL), function()
     cls()
-    SCENE = sc5
+    SCENE = sc2
   end)
 end

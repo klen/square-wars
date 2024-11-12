@@ -23,18 +23,17 @@ end
 
 function frame(h)
   h = h or 104
-  rect(0, 0, 127, h + 4, 10)
-
-  for t in all({{0, 0}, {123, 0}, {0, h}, {123, h}}) do
+  rect(0, 1, 127, h + 4, 10)
+  for t in all({{0, 1}, {123, 1}, {0, h}, {123, h}}) do
     local x, y = t[1], t[2]
     clip(x, y, x + 4, y + 4)
     rectfill(0, 0, 127, 127, 0)
-    circ(x == 0 and 4 or 123, y == 0 and 4 or h, 4, 10)
+    circ(x == 0 and 4 or 123, y == 1 and 5 or h, 4, 10)
   end
 
   clip()
-  line(2, 4, 2, h, 8)
-  line(125, 4, 125, h, 8)
+  line(2, 5, 2, h, 8)
+  line(125, 5, 125, h, 8)
 end
 
 Conf = Ent:create {

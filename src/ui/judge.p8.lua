@@ -30,10 +30,9 @@ Judge = Ent:create {
         take = function(self, t, an)
           t.p = self.n
           if an then
-            t:anim(self.c)
-          else
-            t.c = self.c
+            t:anim(COLORS[self.c])
           end
+          t.c = self.c
           add(self.t, t.n)
         end,
       })
@@ -195,7 +194,6 @@ Judge = Ent:create {
       return p.skip < 8
     end)
     if active_players > 0 then
-      f:move()
       for t in all(f.t) do
         if t:free() then
           return _ENV:next_move(next)
@@ -220,8 +218,10 @@ Judge = Ent:create {
     -- play finish sound
     sfx(res[1].cpu and 60 or 61)
 
-    frz:freeze(60, Fade:new {}, function()
-      results(res, moves, time() - start, num == 0 and a or num, num == 0 and "a" or "m")
+    pause(function()
+      frz:freeze(60, Fade:new {}, function()
+        results(res, moves, time() - start, num == 0 and a or num, num == 0 and "a" or "m")
+      end)
     end)
   end,
 }
