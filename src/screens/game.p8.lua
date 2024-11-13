@@ -1,6 +1,6 @@
 function game(fd, jd, pwr)
   music(-1)
-  sfx(0)
+  sfx(56)
   cls()
 
   local f, w = Fld:new(fd), pwr and Power:new { pwr = pwr, plw = dget(CART.power) } or nil

@@ -12,7 +12,7 @@ sync: build
 	scp $(TARGET).p8.png root@game-anbernic.lan:/mnt/sdcard/ROMS/DEV/.
 
 clean_data:
-	rm -f ../../cdata/horneds-sw*
+	rm -f ../../cdata/horneds-$(TARGET)*
 
 memdata:
 	lua $(CURDIR)/data/convert.lua

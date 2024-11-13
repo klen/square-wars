@@ -5,7 +5,7 @@ function editor()
     art(cls),
     Menu:new({}, {
       {
-        function()
+        n = function()
           return "arena: " .. arena .. " - " .. ARENAS[arena][1]
         end,
         cb = function(self, dir, btn)

@@ -30,7 +30,7 @@ function infinite(seed)
     },
   })
 
-  sd = Seed:new { menu = menu, seed = seed }
+  sd = Seed:new { menu = menu, seed = seed or Seed.gen() }
   local run, runmax, top = dget(CART.run), dget(CART.runmax), ""
 
   SCENE = {
@@ -57,13 +57,24 @@ function start_seed(seed)
     art(part(cls, 1)),
   }
   srand(seed)
-  local a, eff, cpu = rint(#ARENAS, 1), rnd(split "dark,erosion,,,,,"), {}
+  local a, eff, cpu = rint(#ARENAS, 1), rnd(split "dark,erosion,,,,,,"), {}
   for idx = 1, rint(3, 1) do
     add(cpu, rint(3, 1))
   end
+  local ot, o = rint(6, 1), {}
+  if ot == 3 then
+    o[3] = map(split "1,4,2,3", qrnd)
+  elseif ot == 4 then
+    o[4] = map(split "1,2,3,4", qrnd)
+  end
   game(
-    { a = a, eff = eff },
+    { a = a, eff = eff, o = o },
     { a = a, human = 1, cpu = join(",", cpu), seed = rint(9999, 0), num = seed },
     63
   )
+end
+
+QD = split "0,10,200,210"
+function qrnd(q)
+  return QD[q] + rint(7, 1) * 20 + rint(7, 2)
 end

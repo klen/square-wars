@@ -1,7 +1,7 @@
 Menu = Ent:create {
   y = 68,
   sel = 1,
-  dir = { -1, 1, -1, 1, 1, 1 },
+  dir = split "-1,1,-1,1,1,1",
 
   init = function(_ENV, items)
     opts = {}

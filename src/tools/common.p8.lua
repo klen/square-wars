@@ -44,6 +44,14 @@ function join(d, t)
   return t[1] .. d .. join(d, slice(t, 2))
 end
 
+function map(t, fn)
+  local r = {}
+  for o in all(t) do
+    add(r, fn(o))
+  end
+  return r
+end
+
 function rint(n, t)
   return flr(rnd(n)) + t
 end

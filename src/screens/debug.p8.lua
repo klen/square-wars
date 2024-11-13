@@ -268,7 +268,7 @@ function show_debug()
   }
 end
 
-menuitem(3, "debug", show_debug)
+menuitem(5, "debug", show_debug)
 
 function invert(var, b)
   return var & b == 0 and var | b or var & ~b

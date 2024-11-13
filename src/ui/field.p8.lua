@@ -56,11 +56,11 @@ Fld = Ent:create {
     if o then
       local prv
       for tp, v in pairs(o) do
-        for i, h in ipairs(split(v)) do
-          if h == "" then
-            break
-          end
-          local tt = t[tonum("0x" .. h)]
+        if type(v) == "string" then
+          v = map(split(v), function(h) return tonum("0x" .. h) end)
+        end
+        for i, n in ipairs(v) do
+          local tt = t[n]
           tt.tp = tp
           while tt.c == #COLORS do
             tt.c = rndcolor()
