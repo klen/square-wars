@@ -1,4 +1,5 @@
 function results(players, moves, seconds, num, mode, seed)
+  cls()
   pal(0)
   frame()
 
@@ -8,7 +9,7 @@ function results(players, moves, seconds, num, mode, seed)
 
   if seed then
     if win.cpu then
-      add(SCENE, Tw:new { txt = "status: run over (" .. dget(CART.run) .. ")", c = 8, y = 95 })
+      add(SCENE, Tw:new { txt = "status: run over (" .. dget(CART.run) .. ")", c = 8, y = 96 })
       add(SCENE, Conf:new { txt = "main menu", cb = start })
     else
       local run, runmax = dget(CART.run) + 1, dget(CART.runmax)
@@ -16,7 +17,7 @@ function results(players, moves, seconds, num, mode, seed)
       dset(CART.run, run)
       dset(CART.runmax, max(runmax, run))
       if run > runmax then
-        add(SCENE, Tw:new { txt = "max run updated!", c = 10, y = 95 })
+        add(SCENE, Tw:new { txt = "max run updated!", c = 10, y = 96 })
       end
       add(
         SCENE,
@@ -30,7 +31,7 @@ function results(players, moves, seconds, num, mode, seed)
     dset(CART.time, dget(CART.time) + seconds)
 
     if win.cpu then
-      add(SCENE, Tw:new { txt = "status: disqualified", c = 8, y = 95 })
+      add(SCENE, Tw:new { txt = "status: disqualified", c = 8, y = 96 })
       add(SCENE, Conf:new { txt = "main menu", cb = start })
     else
       local mdata = MISSIONS[num]
@@ -38,7 +39,7 @@ function results(players, moves, seconds, num, mode, seed)
       dset(CART.mission, done)
       dset(CART.score, dget(CART.score) + win.score)
 
-      add(SCENE, Tw:new { txt = "status: mission complete", c = 12, y = 95 })
+      add(SCENE, Tw:new { txt = "status: mission complete", c = 12, y = 96 })
       add(SCENE, unlock(mdata))
       add(
         SCENE,

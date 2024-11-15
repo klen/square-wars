@@ -77,7 +77,6 @@ Ctrl = Ent:create {
     frz:freeze(20, nil, function()
       sc = jd:finish(next)
     end)
-    log("ctr: move " .. c .. " sc " .. sc)
   end,
 }
 

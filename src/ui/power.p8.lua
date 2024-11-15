@@ -25,7 +25,6 @@ Power = Ent:create {
     if pwr & (1 << (c - 1)) > 0 then
       lvl[c] = (lvl[c] + 1) % (mx + 1)
     end
-    log("pwr: move " .. c .. " l " .. lvl[c])
   end,
 
   active = function(_ENV, c)

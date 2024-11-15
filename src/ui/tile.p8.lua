@@ -10,18 +10,16 @@ end
 OBS = { [3] = "☉", [4] = "✽" }
 
 Tile = Ent:create {
-  p = nil,
-  tp = nil,
   av = true,
   n = 0,
   x = 0,
   y = 0,
   ts = 8,
+  -- p = nil,
+  -- tp = nil,
 
   init = function(_ENV)
-    diag = {}
-    hvrel = {}
-    c = rndcolor()
+    diag, hvrel, c = {}, {}, rndcolor()
   end,
 
   draw = function(_ENV)

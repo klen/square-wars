@@ -1,6 +1,6 @@
 Stars = Ent:create {
   warp = 3,
-  cols = { 1, 2, 5, 6, 7, 12 },
+  cols = split "1,2,5,6,7,12",
 
   init = function(_ENV)
     stars = {}

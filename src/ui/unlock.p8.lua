@@ -10,6 +10,6 @@ function unlock(md)
     elseif s then
       dset(CART[s], 1)
     end
-    return Tw:new { txt = "unlocked: " .. n, c = 6, y = 85 }
+    return Tw:new { txt = "unlocked: " .. n, c = 6, y = 86 }
   end
 end

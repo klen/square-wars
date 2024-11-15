@@ -1,8 +1,8 @@
 Seed = Ent:create {
   pos = 1,
   on = false,
-  seed = nil,
-  menu = nil,
+  -- seed = nil,
+  -- menu = nil,
   init = function(self)
     seed = seed or self:gen()
   end,

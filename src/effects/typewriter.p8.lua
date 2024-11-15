@@ -14,7 +14,7 @@ Tw = Ent:create {
           _txt ..= ctrl .. "3"
         end
       else
-        local r = rnd { "a", "e", "b", "c", "d" }
+        local r = rnd(split "a,e,b,c,d")
         _txt ..= "\as1i1v2" .. r .. "1 " .. ctrl .. sd .. ch
       end
       _ch = ch

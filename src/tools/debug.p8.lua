@@ -1,16 +1,17 @@
-function debug(t, indent)
+function debug(t, ind)
   if type(t) ~= "table" then
     return tostr(t)
   end
 
-  res = ""
-  indent = indent or " "
+  ind = ind or ""
+  local res = ind
   for k, v in pairs(t) do
-    if type(v) == "table" then
-      res = res .. indent .. k .. ":\n" .. debug(v, indent .. " ")
-    else
-      res = res .. indent .. k .. ": " .. tostr(v) .. "\n"
-    end
+    res ..= k .. ": " .. (type(v) == "table" and ("\n" .. debug(v, ind .. " ")) or (tostr(v) .. "\n"))
+    -- if type(v) == "table" then
+    --   res = res .. "\n" .. debug(v, ind .. " ")
+    -- else
+    --   res = res .. tostr(v) .. "\n"
+    -- end
   end
   return res
 end

@@ -5,11 +5,11 @@ Judge = Ent:create {
   a = 0,
   num = 0,
   human = 1,
-  plc = nil,
 
-  f = nil,
-  pwr = nil,
-  seed = nil,
+  -- plc = nil,
+  -- f = nil,
+  -- pwr = nil,
+  -- seed = nil,
 
   init = function(_ENV)
     moves, start = 0, time()
@@ -159,8 +159,6 @@ Judge = Ent:create {
         end)
       end
     end
-
-    log("jud: move " .. "p " .. p.n .. " c " .. c .. " t " .. #ptiles .. " s " .. p.skip)
 
     -- keep the current player
     if pwr and not empty then
