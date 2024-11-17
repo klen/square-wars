@@ -70,6 +70,7 @@ function start_seed(seed)
   game(
     { a = a, eff = eff, o = o },
     { a = a, human = 1, cpu = join(",", cpu), seed = rint(9999, 0), num = seed },
+    63,
     63
   )
 end

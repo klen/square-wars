@@ -32,7 +32,7 @@ function start()
       {
         n = "continue (m" .. num + 1 .. ")",
         cb = part(_start, num + 1),
-        hide = num == 0 or num >= #MISSIONS,
+        hide = num < 2 or num >= #MISSIONS,
       },
       {
         n = "new story",

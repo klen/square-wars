@@ -213,7 +213,7 @@ Judge = Ent:create {
     end
 
     -- play finish sound
-    sfx(res[1].cpu and 60 or 61)
+    sfx(res[1].cpu and 60 or 61, -1)
 
     pause(function()
       frz:freeze(60, Fade:new {}, function()

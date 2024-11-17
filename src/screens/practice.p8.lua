@@ -19,12 +19,12 @@ function practice()
           music(-1)
           local bots, tcpu = {}, split "3,2,1,1"
           for idx = 1, cpu do
-            add(tcpu, bots[idx])
+            add(bots, tcpu[idx])
           end
           local a = arena == 0 and rint(#arenas, 1) or arena
           game(
             { a = a, eff = eff },
-            { a = a, human = human, cpu = join(",", tcpu) },
+            { a = a, human = human, cpu = join(",", bots) },
             dget(CART.power)
           )
         end,

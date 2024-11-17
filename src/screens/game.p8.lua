@@ -1,9 +1,9 @@
-function game(fd, jd, pwr)
+function game(fd, jd, pwr, plw)
   music(-1)
   sfx(56)
   cls()
 
-  local f, w = Fld:new(fd), pwr and Power:new { pwr = pwr, plw = dget(CART.power) } or nil
+  local f, w = Fld:new(fd), pwr and Power:new { pwr = pwr, plw = plw or dget(CART.power) } or nil
   jd.f = f
   jd.pwr = w
   local j = Judge:new(jd)
