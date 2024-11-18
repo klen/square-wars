@@ -24,3 +24,6 @@ inject:
 	@rm -f xx01 $(TARGET)
 	@mv xx00 $(TARGET)
 	@cat memdata.rom >> $(TARGET)
+
+edit:
+	open https://www.lexaloffle.com/bbs/?tid=144970
