@@ -36,7 +36,6 @@ Ctrl = Ent:create {
         end, p.w)
         beep()
       elseif jd:cfree(sc, p.w) then
-        sfx(63)
         _ENV:move(sc)
       end
     end
@@ -74,7 +73,7 @@ Ctrl = Ent:create {
     jd.f:move()
 
     add(frz.es, cnt(p, score, #p.t))
-    frz:freeze(20, nil, function()
+    frz:freeze(10 + rint(10, 1), nil, function()
       sc = jd:finish(next)
     end)
   end,

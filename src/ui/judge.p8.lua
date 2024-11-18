@@ -6,7 +6,8 @@ Judge = Ent:create {
   num = 0,
   human = 1,
 
-  -- plc = nil,
+  plc = "22,379,39,362",
+
   -- f = nil,
   -- pwr = nil,
   -- seed = nil,
@@ -50,14 +51,13 @@ Judge = Ent:create {
     end
 
     -- placement
-    local s = f.s
-    plc = plc or { "1", tostr(s * s), tostr(s), tostr(s * s - s + 1) }
+    local s, pos = f.s, split(plc)
     for p in all(players) do
-      for n in all(split(plc[p.n])) do
+      for n in all(split(pos[p.n], "/")) do
         local tt = t[n]
         for nn in all(tt.hvrel) do
           local nt = t[nn]
-          while nt.c == p.c do
+          while nt:free() and nt.c == p.c do
             nt.c = rndcolor()
           end
         end
@@ -162,13 +162,11 @@ Judge = Ent:create {
 
     -- keep the current player
     if pwr and not empty then
-      sfx(59)
+      sfx(53)
       return false
     end
 
-    if p.cpu then
-      sfx(62)
-    end
+    sfx(52)
     return true
   end,
 
@@ -213,7 +211,7 @@ Judge = Ent:create {
     end
 
     -- play finish sound
-    sfx(res[1].cpu and 60 or 61, -1)
+    sfx(res[1].cpu and 55 or 54)
 
     pause(function()
       frz:freeze(60, Fade:new {}, function()

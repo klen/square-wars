@@ -9,7 +9,7 @@ return {
   {
     n = "awakening",
     f = { s = 5 },
-    j = {},
+    j = { plc = "1" },
 
     b = [[begins your journey does.
 know the field, you must;
@@ -40,7 +40,7 @@ the first battle awaits...]],
   {
     n = "first test",
     f = { s = 8 },
-    j = { cpu = "1" },
+    j = { cpu = "1", plc = "1,64" },
     u = { n = "continue" },
     b = [[an adversary appears.
 slow, they are observe
@@ -54,7 +54,7 @@ the ways of the square.]],
   {
     n = "dual challenge",
     f = { s = 12 },
-    j = { cpu = "1,1" },
+    j = { cpu = "1,1", plc = "1,144,12" },
     b = [[two foes stand before you.
 a trial of focus and skill
 ready to advance,
@@ -66,7 +66,7 @@ you must be.]],
   {
     n = "the proving",
     f = { s = 15 },
-    j = { cpu = "1,1,1" },
+    j = { cpu = "1,1,1", plc = "17,209,29,197" },
     u = { n = "practice mode" },
     b = [[in the academy,
 not easy it is.
@@ -157,7 +157,7 @@ and my power is yours.]],
     r = 6,
     pwr = 2,
     f = { a = 13 },
-    j = { cpu = "2", plc = { "1,20,381,400", "190,191,210,211" } },
+    j = { cpu = "2", plc = "1/20/381/400,190/191/210/211" },
     u = { v = 2, s = "power", n = "power of fire" },
     b = [[fury and speed,
 my strength lies in. from
@@ -174,7 +174,7 @@ claim my fire.]],
     r = 6,
     pwr = 4,
     f = { a = 14 },
-    j = { cpu = "2", plc = { "64", "337" } },
+    j = { cpu = "2", plc = "64,337" },
     u = { v = 4, s = "power", n = "power of desert" },
     b = [[endless sands, my domain
 in the desert, endurance
@@ -190,7 +190,7 @@ and take my power.]],
     r = 6,
     pwr = 8,
     f = { a = 15 },
-    j = { cpu = "2", plc = { "127,274", "267,134" } },
+    j = { cpu = "2", plc = "127/274,267/134" },
     u = { v = 8, s = "power", n = "power of sun" },
     b = [[rays of light, i command
 from the core, all
@@ -206,7 +206,7 @@ my power you will gain.]],
     r = 6,
     pwr = 16,
     f = { a = 16 },
-    j = { cpu = "2", plc = { "1,381", "20,400" } },
+    j = { cpu = "2", plc = "1/381,20/400" },
     u = { v = 16, s = "power", n = "power of woods" },
     b = [[life and resilience,
 the source of my strength.
@@ -223,7 +223,7 @@ and my power is yours.]],
     r = 6,
     pwr = 32,
     f = { a = 17 },
-    j = { cpu = "2", plc = { "190", "211" } },
+    j = { cpu = "2", plc = "190,211" },
     u = { v = 32, s = "power", n = "power of storm" },
     b = [[depth and mystery,
 my domain. the whirlpool
@@ -286,7 +286,7 @@ and claim victory.]],
   {
     n = "mirror",
     f = { a = 6 },
-    j = { cpu = "3", plc = { "161,180", "221,240" } },
+    j = { cpu = "3", plc = "161/180,221/240" },
     u = { s = "arena" },
     b = [[a lone opponent from
 the mirror planet awaits.
@@ -368,7 +368,7 @@ you are to succeed.]],
     n = "apex",
     f = { a = 11 },
     u = { n = "square master" },
-    j = { cpu = "3,3,3", plc = { "85", "316", "96", "305" } },
+    j = { cpu = "3,3,3", plc = "85,316,96,305" },
     b = [[the final battle awaits.
 to earn the champion title,
 you must wield every power
