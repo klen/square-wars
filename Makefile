@@ -27,3 +27,6 @@ inject:
 
 edit:
 	open https://www.lexaloffle.com/bbs/?tid=144970
+
+bin:
+	$(PICO8) -x main.p8 -export $(TARGET).bin

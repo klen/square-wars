@@ -1,5 +1,6 @@
 *.p8l
-*.txt
 *.rom
+*.txt
+/sw.bin
 _*
 test.p8

@@ -13,8 +13,8 @@ function _init()
   end)
   menuitem(4, "erase savestate", function()
     menuitem(nil, "erase savestate?", function()
-      for k, v in pairs(CART) do
-        dset(CART[k], 0)
+      for idx = 0, 63 do
+        dset(idx, 0)
       end
       sfx(59)
       _init()
