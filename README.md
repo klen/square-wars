@@ -2,6 +2,8 @@
 
 A game for [Pico8](https://www.lexaloffle.com/pico-8.php) virtual console.
 
+[Link to the game](https://www.lexaloffle.com/bbs/?tid=144970)
+
 ## How to play
 
 - Use arrow keys to choose the color.
