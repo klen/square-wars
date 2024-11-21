@@ -15,6 +15,11 @@ A game for [Pico8](https://www.lexaloffle.com/pico-8.php) virtual console.
 
 [![Square Wars](https://img.youtube.com/vi/R4EBgkI0ZOI/0.jpg)](https://www.youtube.com/watch?v=R4EBgkI0ZOI)
 
+
+## PICO8 Cartridge
+
+![Square Wars](https://github.com/klen/square-wars/blob/main/sw.p8.png?raw=true)
+
 ## License
 
 MIT
