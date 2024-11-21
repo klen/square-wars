@@ -116,6 +116,7 @@ Judge = Ent:create {
 
       -- portals
       if pt.tp == 3 then
+        pt.tp = nil
         foreach(tiles, function(t)
           if t.tp == 3 and t:free(c) then
             p:take(t)
@@ -153,6 +154,7 @@ Judge = Ent:create {
           end)
         end)
       end)
+
       for p in all(players) do
         p.t = filter(p.t, function(tn)
           return tiles[tn].p == p.n

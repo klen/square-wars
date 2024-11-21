@@ -22,6 +22,7 @@ Seed = Ent:create {
         frz:freeze(5, nil, function()
           on = false
           menu.sel = 1
+          dset(CART.runseed, seed)
         end)
       end
     end

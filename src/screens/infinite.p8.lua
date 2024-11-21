@@ -32,19 +32,23 @@ function infinite(seed)
 
   sd = Seed:new { menu = menu, seed = seed or Seed.gen() }
   local run, runmax, top = dget(CART.run), dget(CART.runmax), ""
+  if not seed then
+    dset(CART.runseed, sd.seed)
+  end
 
   SCENE = {
     art(function()
       cls(1)
       print("infinite mode", 34, 16, 7)
       if seed then
+        print("run seed:  " .. pspace(tostr(dget(CART.runseed)), 10), 16, 58, 6)
         print(
           "run done:  " .. pspace(tostr(run), 10) .. (run == runmax and " top!" or ""),
           16,
-          62,
+          66,
           6
         )
-        print("run score: " .. pspace(tostr(dget(CART.rscore)), 10), 16, 70, 6)
+        print("run score: " .. pspace(tostr(dget(CART.rscore)), 10), 16, 74, 6)
       end
     end),
     menu,

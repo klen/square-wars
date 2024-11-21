@@ -15,7 +15,6 @@ function start()
     art(cls),
     Stars:new { cols = COLORS },
     art(function()
-      -- rectfill(0, 48, 127, 127, 1)
       printb(ctrl .. "x5square", 38, 26, 1)
       printb(ctrl .. "x5square", 37, 25, 9)
       printb(ctrl .. "x8wars", 39, 42, 1)
